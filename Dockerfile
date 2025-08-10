@@ -24,8 +24,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # Copy the compiled application files from the 'build' stage.
-# Make sure 'your-project-name' matches the name in your new angular.json
-COPY --from=build /usr/src/app/dist/your-project-name/browser/ .
+COPY --from=build /usr/src/app/dist/ums-client/browser/ .
 
 # Copy the custom NGINX configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
