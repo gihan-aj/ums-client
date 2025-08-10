@@ -1,26 +1,41 @@
-// The :host selector targets the host element of the component (<app-button>).
+@use "sass:color"; // Import the color module for color.adjust()
+
 :host {
-  display: inline-block; // Ensures the component respects layout properties.
+  display: inline-block;
+
+  // Use the new .is-loading class for a more robust state
+  &.is-loading {
+    .btn-content {
+      // Make the text invisible but keep it in the layout to preserve height
+      color: transparent;
+      user-select: none; // Prevent highlighting the invisible text
+    }
+    .spinner-container {
+      // Show the spinner
+      opacity: 1;
+    }
+  }
 }
 
-// Base button styles
 .btn {
-  display: flex;
+  position: relative;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%; // Make button take full width of its container
-  padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.1);
+  width: 100%;
+  padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1);
   border: 1px solid transparent;
   border-radius: var(--border-radius);
   font-family: var(--font-family);
   font-size: var(--font-size-base);
   font-weight: 500;
   cursor: pointer;
-  text-align: center;
   transition: background-color var(--transition-speed) ease-in-out,
               border-color var(--transition-speed) ease-in-out,
               color var(--transition-speed) ease-in-out;
   -webkit-font-smoothing: antialiased;
+  // line-height: calc(var(--line-height-base) * 2.5);
+  min-height: calc(var(--font-size-base) * 2.5);
 
   &:focus {
     outline: none;
@@ -29,43 +44,88 @@
 
   &:disabled {
     cursor: not-allowed;
+    // We only change opacity for the non-loading disabled state
     opacity: 0.65;
+  }
+
+  // When loading, the opacity is handled by making the text transparent
+  :host(.is-loading) &:disabled {
+    opacity: 1;
   }
 }
 
-// Variant styles
+.btn-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-unit);
+  // The content's color will now transition to transparent
+  transition: color var(--transition-speed) ease;
+}
+
+.icon-element {
+  font-size: 1.1em;
+}
+
+// Handle icon position
+.btn.icon-right {
+  flex-direction: row-reverse;
+}
+
+// --- Variant Styles ---
 .btn-primary {
   background-color: var(--primary-color);
   color: var(--text-color-light);
   border-color: var(--primary-color);
-
-  &:hover:not(:disabled) {
-    background-color: var(--primary-color-hover);
-    border-color: var(--primary-color-hover);
-  }
+  &:hover:not(:disabled) { background-color: var(--primary-color-hover); }
 }
 
 .btn-secondary {
   background-color: var(--surface-color);
   color: var(--text-color);
   border-color: var(--border-color);
-
-  &:hover:not(:disabled) {
-    background-color: var(--background-color);
-  }
+  &:hover:not(:disabled) { background-color: var(--background-color); }
 }
 
 .btn-danger {
-    background-color: var(--error-color);
-    color: var(--text-color-light);
-    border-color: var(--error-color);
-
-    &:hover:not(:disabled) {
-        background-color: darken(#ef4444, 10%);
-    }
+  background-color: var(--error-color);
+  color: var(--text-color-light);
+  border-color: var(--error-color);
+  // Use the modern, recommended color function
+  &:hover:not(:disabled) { background-color: color.adjust(#ef4444, $lightness: -10%); }
 }
 
-// Loading spinner
+// Icon-only button variant
+.btn-icon {
+  width: auto;
+  aspect-ratio: 1 / 1;
+  padding: calc(var(--spacing-unit) * 1.25);
+  border-radius: 50%;
+
+  .icon-element {
+    font-size: 1.4em;
+  }
+  .text-content {
+    display: none;
+  }
+}
+
+// --- Spinner Styles ---
+.spinner-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-speed) ease;
+  // Make sure spinner is not affected by the parent's text color transition
+  color: initial;
+}
+
 .spinner {
   display: inline-block;
   width: 20px;
@@ -76,15 +136,12 @@
   animation: spin 1s ease-in-out infinite;
 }
 
-// For secondary button, spinner color should be different
-.btn-secondary .spinner {
-    border-color: rgba(0,0,0,0.2);
-    border-top-color: var(--secondary-color);
+.btn-secondary .spinner,
+.btn-icon .spinner {
+  border-color: rgba(0,0,0,0.2);
+  border-top-color: var(--secondary-color);
 }
 
-
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }

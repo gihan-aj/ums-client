@@ -18,7 +18,7 @@
 .login-panel {
   width: 100%;
   max-width: 400px;
-  padding: calc(var(--spacing-unit) * 4);
+  padding: calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 5);
   background-color: var(--surface-color);
   border-radius: calc(var(--border-radius) * 2);
   border: 1px solid var(--border-color);
@@ -44,26 +44,54 @@
 }
 
 .form-field {
-  margin-bottom: calc(var(--spacing-unit) * 2.5);
+  margin-bottom: calc(var(--spacing-unit) * 1);
 }
 
 .form-actions {
-  margin-top: calc(var(--spacing-unit) * 3);
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacing-unit) * 2);
+  gap: calc(var(--spacing-unit) * 1.5);
+  margin-top: calc(var(--spacing-unit) * 1);
+  margin-bottom: calc(var(--spacing-unit) * 3);
 }
 
-.forgot-password-link {
-  font-size: var(--font-size-base);
-  font-weight: 500;
+// --- Link Styles ---
+.primary-link {
+  font-weight: 600;
   color: var(--primary-color);
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+
+.secondary-link {
+  font-size: calc(var(--font-size-base) * 0.95);
+  font-weight: 500;
+  color: var(--secondary-color);
   text-decoration: none;
   text-align: right;
   transition: color var(--transition-speed) ease;
 
   &:hover {
+    color: var(--primary-color);
     text-decoration: underline;
-    color: var(--primary-color-hover);
+  }
+}
+
+// --- Footer section for extra links ---
+.login-footer {
+  border-top: 1px solid var(--border-color);
+  padding-top: calc(var(--spacing-unit) * 2);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 1);
+
+  p {
+    font-size: var(--font-size-base);
+    color: var(--secondary-color);
+  }
+
+  .secondary-link {
+    text-align: center;
   }
 }

@@ -14,6 +14,7 @@
           type="email"
           formControlName="email"
           [control]="emailControl!"
+          [validationMessages]="{ required: 'Email is required.', email: 'Please enter a valid email.' }"
         ></app-input>
       </div>
 
@@ -24,11 +25,12 @@
           type="password"
           formControlName="password"
           [control]="passwordControl!"
+          [validationMessages]="{ required: 'Password is required.' }"
         ></app-input>
       </div>
 
       <div class="form-actions">
-        <a href="#" class="forgot-password-link">Forgot password?</a>
+        <a routerLink="/forgot-password" class="secondary-link">Forgot password?</a>
         <app-button
           variant="primary"
           [loading]="isLoading"
@@ -38,6 +40,14 @@
         </app-button>
       </div>
     </form>
+
+    <div class="login-footer">
+      <p>
+        Don't have an account?
+        <a routerLink="/register" class="primary-link">Create one</a>
+      </p>
+      <a routerLink="/resend-activation" class="secondary-link">Resend activation link</a>
+    </div>
 
   </div>
 </div>

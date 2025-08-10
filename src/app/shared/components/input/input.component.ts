@@ -27,6 +27,13 @@ export class InputComponent implements ControlValueAccessor {
   @Input() label: string = '';
   @Input() type: 'text' | 'password' | 'email' | 'number' = 'text';
   @Input() placeholder: string = '';
+  @Input() loading: boolean = false;
+
+  /**
+   * An object to map validation error keys to user-friendly messages.
+   * Example: { required: 'This field is mandatory.', minlength: 'Too short.' }
+   */
+  @Input() validationMessages: { [key: string]: string } = {};
 
   id = `app-input-${nextId++}`;
 
@@ -34,6 +41,24 @@ export class InputComponent implements ControlValueAccessor {
   // when the input is invalid, so we can style it from the outside if needed.
   @HostBinding('class.is-invalid') get isInvalid() {
     return this.control.invalid && (this.control.dirty || this.control.touched);
+  }
+
+  /**
+   * Gets the first validation error message to display.
+   */
+  get errorMessage(): string | null {
+    if (!this.control.errors || !(this.control.touched || this.control.dirty)) {
+      return null;
+    }
+
+    const errorKeys = Object.keys(this.control.errors);
+    const firstErrorKey = errorKeys[0];
+
+    // Return custom message, or a generic one if no mapping is provided.
+    return (
+      this.validationMessages[firstErrorKey] ||
+      `Invalid input for ${this.label}.`
+    );
   }
 
   // --- ControlValueAccessor implementation ---
