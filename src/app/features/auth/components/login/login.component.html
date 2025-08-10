@@ -1,0 +1,43 @@
+<div class="login-page-container">
+  <div class="login-panel">
+    <div class="login-header">
+      <!-- You can place a logo here -->
+      <h1 class="title">Welcome Back</h1>
+      <p class="subtitle">Please enter your details to sign in.</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+      <div class="form-field">
+        <app-input
+          label="Email Address"
+          placeholder="e.g., name@company.com"
+          type="email"
+          formControlName="email"
+          [control]="emailControl!"
+        ></app-input>
+      </div>
+
+      <div class="form-field">
+        <app-input
+          label="Password"
+          placeholder="Enter your password"
+          type="password"
+          formControlName="password"
+          [control]="passwordControl!"
+        ></app-input>
+      </div>
+
+      <div class="form-actions">
+        <a href="#" class="forgot-password-link">Forgot password?</a>
+        <app-button
+          variant="primary"
+          [loading]="isLoading"
+          [disabled]="loginForm.invalid && (loginForm.dirty || loginForm.touched)"
+        >
+          Sign In
+        </app-button>
+      </div>
+    </form>
+
+  </div>
+</div>

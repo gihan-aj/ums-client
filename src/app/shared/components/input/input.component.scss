@@ -1,0 +1,61 @@
+:host {
+  display: block; // Make the component a block-level element
+  width: 100%;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.input-label {
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  margin-bottom: var(--spacing-unit);
+  color: var(--text-color);
+}
+
+.input-container {
+  position: relative;
+  width: 100%;
+}
+
+.input-element {
+  width: 100%;
+  padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.1);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--text-color);
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: border-color var(--transition-speed) ease-in-out,
+              box-shadow var(--transition-speed) ease-in-out;
+
+  &::placeholder {
+    color: var(--secondary-color);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--border-color-focus);
+    box-shadow: 0 0 0 3px var(--primary-color-focus);
+  }
+}
+
+// Style the input when it's invalid
+:host(.is-invalid) .input-element {
+  border-color: var(--error-color);
+
+  &:focus {
+     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+  }
+}
+
+.error-message {
+  margin-top: calc(var(--spacing-unit) * 0.75);
+  font-size: calc(var(--font-size-base) * 0.9);
+  color: var(--error-color);
+  font-weight: 500;
+}

@@ -1,0 +1,90 @@
+// The :host selector targets the host element of the component (<app-button>).
+:host {
+  display: inline-block; // Ensures the component respects layout properties.
+}
+
+// Base button styles
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%; // Make button take full width of its container
+  padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 1.1);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color var(--transition-speed) ease-in-out,
+              border-color var(--transition-speed) ease-in-out,
+              color var(--transition-speed) ease-in-out;
+  -webkit-font-smoothing: antialiased;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--primary-color-focus);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+}
+
+// Variant styles
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--text-color-light);
+  border-color: var(--primary-color);
+
+  &:hover:not(:disabled) {
+    background-color: var(--primary-color-hover);
+    border-color: var(--primary-color-hover);
+  }
+}
+
+.btn-secondary {
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  border-color: var(--border-color);
+
+  &:hover:not(:disabled) {
+    background-color: var(--background-color);
+  }
+}
+
+.btn-danger {
+    background-color: var(--error-color);
+    color: var(--text-color-light);
+    border-color: var(--error-color);
+
+    &:hover:not(:disabled) {
+        background-color: darken(#ef4444, 10%);
+    }
+}
+
+// Loading spinner
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  border-top-color: var(--text-color-light);
+  animation: spin 1s ease-in-out infinite;
+}
+
+// For secondary button, spinner color should be different
+.btn-secondary .spinner {
+    border-color: rgba(0,0,0,0.2);
+    border-top-color: var(--secondary-color);
+}
+
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
