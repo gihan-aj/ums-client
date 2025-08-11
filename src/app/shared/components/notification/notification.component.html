@@ -1,0 +1,7 @@
+<div class="notification-toast" [ngClass]="'toast-' + notification.type" @fade>
+    <div class="icon-container">
+        <i [ngClass]="iconClass"></i>
+    </div>
+    <p class="message">{{ notification.message }}</p>
+    <button class="close-btn" (click)="onClose()">&times;</button>
+</div>

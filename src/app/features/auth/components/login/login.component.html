@@ -7,9 +7,9 @@
     </div>
 
     <!-- Display API error message -->
-    <div *ngIf="error$ | async as errorMessage" class="api-error-banner">
+    <!-- <div *ngIf="error$ | async as errorMessage" class="api-error-banner">
       {{ errorMessage }}
-    </div>
+    </div> -->
 
     <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
       <div class="form-field">

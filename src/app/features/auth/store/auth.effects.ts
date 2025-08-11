@@ -4,12 +4,16 @@ import { AuthService } from "../services/auth.service";
 import { Router } from "@angular/router";
 import { AuthActions } from "./auth.actions";
 import { catchError, exhaustMap, map, of, tap } from "rxjs";
+import { ErrorHandlingService } from '../../../core/services/error-handling.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Injectable()
 export class AuthEffects {
   private actions$ = inject(Actions);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private errorHandlingService = inject(ErrorHandlingService);
+  private notificationService = inject(NotificationService);
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -28,9 +32,10 @@ export class AuthEffects {
             });
           }),
           catchError((error) => {
-            // On failure, dispatch the LoginFailure action with the error message
+            // Delegate all error handling to the service
             const errorMessage =
-              error.error?.message || 'An unknown error occurred.';
+              this.errorHandlingService.handleHttpError(error);
+            // Dispatch the failure action with the simple message
             return of(AuthActions.loginFailure({ error: errorMessage }));
           })
         )
@@ -44,6 +49,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.loginSuccess),
         tap(() => {
+          this.notificationService.showSuccess('Login successful!');
           // Navigate to the main dashboard or home page after login
           this.router.navigate(['/']);
         })
