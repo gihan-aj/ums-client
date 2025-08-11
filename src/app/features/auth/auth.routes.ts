@@ -4,20 +4,20 @@ import { provideState } from "@ngrx/store";
 import { authFeature } from "./store/auth.reducer";
 import { provideEffects } from "@ngrx/effects";
 import { AuthEffects } from "./store/auth.effects";
+import { RegisterComponent } from './components/register/register.component';
+import { AwaitingActivationComponent } from './components/awaiting-activation/awaiting-activation.component';
 
 export const AUTH_ROUTES: Routes = [
   {
-    // This is the new default route for this feature module.
-    // If the user lands on the root path, they will be redirected to 'login'.
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-    // Provide the feature state and effects only for this feature's routes
+    // Provide the feature state and effects for all auth-related routes
     providers: [provideState(authFeature), provideEffects([AuthEffects])],
+    children: [
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
+      { path: 'awaiting-activation', component: AwaitingActivationComponent },
+      // Default redirect for the auth module
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
+    ],
   },
-  // We will add routes for register, forgot-password, etc. here later
 ];

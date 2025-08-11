@@ -19,6 +19,14 @@ interface LoginResponse {
   tokenExpiryUtc: string;
 }
 
+interface RegisterPayload {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  firstName: string;
+  lastName: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -28,5 +36,12 @@ export class AuthService {
 
   login(payload: LoginPayload): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, payload);
+  }
+
+  register(payload: RegisterPayload): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrl}/register`,
+      payload
+    );
   }
 }

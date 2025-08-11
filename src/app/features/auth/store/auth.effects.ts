@@ -6,6 +6,7 @@ import { AuthActions } from "./auth.actions";
 import { catchError, exhaustMap, map, of, tap } from "rxjs";
 import { ErrorHandlingService } from '../../../core/services/error-handling.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class AuthEffects {
@@ -55,5 +56,39 @@ export class AuthEffects {
         })
       ),
     { dispatch: false } // This effect does not dispatch any new actions
+  );
+
+  // --- Register Effect ---
+  register$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.register),
+      exhaustMap((action) =>
+        this.authService.register(action.payload).pipe(
+          map((response) =>
+            AuthActions.registerSuccess({ successMessage: response.message })
+          ),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              this.errorHandlingService.handleHttpError(error);
+            return of(AuthActions.registerFailure({ error: errorMessage }));
+          })
+        )
+      )
+    )
+  );
+
+  // Effect to handle side-effects of successful registration
+  registerSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.registerSuccess),
+        tap((action) => {
+          // Show a success toast
+          this.notificationService.showSuccess(action.successMessage);
+          // Redirect to the awaiting activation page
+          this.router.navigate(['/awaiting-activation']);
+        })
+      ),
+    { dispatch: false }
   );
 }

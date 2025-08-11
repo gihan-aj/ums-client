@@ -5,17 +5,17 @@ import { jwtDecode } from 'jwt-decode';
 
 export const authFeature = createFeature({
   name: 'auth', // The key for this state slice in the global store
+
   reducer: createReducer(
     initialAuthState,
 
-    // Handle the login action
+    // --- Login Reducers ---
     on(AuthActions.login, (state) => ({
       ...state,
       isLoading: true,
       error: null,
     })),
 
-    // Handle the login action
     on(AuthActions.loginSuccess, (state, { accessToken, tokenExpiryUtc }) => {
       // Decode the token to get user details not in the main response body
       const decodedToken: any = jwtDecode(accessToken);
@@ -39,7 +39,6 @@ export const authFeature = createFeature({
       };
     }),
 
-    // Handle the Login Failure action
     on(AuthActions.loginFailure, (state, { error }) => ({
       ...state,
       isLoading: false,
@@ -49,8 +48,23 @@ export const authFeature = createFeature({
       tokenExpiry: null,
     })),
 
-    // Handle the Logout action
-    on(AuthActions.logout, () => initialAuthState)
+    on(AuthActions.logout, () => initialAuthState),
+
+    // --- Registration Reducers ---
+    on(AuthActions.register, (state) => ({
+      ...state,
+      isLoading: true,
+      error: null,
+    })),
+    on(AuthActions.registerSuccess, (state) => ({
+      ...state,
+      isLoading: false, // Registration is done, so loading is false
+    })),
+    on(AuthActions.registerFailure, (state, { error }) => ({
+      ...state,
+      isLoading: false,
+      error: error,
+    }))
   ),
 });
 
