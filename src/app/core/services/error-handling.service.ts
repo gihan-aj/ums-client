@@ -1,12 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { NotificationService } from './notification.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DialogService } from './dialog.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ErrorHandlingService {
   private notificationService = inject(NotificationService);
+  private dialogService = inject(DialogService);
 
   /**
    * Parses an HttpErrorResponse, shows a notification, and returns a user-friendly message.
@@ -21,24 +23,27 @@ export class ErrorHandlingService {
       return message;
     }
 
-    // The error object from your .NET API
     const apiError = error.error;
-    let displayMessage = 'An unexpected error occurred.';
 
     // Check for standard validation problem details (status 400)
     if (apiError.title === 'Validation Error' && apiError.errors) {
-      // We could get more specific here, but for a toast, a general message is often best.
-      displayMessage = apiError.detail || 'Please check the form for errors.';
-    }
-    // Check for other structured errors from your API
-    else if (apiError.detail) {
-      displayMessage = apiError.detail;
-    }
-    // Fallback for other types of errors
-    else if (error.message) {
-      displayMessage = error.message;
+      const validationErrors = Object.values(
+        apiError.errors
+      ).flat() as string[];
+      this.dialogService.openInfoDialog({
+        title: 'Validation Failed',
+        messages:
+          validationErrors.length > 0 ? validationErrors : [apiError.detail],
+        type: 'error',
+      });
+      let displayMessage = apiError.detail || 'Validation failed.';
+      this.notificationService.showError(displayMessage);
+      return displayMessage;
     }
 
+    // Handle other structured errors with a toast notification
+    let displayMessage =
+      apiError.detail || error.message || 'An unexpected error occurred.';
     this.notificationService.showError(displayMessage);
     return displayMessage;
   }

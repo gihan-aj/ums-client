@@ -1,0 +1,16 @@
+<app-modal (closed)="close()">
+  <h2 modal-title class="title-content" [ngClass]="type">
+    <i [ngClass]="iconClass"></i>
+    <span>{{ title }}</span>
+  </h2>
+
+  <div modal-body>
+    <ul class="message-list">
+      <li *ngFor="let message of messages">{{ message }}</li>
+    </ul>
+  </div>
+
+  <div modal-footer>
+    <app-button (click)="close()">OK</app-button>
+  </div>
+</app-modal>
