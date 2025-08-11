@@ -1,24 +1,14 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './features/auth/components/login/login.component';
 
 export const routes: Routes = [
+  // Lazy-load the authentication feature routes.
+  // The router will now look inside AUTH_ROUTES for any path starting from root.
   {
-    path: 'login',
-    component: LoginComponent,
+    path: '', // Corrected: This path now correctly points to the lazy-loaded module.
+    loadChildren: () =>
+      import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
   },
-  // Redirect the root path to the login page
-  {
-    path: '',
-    redirectTo: '/login',
-    pathMatch: 'full',
-  },
-  // We will add a route for the main application layout later
-  // {
-  //   path: '',
-  //   component: MainLayoutComponent,
-  //   canActivate: [AuthGuard], // Protect this route
-  //   children: [
-  //     // ... dashboard, users, etc.
-  //   ]
-  // }
+
+  // We can add a wildcard route here for a 404 page later.
+  // The primary redirect is now handled inside auth.routes.ts.
 ];

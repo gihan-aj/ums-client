@@ -1,10 +1,31 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
+
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { selectAuthError, selectAuthIsLoading } from '../../store/auth.reducer';
+import { AuthActions } from '../../store/auth.actions';
+
+// Helper to get or create a device ID
+const getDeviceId = (): string => {
+  const DEVICE_ID_KEY = 'ums-device-id';
+  let deviceId = localStorage.getItem(DEVICE_ID_KEY);
+  if (!deviceId) {
+    deviceId = crypto.randomUUID();
+    localStorage.setItem(DEVICE_ID_KEY, deviceId);
+  }
+  return deviceId;
+};
 
 @Component({
   selector: 'app-login',
@@ -13,12 +34,14 @@ import { InputComponent } from '../../../../shared/components/input/input.compon
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  // Using inject() is the modern way to get dependencies
   private fb = inject(FormBuilder);
-  private router = inject(Router);
+  private store = inject(Store);
 
   loginForm: FormGroup;
-  isLoading = false;
+
+  // Select state from the store as observables
+  isLoading$: Observable<boolean> = this.store.select(selectAuthIsLoading);
+  error$: Observable<string | null> = this.store.select(selectAuthError);
 
   constructor() {
     this.loginForm = this.fb.group({
@@ -33,25 +56,21 @@ export class LoginComponent {
   }
 
   get passwordControl() {
-    return this.loginForm.get('password') as FormControl
+    return this.loginForm.get('password') as FormControl;
   }
 
   login(): void {
     if (this.loginForm.invalid) {
-      // Mark all fields as touched to trigger validation messages
       this.loginForm.markAllAsTouched();
       return;
     }
 
-    this.isLoading = true;
-    console.log('Form Submitted:', this.loginForm.value);
+    const payload = {
+      ...this.loginForm.value,
+      deviceId: getDeviceId(),
+    };
 
-    // Simulate an API call
-    setTimeout(() => {
-      this.isLoading = false;
-      // On success, you would navigate to the dashboard
-      // this.router.navigate(['/dashboard']);
-      console.log('Login successful (simulated)');
-    }, 2000);
+    // Dispatch the login action to the store
+    this.store.dispatch(AuthActions.login({ payload }));
   }
 }

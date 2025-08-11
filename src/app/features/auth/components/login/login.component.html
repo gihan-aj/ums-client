@@ -6,6 +6,11 @@
       <p class="subtitle">Please enter your details to sign in.</p>
     </div>
 
+    <!-- Display API error message -->
+    <div *ngIf="error$ | async as errorMessage" class="api-error-banner">
+      {{ errorMessage }}
+    </div>
+
     <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
       <div class="form-field">
         <app-input
@@ -33,7 +38,7 @@
         <a routerLink="/forgot-password" class="secondary-link">Forgot password?</a>
         <app-button
           variant="primary"
-          [loading]="isLoading"
+          [loading]="(isLoading$ | async)?? false"
           [disabled]="loginForm.invalid && (loginForm.dirty || loginForm.touched)"
         >
           Sign In
