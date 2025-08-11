@@ -1,0 +1,27 @@
+
+<div class="register-page-container">
+  <div class="register-panel">
+    <div class="register-header">
+      <h1 class="title">Create an Account</h1>
+      <p class="subtitle">Join us by filling out the form below.</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
+      <div class="name-fields">
+        <app-input label="First Name" placeholder="John" formControlName="firstName" [control]="firstNameCtrl"></app-input>
+        <app-input label="Last Name" placeholder="Doe" formControlName="lastName" [control]="lastNameCtrl"></app-input>
+      </div>
+      <app-input label="Email Address" type="email" placeholder="name@company.com" formControlName="email" [control]="emailCtrl"></app-input>
+      <app-input label="Password" type="password" placeholder="Min. 8 characters" formControlName="password" [control]="passwordCtrl"></app-input>
+      <app-input label="Confirm Password" type="password" placeholder="Re-enter your password" formControlName="confirmPassword" [control]="confirmPasswordCtrl" [validationMessages]="{ 'passwordMismatch': 'Passwords do not match.' }"></app-input>
+
+      <app-button variant="primary" [loading]="(isLoading$ | async)!" class="submit-btn">
+        Create Account
+      </app-button>
+    </form>
+
+    <div class="register-footer">
+      <p>Already have an account? <a routerLink="/login" class="primary-link">Sign In</a></p>
+    </div>
+  </div>
+</div>

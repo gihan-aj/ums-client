@@ -15,6 +15,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectAuthError, selectAuthIsLoading } from '../../store/auth.reducer';
 import { AuthActions } from '../../store/auth.actions';
+import { RouterLink } from '@angular/router';
 
 // Helper to get or create a device ID
 const getDeviceId = (): string => {
@@ -29,7 +30,13 @@ const getDeviceId = (): string => {
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, InputComponent, ButtonComponent],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ReactiveFormsModule,
+    InputComponent,
+    ButtonComponent,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
