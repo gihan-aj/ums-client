@@ -65,7 +65,7 @@ export class AuthEffects {
       exhaustMap((action) =>
         this.authService.register(action.payload).pipe(
           map((response) =>
-            AuthActions.registerSuccess({ successMessage: response.message })
+            AuthActions.registerSuccess({ successMessage: response })
           ),
           catchError((error: HttpErrorResponse) => {
             const errorMessage =
@@ -87,6 +87,55 @@ export class AuthEffects {
           this.notificationService.showSuccess(action.successMessage);
           // Redirect to the awaiting activation page
           this.router.navigate(['/awaiting-activation']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  // --- Activation Effects ---
+  activateAccount$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.activateAccount),
+      exhaustMap((action) =>
+        this.authService.activateAccount(action.token, action.email).pipe(
+          map((response) =>
+            AuthActions.activationSuccess({ successMessage: response })
+          ),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              this.errorHandlingService.handleHttpError(error);
+            return of(AuthActions.activationFailure({ error: errorMessage }));
+          })
+        )
+      )
+    )
+  );
+
+  setInitialPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.setInitialPassword),
+      exhaustMap((action) =>
+        this.authService.setInitialPassword(action.payload).pipe(
+          map((response) =>
+            AuthActions.activationSuccess({ successMessage: response })
+          ),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              this.errorHandlingService.handleHttpError(error);
+            return of(AuthActions.activationFailure({ error: errorMessage }));
+          })
+        )
+      )
+    )
+  );
+
+  activationSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.activationSuccess),
+        tap((action) => {
+          this.notificationService.showSuccess(action.successMessage);
+          this.router.navigate(['/login']);
         })
       ),
     { dispatch: false }

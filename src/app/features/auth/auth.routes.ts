@@ -6,6 +6,7 @@ import { provideEffects } from "@ngrx/effects";
 import { AuthEffects } from "./store/auth.effects";
 import { RegisterComponent } from './components/register/register.component';
 import { AwaitingActivationComponent } from './components/awaiting-activation/awaiting-activation.component';
+import { ActivationComponent } from './components/activation/activation.component';
 
 export const AUTH_ROUTES: Routes = [
   {
@@ -16,6 +17,7 @@ export const AUTH_ROUTES: Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
       { path: 'awaiting-activation', component: AwaitingActivationComponent },
+      { path: 'activate-account', component: ActivationComponent },
       // Default redirect for the auth module
       { path: '', redirectTo: 'login', pathMatch: 'full' },
     ],

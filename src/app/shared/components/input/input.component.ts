@@ -28,6 +28,7 @@ export class InputComponent implements ControlValueAccessor {
   @Input() type: 'text' | 'password' | 'email' | 'number' = 'text';
   @Input() placeholder: string = '';
   @Input() loading: boolean = false;
+  @Input() readonly: boolean = false;
 
   /**
    * An object to map validation error keys to user-friendly messages.

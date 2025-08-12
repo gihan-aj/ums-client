@@ -49,6 +49,18 @@
     border-color: var(--border-color-focus);
     box-shadow: 0 0 0 3px var(--primary-color-focus);
   }
+  
+  &.is-readonly {
+    background-color: var(--background-color);
+    cursor: default;
+    color: var(--secondary-color);
+
+    &:focus {
+      // Prevent focus styles on readonly inputs
+      border-color: var(--border-color);
+      box-shadow: none;
+    }
+  }
 }
 
 // Style the input when it's invalid

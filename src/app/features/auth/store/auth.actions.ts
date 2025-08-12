@@ -9,6 +9,13 @@ interface RegisterPayload {
   lastName: string;
 }
 
+interface SetInitialPasswordPayload {
+  email: string;
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export const AuthActions = createActionGroup({
   source: 'Auth API',
   events: {
@@ -28,5 +35,11 @@ export const AuthActions = createActionGroup({
     Register: props<{ payload: RegisterPayload }>(),
     'Register Success': props<{ successMessage: string }>(),
     'Register Failure': props<{ error: string }>(),
+
+    // --- Activation Actions ---
+    'Activate Account': props<{ token: string; email: string }>(),
+    'Set Initial Password': props<{ payload: SetInitialPasswordPayload }>(),
+    'Activation Success': props<{ successMessage: string }>(),
+    'Activation Failure': props<{ error: string }>(),
   },
 });

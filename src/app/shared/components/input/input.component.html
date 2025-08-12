@@ -6,8 +6,10 @@
       [type]="type"
       [formControl]="control"
       [placeholder]="placeholder"
+      [readOnly]="readonly"
       class="input-element"
       [class.has-loader]="loading"
+      [class.is-readonly]="readonly"
       (input)="onInput($event)"
       (blur)="onTouched()"
     />

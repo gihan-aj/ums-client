@@ -64,6 +64,26 @@ export const authFeature = createFeature({
       ...state,
       isLoading: false,
       error: error,
+    })),
+
+    // --- Activation Reducers ---
+    on(
+      AuthActions.activateAccount,
+      AuthActions.setInitialPassword,
+      (state) => ({
+        ...state,
+        isLoading: true,
+        error: null,
+      })
+    ),
+    on(AuthActions.activationSuccess, (state) => ({
+      ...state,
+      isLoading: false,
+    })),
+    on(AuthActions.activationFailure, (state, { error }) => ({
+      ...state,
+      isLoading: false,
+      error: error,
     }))
   ),
 });

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
@@ -27,6 +27,13 @@ interface RegisterPayload {
   lastName: string;
 }
 
+interface SetInitialPasswordPayload {
+  email: string;
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -38,9 +45,29 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, payload);
   }
 
-  register(payload: RegisterPayload): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(
-      `${this.apiUrl}/register`,
+  register(payload: RegisterPayload): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/register`, payload);
+  }
+
+  /**
+   * Activates a user account using the token from the registration email.
+   * @param token The activation token from the URL.
+   * @param email The user's email from the URL.
+   */
+  activateAccount(token: string, email: string): Observable<string> {
+    const params = new HttpParams().set('token', token).set('email', email);
+    return this.http.get<string>(`${this.apiUrl}/activate`, {
+      params,
+    });
+  }
+
+  /**
+   * Sets the initial password for an account created by an admin.
+   * @param payload The command containing token, email, and new passwords.
+   */
+  setInitialPassword(payload: SetInitialPasswordPayload): Observable<string> {
+    return this.http.post<string>(
+      `${this.apiUrl}/set-initial-password`,
       payload
     );
   }

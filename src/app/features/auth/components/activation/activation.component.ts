@@ -1,0 +1,106 @@
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { InputComponent } from '../../../../shared/components/input/input.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable, take } from 'rxjs';
+import { selectAuthIsLoading } from '../../store/auth.reducer';
+import { AuthActions } from '../../store/auth.actions';
+
+// Re-using the password match validator from the register page
+export function passwordMatchValidator(controlName: string, matchingControlName: string): ValidatorFn {
+  return (formGroup: AbstractControl): { [key: string]: any } | null => {
+    const control = formGroup.get(controlName);
+    const matchingControl = formGroup.get(matchingControlName);
+    if (matchingControl?.errors && !matchingControl.errors['passwordMismatch']) {
+      return null;
+    }
+    if (control?.value !== matchingControl?.value) {
+      matchingControl?.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    } else {
+      matchingControl?.setErrors(null);
+      return null;
+    }
+  };
+}
+
+@Component({
+  selector: 'app-activation',
+  imports: [CommonModule, ReactiveFormsModule, InputComponent, ButtonComponent],
+  templateUrl: './activation.component.html',
+  styleUrl: './activation.component.scss',
+})
+export class ActivationComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private store = inject(Store);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+
+  isLoading$: Observable<boolean> = this.store.select(selectAuthIsLoading);
+  setPasswordMode = false;
+  setPasswordForm!: FormGroup;
+
+  private token: string | null = null;
+  private email: string | null = null;
+
+  ngOnInit(): void {
+    this.route.queryParams.pipe(take(1)).subscribe((params) => {
+      this.token = params['token'];
+      this.email = params['email'];
+      this.setPasswordMode = params['setPassword'] === 'true';
+
+      if (!this.token || !this.email) {
+        // Handle invalid link case
+        this.router.navigate(['/login']);
+        return;
+      }
+
+      if (this.setPasswordMode) {
+        this.initializeForm();
+      } else {
+        // Dispatch automatic activation
+        this.store.dispatch(
+          AuthActions.activateAccount({ token: this.token, email: this.email })
+        );
+      }
+    });
+  }
+
+  private initializeForm(): void {
+    this.setPasswordForm = this.fb.group(
+      {
+        email: [{ value: this.email, disabled: true }],
+        newPassword: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', Validators.required],
+      },
+      { validators: passwordMatchValidator('newPassword', 'confirmPassword') }
+    );
+  }
+
+  get emailCtrl() {
+    return this.setPasswordForm.get('email') as FormControl;
+  }
+
+  get newPasswordCtrl() {
+    return this.setPasswordForm.get('newPassword') as FormControl;
+  }
+  get confirmPasswordCtrl() {
+    return this.setPasswordForm.get('confirmPassword') as FormControl;
+  }
+
+  submitPassword(): void {
+    if (this.setPasswordForm.invalid || !this.token || !this.email) {
+      this.setPasswordForm.markAllAsTouched();
+      return;
+    }
+    const payload = {
+      token: this.token,
+      email: this.email,
+      ...this.setPasswordForm.value,
+    };
+    this.store.dispatch(AuthActions.setInitialPassword({ payload }));
+  }
+}
