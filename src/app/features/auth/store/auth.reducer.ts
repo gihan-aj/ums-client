@@ -84,6 +84,38 @@ export const authFeature = createFeature({
       ...state,
       isLoading: false,
       error: error,
+    })),
+
+    // ---Resend Activation Reducers ---
+    on(AuthActions.resendActivation, (state) => ({
+      ...state,
+      isLoading: true,
+      error: null,
+    })),
+    on(AuthActions.resendActivationSuccess, (state) => ({
+      ...state,
+      isLoading: false,
+    })),
+    on(AuthActions.resendActivationFailure, (state, { error }) => ({
+      ...state,
+      isLoading: false,
+      error: error,
+    })),
+
+    // ---Request Password Reset Reducers ---
+    on(AuthActions.requestPasswordReset, (state) => ({
+      ...state,
+      isLoading: true,
+      error: null,
+    })),
+    on(AuthActions.requestPasswordResetSuccess, (state) => ({
+      ...state,
+      isLoading: false,
+    })),
+    on(AuthActions.requestPasswordResetFailure, (state, { error }) => ({
+      ...state,
+      isLoading: false,
+      error: error,
     }))
   ),
 });

@@ -1,0 +1,28 @@
+<div class="auth-form-container">
+  <div class="auth-form-panel">
+    <div class="auth-form-header">
+      <h1 class="title">Resend Activation Link</h1>
+      <p class="subtitle">Enter your email address below and we'll send you a new activation link.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="auth-form-body">
+      <app-input
+        label="Email Address"
+        placeholder="e.g., name@company.com"
+        type="email"
+        formControlName="email"
+        [control]="emailCtrl"
+      ></app-input>
+
+      <div class="auth-form-actions">
+        <app-button variant="primary" [loading]="(isLoading$ | async) ?? false">
+          Send Link
+        </app-button>
+      </div>
+    </form>
+
+    <div class="auth-form-footer">
+      <a routerLink="/login" class="primary-link">Back to Sign In</a>
+    </div>
+  </div>
+</div>

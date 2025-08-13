@@ -16,6 +16,13 @@ interface SetInitialPasswordPayload {
   confirmPassword: string;
 }
 
+interface ResetPasswordPayload {
+  email: string;
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export const AuthActions = createActionGroup({
   source: 'Auth API',
   events: {
@@ -41,5 +48,20 @@ export const AuthActions = createActionGroup({
     'Set Initial Password': props<{ payload: SetInitialPasswordPayload }>(),
     'Activation Success': props<{ successMessage: string }>(),
     'Activation Failure': props<{ error: string }>(),
+
+    // --- New Resend Activation Actions ---
+    'Resend Activation': props<{ email: string }>(),
+    'Resend Activation Success': props<{ successMessage: string }>(),
+    'Resend Activation Failure': props<{ error: string }>(),
+
+    // --- Request Password Request Actions ---
+    'Request Password Reset': props<{ email: string }>(),
+    'Request Password Reset Success': props<{ successMessage: string }>(),
+    'Request Password Reset Failure': props<{ error: string }>(),
+
+    // --- Request Password Request Actions ---
+    'Reset Password': props<{ payload: ResetPasswordPayload }>(),
+    'Reset Password Success': props<{ successMessage: string }>(),
+    'Reset Password Failure': props<{ error: string }>(),
   },
 });

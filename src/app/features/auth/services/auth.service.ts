@@ -34,6 +34,13 @@ interface SetInitialPasswordPayload {
   confirmPassword: string;
 }
 
+interface ResetPasswordPayload {
+  email: string;
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -68,6 +75,39 @@ export class AuthService {
   setInitialPassword(payload: SetInitialPasswordPayload): Observable<string> {
     return this.http.post<string>(
       `${this.apiUrl}/set-initial-password`,
+      payload
+    );
+  }
+
+  /**
+   * Requests a new activation email to be sent.
+   * @param email The user's email address.
+   */
+  resendActivation(email: string): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/resend-activation`, {
+      email,
+    });
+  }
+
+  /**
+   * Requests a password reset link to be sent via email.
+   * @param email The user's email address.
+   */
+  requestPasswordReset(email: string): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/request-password-reset`, {
+      email,
+    });
+  }
+
+  /**
+   * Submits the new password along with the reset token.
+   * @param payload The command containing token, email, and new passwords.
+   */
+  resetPassword(
+    payload: ResetPasswordPayload
+  ): Observable<string> {
+    return this.http.post<string>(
+      `${this.apiUrl}/reset-password`,
       payload
     );
   }
