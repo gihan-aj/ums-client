@@ -49,7 +49,9 @@ export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`; // Example API URL structure
 
   login(payload: LoginPayload): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, payload);
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, payload, {
+      withCredentials: true,
+    });
   }
 
   register(payload: RegisterPayload): Observable<string> {
