@@ -1,44 +1,34 @@
-<div class="login-page-container">
-  <div class="login-panel">
-    <div class="login-header">
-      <!-- You can place a logo here -->
+<div class="auth-form-container">
+  <div class="auth-form-panel">
+    <div class="auth-form-header">
       <h1 class="title">Welcome Back</h1>
       <p class="subtitle">Please enter your details to sign in.</p>
     </div>
 
-    <!-- Display API error message -->
-    <!-- <div *ngIf="error$ | async as errorMessage" class="api-error-banner">
-      {{ errorMessage }}
-    </div> -->
+    <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate class="auth-form-body">
+      <app-input
+        label="Email Address"
+        placeholder="e.g., name@company.com"
+        type="email"
+        formControlName="email"
+        [control]="emailControl"
+        [validationMessages]="{ required: 'Email is required.', email: 'Please enter a valid email.' }"
+      ></app-input>
 
-    <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
-      <div class="form-field">
-        <app-input
-          label="Email Address"
-          placeholder="e.g., name@company.com"
-          type="email"
-          formControlName="email"
-          [control]="emailControl!"
-          [validationMessages]="{ required: 'Email is required.', email: 'Please enter a valid email.' }"
-        ></app-input>
-      </div>
+      <app-input
+        label="Password"
+        placeholder="Enter your password"
+        type="password"
+        formControlName="password"
+        [control]="passwordControl"
+        [validationMessages]="{ required: 'Password is required.' }"
+      ></app-input>
 
-      <div class="form-field">
-        <app-input
-          label="Password"
-          placeholder="Enter your password"
-          type="password"
-          formControlName="password"
-          [control]="passwordControl!"
-          [validationMessages]="{ required: 'Password is required.' }"
-        ></app-input>
-      </div>
-
-      <div class="form-actions">
+      <div class="auth-form-actions">
         <a routerLink="/forgot-password" class="secondary-link">Forgot password?</a>
         <app-button
           variant="primary"
-          [loading]="(isLoading$ | async)?? false"
+          [loading]="(isLoading$ | async) ?? false"
           [disabled]="loginForm.invalid && (loginForm.dirty || loginForm.touched)"
         >
           Sign In
@@ -46,7 +36,7 @@
       </div>
     </form>
 
-    <div class="login-footer">
+    <div class="auth-form-footer">
       <p>
         Don't have an account?
         <a routerLink="/register" class="primary-link">Create one</a>

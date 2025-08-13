@@ -1,45 +1,16 @@
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: var(--background-color);
-    padding: 20px;
-}
-
-.panel {
-    text-align: center;
-    max-width: 450px;
-    padding: 40px;
-    background-color: var(--surface-color);
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-}
-
 .icon-container {
-    font-size: 48px;
-    color: var(--primary-color);
-    margin-bottom: 24px;
+  font-size: 48px;
+  color: var(--primary-color);
+  margin-bottom: 24px;
 }
 
-.title {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 12px;
-}
+// Override the footer to be borderless and centered for this specific page
+.auth-form-footer {
+  border-top: none;
+  padding-top: 0;
+  margin-top: calc(var(--spacing-unit) * 2);
 
-.subtitle {
-    color: var(--secondary-color);
-    line-height: 1.6;
-    margin-bottom: 32px;
-}
-
-.back-link {
-    color: var(--primary-color);
-    font-weight: 500;
-    text-decoration: none;
-
-    &:hover {
-        text-decoration: underline;
-    }
+  .primary-link {
+    text-align: center;
+  }
 }

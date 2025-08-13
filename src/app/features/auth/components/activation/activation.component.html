@@ -1,5 +1,6 @@
-<div class="form-container">
-  <div class="form-panel">
+<div class="auth-form-container">
+  <div class="auth-form-panel">
+
     <!-- Automatic Activation View -->
     <div *ngIf="!setPasswordMode; else setPasswordView" class="status-view">
       <div class="spinner"></div>
@@ -9,64 +10,42 @@
 
     <!-- Set Password View -->
     <ng-template #setPasswordView>
-      <div class="form-header">
-        <h1 class="title">Set Your Password</h1>
-        <p class="subtitle">
-          Your account has been created. Please set a password to continue.
-        </p>
-      </div>
-      <form
-        [formGroup]="setPasswordForm"
-        (ngSubmit)="submitPassword()"
-        novalidate
-      >
-
-      <div class="form-field">
-        <app-input
+      <div class="form-view">
+        <div class="auth-form-header">
+          <h1 class="title">Set Your Password</h1>
+          <p class="subtitle">Your account has been created. Please set a password to continue.</p>
+        </div>
+        <form [formGroup]="setPasswordForm" (ngSubmit)="submitPassword()" novalidate class="auth-form-body">
+          <app-input
             label="Email Address"
             type="email"
             formControlName="email"
             [control]="emailCtrl"
             [readonly]="true">
-          >
           </app-input>
-      </div>
-
-        <div class="form-field">
-          <app-input
-            label="New Password"
-            type="password"
+          <app-input 
+            label="New Password" 
+            type="password" 
             placeholder="Min. 8 characters"
-            formControlName="newPassword"
-            [control]="newPasswordCtrl"
-            [validationMessages]="{
-              required: 'Password is required.',
-              minlength: 'Too short.'
-            }"
-          >
+            formControlName="newPassword" 
+            [control]="newPasswordCtrl">
           </app-input>
-        </div>
-
-        <div class="form-field">
-          <app-input
-            label="Confirm New Password"
+          <app-input 
+            label="Confirm New Password" 
             type="password"
-            placeholder="Re-enter your password"
-            formControlName="confirmPassword"
+            placeholder="Re-enter your password" 
+            formControlName="confirmPassword" 
             [control]="confirmPasswordCtrl"
-            [validationMessages]="{
-              passwordMismatch: 'Passwords do not match.'
-            }"
-          >
+            [validationMessages]="{ 'passwordMismatch': 'Passwords do not match.' }">
           </app-input>
-        </div>
-
-        <div class="form-actions">
-          <app-button variant="primary" [loading]="(isLoading$ | async)!">
-            Activate and Set Password
-          </app-button>
-        </div>
-      </form>
+          <div class="auth-form-actions">
+            <app-button variant="primary" [loading]="(isLoading$ | async) ?? false">
+              Activate and Set Password
+            </app-button>
+          </div>
+        </form>
+      </div>
     </ng-template>
+
   </div>
 </div>

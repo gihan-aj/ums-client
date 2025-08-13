@@ -70,17 +70,23 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: calc(var(--spacing-unit) * 2);
 }
 
-.form-container {
+/* =============================================== */
+/* == Global Authentication Form Styles == */
+/* =============================================== */
+
+.auth-form-container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
+  min-height: 100vh; /* Use min-height to fill the viewport */
   padding: calc(var(--spacing-unit) * 2);
+  background-color: var(--background-color);
 }
 
-.form-panel {
+.auth-form-panel {
   width: 100%;
-  max-width: 400px;
+  max-width: 450px; /* A slightly larger max-width can be good for forms */
   padding: calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 5);
   background-color: var(--surface-color);
   border-radius: calc(var(--border-radius) * 2);
@@ -89,36 +95,45 @@ h1, h2, h3, h4, h5, h6 {
   transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
 }
 
-.form-header {
+.auth-form-header {
   text-align: center;
   margin-bottom: calc(var(--spacing-unit) * 4);
 
   .title {
     font-size: 24px;
     font-weight: 700;
-    color: var(--text-color);
     margin-bottom: var(--spacing-unit);
   }
 
   .subtitle {
-    font-size: var(--font-size-base);
     color: var(--secondary-color);
+    line-height: 1.6; /* Added for better readability on multi-line subtitles */
   }
 }
 
-.form-field {
-  margin-bottom: calc(var(--spacing-unit) * 1);
+/* A wrapper for the <form> element to control spacing */
+.auth-form-body {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 0.5);
 }
 
-.form-actions {
+.auth-form-actions {
   display: flex;
   flex-direction: column;
   gap: calc(var(--spacing-unit) * 1.5);
-  margin-top: calc(var(--spacing-unit) * 2);
-  margin-bottom: calc(var(--spacing-unit) * 1);
+  margin-top: calc(var(--spacing-unit) * 1.5);
 }
 
-// --- Link Styles ---
+.auth-form-footer {
+  text-align: center;
+  margin-top: calc(var(--spacing-unit) * 4);
+  padding-top: calc(var(--spacing-unit) * 3);
+  border-top: 1px solid var(--border-color);
+  color: var(--secondary-color);
+}
+
+/* --- Shared Link Styles --- */
 .primary-link {
   font-weight: 600;
   color: var(--primary-color);
@@ -137,24 +152,5 @@ h1, h2, h3, h4, h5, h6 {
   &:hover {
     color: var(--primary-color);
     text-decoration: underline;
-  }
-}
-
-// --- Footer section for extra links ---
-.form-footer {
-  border-top: 1px solid var(--border-color);
-  padding-top: calc(var(--spacing-unit) * 2);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--spacing-unit) * 1);
-
-  p {
-    font-size: var(--font-size-base);
-    color: var(--secondary-color);
-  }
-
-  .secondary-link {
-    text-align: center;
   }
 }

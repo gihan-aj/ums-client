@@ -1,26 +1,59 @@
-
-<div class="register-page-container">
-  <div class="register-panel">
-    <div class="register-header">
+<div class="auth-form-container">
+  <div class="auth-form-panel">
+    <div class="auth-form-header">
       <h1 class="title">Create an Account</h1>
       <p class="subtitle">Join us by filling out the form below.</p>
     </div>
 
-    <form [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
+    <form [formGroup]="registerForm" (ngSubmit)="register()" novalidate class="auth-form-body">
       <div class="name-fields">
-        <app-input label="First Name" placeholder="John" formControlName="firstName" [control]="firstNameCtrl"></app-input>
-        <app-input label="Last Name" placeholder="Doe" formControlName="lastName" [control]="lastNameCtrl"></app-input>
+        <app-input 
+          label="First Name" 
+          placeholder="John" 
+          formControlName="firstName" 
+          [control]="firstNameCtrl">
+        </app-input>
+        <app-input 
+          label="Last Name" 
+          placeholder="Doe" 
+          formControlName="lastName" 
+          [control]="lastNameCtrl">
+        </app-input>
       </div>
-      <app-input label="Email Address" type="email" placeholder="name@company.com" formControlName="email" [control]="emailCtrl"></app-input>
-      <app-input label="Password" type="password" placeholder="Min. 8 characters" formControlName="password" [control]="passwordCtrl"></app-input>
-      <app-input label="Confirm Password" type="password" placeholder="Re-enter your password" formControlName="confirmPassword" [control]="confirmPasswordCtrl" [validationMessages]="{ 'passwordMismatch': 'Passwords do not match.' }"></app-input>
 
-      <app-button variant="primary" [loading]="(isLoading$ | async)!" class="submit-btn">
-        Create Account
-      </app-button>
+      <app-input 
+        label="Email Address" 
+        type="email" 
+        placeholder="name@company.com" 
+        formControlName="email" 
+        [control]="emailCtrl">
+      </app-input>
+
+      <app-input 
+        label="Password" 
+        type="password" 
+        placeholder="Min. 8 characters" 
+        formControlName="password" 
+        [control]="passwordCtrl">
+      </app-input>
+
+      <app-input 
+        label="Confirm Password" 
+        type="password" 
+        placeholder="Re-enter your password" 
+        formControlName="confirmPassword" 
+        [control]="confirmPasswordCtrl" 
+        [validationMessages]="{ 'passwordMismatch': 'Passwords do not match.' }">
+      </app-input>
+
+      <div class="auth-form-actions">
+        <app-button variant="primary" [loading]="(isLoading$ | async) ?? false">
+          Create Account
+        </app-button>
+      </div>
     </form>
 
-    <div class="register-footer">
+    <div class="auth-form-footer">
       <p>Already have an account? <a routerLink="/login" class="primary-link">Sign In</a></p>
     </div>
   </div>
