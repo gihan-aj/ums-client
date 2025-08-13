@@ -52,7 +52,7 @@ export class AuthEffects {
         tap(() => {
           this.notificationService.showSuccess('Login successful!');
           // Navigate to the main dashboard or home page after login
-          this.router.navigate(['/']);
+          this.router.navigate(['/dashboard']);
         })
       ),
     { dispatch: false } // This effect does not dispatch any new actions
@@ -240,6 +240,18 @@ export class AuthEffects {
         tap((action) => {
           this.notificationService.showSuccess(action.successMessage);
           this.router.navigate(['/login']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  // Effect to handle logout navigation
+  logout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.logout),
+        tap(() => {
+          this.router.navigate(['/auth/login']);
         })
       ),
     { dispatch: false }

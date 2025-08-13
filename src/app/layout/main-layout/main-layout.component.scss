@@ -1,0 +1,32 @@
+:host {
+  display: block;
+  height: 100vh;
+}
+
+.main-layout {
+  display: flex;
+  height: 100%;
+}
+
+.sidebar {
+  flex-shrink: 0; // Prevent the sidebar from shrinking
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
+.header {
+  flex-shrink: 0; // Prevent the header from shrinking
+}
+
+.content-area {
+  flex-grow: 1;
+  padding: calc(var(--spacing-unit) * 3);
+  overflow-y: auto; // Allow content to scroll
+  background-color: var(--background-color);
+}

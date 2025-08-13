@@ -1,14 +1,33 @@
 import { Routes } from '@angular/router';
+import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { authGuard } from './core/guards/auth.guard';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 export const routes: Routes = [
-  // Lazy-load the authentication feature routes.
-  // The router will now look inside AUTH_ROUTES for any path starting from root.
+  // --- Public Authentication Routes ---
+  // These routes are for users who are not logged in.
   {
-    path: '', // Corrected: This path now correctly points to the lazy-loaded module.
+    path: 'auth',
     loadChildren: () =>
       import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
   },
 
-  // We can add a wildcard route here for a 404 page later.
-  // The primary redirect is now handled inside auth.routes.ts.
+  // --- Protected Application Routes ---
+  // These routes are wrapped in the MainLayoutComponent and protected by the authGuard.
+  {
+    path: '',
+    component: MainLayoutComponent,
+    canActivate: [authGuard], // Protect this whole section
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+      // Redirect the root path of the protected area to the dashboard
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    ],
+  },
+
+  // Fallback route if no other route matches
+  {
+    path: '**',
+    redirectTo: '/auth/login',
+  },
 ];
