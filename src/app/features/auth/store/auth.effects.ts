@@ -86,7 +86,7 @@ export class AuthEffects {
           // Show a success toast
           this.notificationService.showSuccess(action.successMessage);
           // Redirect to the awaiting activation page
-          this.router.navigate(['/awaiting-activation']);
+          this.router.navigate(['/auth/awaiting-activation']);
         })
       ),
     { dispatch: false }
@@ -135,7 +135,7 @@ export class AuthEffects {
         ofType(AuthActions.activationSuccess),
         tap((action) => {
           this.notificationService.showSuccess(action.successMessage);
-          this.router.navigate(['/login']);
+          this.router.navigate(['/auth/login']);
         })
       ),
     { dispatch: false }
@@ -171,7 +171,7 @@ export class AuthEffects {
         tap((action) => {
           // Show the generic success message from the API. Using 'info' type is neutral.
           this.notificationService.showInfo(action.successMessage);
-          this.router.navigate(['/login']);
+          this.router.navigate(['/auth/login']);
         })
       ),
     { dispatch: false }
@@ -239,7 +239,7 @@ export class AuthEffects {
         ofType(AuthActions.resetPasswordSuccess),
         tap((action) => {
           this.notificationService.showSuccess(action.successMessage);
-          this.router.navigate(['/login']);
+          this.router.navigate(['/auth/login']);
         })
       ),
     { dispatch: false }

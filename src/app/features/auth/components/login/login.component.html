@@ -25,7 +25,7 @@
       ></app-input>
 
       <div class="auth-form-actions">
-        <a routerLink="/request-password-reset" class="secondary-link">Forgot password?</a>
+        <a routerLink="/auth/request-password-reset" class="secondary-link">Forgot password?</a>
         <app-button
           variant="primary"
           [loading]="(isLoading$ | async) ?? false"
@@ -39,9 +39,9 @@
     <div class="auth-form-footer">
       <p>
         Don't have an account?
-        <a routerLink="/register" class="primary-link">Create one</a>
+        <a routerLink="/auth/register" class="primary-link">Create one</a>
       </p>
-      <a routerLink="/resend-activation" class="secondary-link">Resend activation link</a>
+      <a routerLink="/auth/resend-activation" class="secondary-link">Resend activation link</a>
     </div>
 
   </div>
