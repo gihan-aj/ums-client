@@ -16,11 +16,7 @@ export const authGuard: CanActivateFn = () : Observable<boolean | UrlTree> => {
                 return true;
              }
 
-             return router.createUrlTree(['/auth/login'], {
-                queryParams: {
-                    returnUrl: router.routerState.snapshot.url
-                }
-             });
+             return router.createUrlTree(['/auth/login']);
         })
     )
 }
