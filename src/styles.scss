@@ -5,29 +5,67 @@
 :root CSS pseudo-class represents the <html> element and is identical to the selector html,
 except that its specificity is higher. We define our global CSS variables here for theming.
 */
+// :root {
+//   /* Let the browser know we support both light and dark modes */
+//   color-scheme: light dark;
+
+//   /* Color Palette using light-dark(light_value, dark_value) */
+//   --primary-color: #4f46e5; /* A modern indigo */
+//   --primary-color-hover: #4338ca;
+//   --primary-color-focus: light-dark(rgba(79, 70, 229, 0.2), rgba(79, 70, 229, 0.3));
+
+//   --secondary-color: light-dark(#6b7280, #9ca3af); /* Gray for secondary text/elements */
+
+//   --text-color: light-dark(#111827, #f9fafb); /* Dark gray for primary text */
+//   --text-color-light: light-dark(#f9fafb, #111827); /* Light text for dark backgrounds */
+
+//   --background-color: light-dark(#f9fafb, #111827); /* Page background */
+//   --surface-color: light-dark(#ffffff, #1f2937); /* For cards, modals, inputs */
+
+//   --border-color: light-dark(#d1d5db, #374151);
+//   --border-color-focus: var(--primary-color);
+
+//   --success-color: #10b981;
+//   --warning-color: #f59e0b;
+//   --error-color: #ef4444;
+
+//   /* Typography */
+//   --font-family: 'Inter', sans-serif;
+//   --font-size-base: 14px; /* A compact base font size */
+//   --line-height-base: 1.5;
+
+//   /* Spacing & Sizing */
+//   --spacing-unit: 8px;
+//   --border-radius: 6px;
+
+//   /* Transitions */
+//   --transition-speed: 200ms;
+// }
+
+
 :root {
   /* Let the browser know we support both light and dark modes */
   color-scheme: light dark;
 
   /* Color Palette using light-dark(light_value, dark_value) */
-  --primary-color: #4f46e5; /* A modern indigo */
-  --primary-color-hover: #4338ca;
-  --primary-color-focus: light-dark(rgba(79, 70, 229, 0.2), rgba(79, 70, 229, 0.3));
+  --primary-color: #2563eb; /* Rich blue */
+  --primary-color-hover: #1d4ed8;
+  --primary-color-focus: light-dark(rgba(37, 99, 235, 0.12), rgba(37, 99, 235, 0.25));
 
-  --secondary-color: light-dark(#6b7280, #9ca3af); /* Gray for secondary text/elements */
+  --secondary-color: light-dark(#64748b, #94a3b8); /* Slate for secondary elements */
 
-  --text-color: light-dark(#111827, #f9fafb); /* Dark gray for primary text */
-  --text-color-light: light-dark(#f9fafb, #111827); /* Light text for dark backgrounds */
+  --text-color: light-dark(#0f172a, #f1f5f9); /* Deep navy to soft white */
+  --text-color-light: light-dark(#ffffff, #0f172a); /* Pure white for dark backgrounds */
 
-  --background-color: light-dark(#f9fafb, #111827); /* Page background */
-  --surface-color: light-dark(#ffffff, #1f2937); /* For cards, modals, inputs */
+  --background-color: light-dark(#f8fafc, #020617); /* Light blue-gray to deep navy */
+  --surface-color: light-dark(#ffffff, #0f172a); /* Pure white to navy */
 
-  --border-color: light-dark(#d1d5db, #374151);
+  --border-color: light-dark(#cbd5e1, #1e293b);
   --border-color-focus: var(--primary-color);
 
-  --success-color: #10b981;
-  --warning-color: #f59e0b;
-  --error-color: #ef4444;
+  --success-color: #16a34a;
+  --warning-color: #ea580c;
+  --error-color: #dc2626;
 
   /* Typography */
   --font-family: 'Inter', sans-serif;
@@ -41,6 +79,80 @@ except that its specificity is higher. We define our global CSS variables here f
   /* Transitions */
   --transition-speed: 200ms;
 }
+
+// :root {
+//   /* Let the browser know we support both light and dark modes */
+//   color-scheme: light dark;
+
+//   /* Color Palette using light-dark(light_value, dark_value) */
+//   --primary-color: #6366f1; /* Modern violet-indigo */
+//   --primary-color-hover: #5855eb;
+//   --primary-color-focus: light-dark(rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.25));
+
+//   --secondary-color: light-dark(#64748b, #94a3b8); /* Slate for secondary text/elements */
+
+//   --text-color: light-dark(#0f172a, #f1f5f9); /* Rich dark slate for primary text */
+//   --text-color-light: light-dark(#f1f5f9, #0f172a); /* Light text for dark backgrounds */
+
+//   --background-color: light-dark(#fefefe, #0f172a); /* Clean white to deep slate */
+//   --surface-color: light-dark(#ffffff, #1e293b); /* Elevated surfaces */
+
+//   --border-color: light-dark(#e2e8f0, #334155);
+//   --border-color-focus: var(--primary-color);
+
+//   --success-color: #059669;
+//   --warning-color: #d97706;
+//   --error-color: #dc2626;
+
+//   /* Typography */
+//   --font-family: 'Inter', sans-serif;
+//   --font-size-base: 14px; /* A compact base font size */
+//   --line-height-base: 1.5;
+
+//   /* Spacing & Sizing */
+//   --spacing-unit: 8px;
+//   --border-radius: 6px;
+
+//   /* Transitions */
+//   --transition-speed: 200ms;
+// }
+
+// :root {
+//   /* Let the browser know we support both light and dark modes */
+//   color-scheme: light dark;
+
+//   /* Color Palette using light-dark(light_value, dark_value) */
+//   --primary-color: #059669; /* Rich emerald green */
+//   --primary-color-hover: #047857;
+//   --primary-color-focus: light-dark(rgba(5, 150, 105, 0.15), rgba(5, 150, 105, 0.25));
+
+//   --secondary-color: light-dark(#475569, #cbd5e1); /* Cool slate for secondary elements */
+
+//   --text-color: light-dark(#1e293b, #f8fafc); /* Deep slate to clean white */
+//   --text-color-light: light-dark(#ffffff, #1e293b); /* Pure white for dark backgrounds, dark for light */
+
+//   --background-color: light-dark(#ffffff, #0f172a); /* Pure white to deep navy */
+//   --surface-color: light-dark(#f8fafc, #1e293b); /* Subtle off-white to slate */
+
+//   --border-color: light-dark(#e2e8f0, #334155);
+//   --border-color-focus: var(--primary-color);
+
+//   --success-color: #10b981;
+//   --warning-color: #f59e0b;
+//   --error-color: #ef4444;
+
+//   /* Typography */
+//   --font-family: 'Inter', sans-serif;
+//   --font-size-base: 14px; /* A compact base font size */
+//   --line-height-base: 1.5;
+
+//   /* Spacing & Sizing */
+//   --spacing-unit: 8px;
+//   --border-radius: 6px;
+
+//   /* Transitions */
+//   --transition-speed: 200ms;
+// }
 
 /* Global Resets & Base Styles */
 *,

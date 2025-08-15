@@ -1,11 +1,12 @@
 <header class="header-container">
     <div class="left-side">
-        <!-- Global Search can go here -->
+        <button class="menu-toggle" (click)="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
     </div>
     <div class="right-side">
         <div class="user-profile" *ngIf="user$ | async as user">
             <span class="user-name">{{ user.given_name }} {{ user.family_name }}</span>
-            <!-- Avatar can go here -->
         </div>
         <button (click)="logout()" class="logout-btn" title="Logout">
             <i class="fa-solid fa-right-from-bracket"></i>

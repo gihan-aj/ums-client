@@ -1,15 +1,9 @@
 :host {
-  display: block;
-  height: 100vh;
-}
-
-.main-layout {
   display: flex;
-  height: 100%;
-}
-
-.sidebar {
-  flex-shrink: 0; // Prevent the sidebar from shrinking
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  position: relative; // Needed for mobile backdrop positioning
 }
 
 .content-wrapper {
@@ -17,16 +11,39 @@
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
-  overflow: hidden;
-}
-
-.header {
-  flex-shrink: 0; // Prevent the header from shrinking
+  transition: margin-left 300ms ease-in-out;
 }
 
 .content-area {
   flex-grow: 1;
   padding: calc(var(--spacing-unit) * 3);
-  overflow-y: auto; // Allow content to scroll
+  overflow-y: auto;
   background-color: var(--background-color);
+}
+
+// --- Desktop State ---
+// Use :not(.is-mobile) which is more robust than relying on an .is-desktop class
+:host(:not(.is-mobile).sidebar-open) {
+  .content-wrapper {
+    margin-left: 250px; // Width of the sidebar
+  }
+}
+
+:host(:not(.is-mobile).sidebar-open) app-sidebar {
+  transform: translateX(0);
+}
+
+:host(:not(.is-mobile):not(.sidebar-open)) app-sidebar {
+  transform: translateX(-100%);
+}
+
+
+// --- Mobile State ---
+// On mobile, the sidebar overlays the content, so we don't use margin-left.
+:host(.is-mobile.sidebar-open) app-sidebar {
+  transform: translateX(0);
+}
+
+:host(.is-mobile:not(.sidebar-open)) app-sidebar {
+  transform: translateX(-100%);
 }

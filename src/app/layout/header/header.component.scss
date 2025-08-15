@@ -9,14 +9,22 @@
   align-items: center;
   height: 60px;
   padding: 0 calc(var(--spacing-unit) * 3);
-  background-color: var(--surface-color);
-  border-bottom: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  // border-bottom: 1px solid var(--border-color);
 }
 
-.right-side {
+.left-side, .right-side {
   display: flex;
   align-items: center;
   gap: calc(var(--spacing-unit) * 2);
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 20px;
+  cursor: pointer;
 }
 
 .user-name {

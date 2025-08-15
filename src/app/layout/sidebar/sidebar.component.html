@@ -1,6 +1,9 @@
-<nav class="sidebar-container">
+<!-- The backdrop is only present on mobile when the sidebar is open -->
+<div *ngIf="(isMobile$ | async) && (isSidebarOpen$ | async)" class="sidebar-backdrop" (click)="closeSidebar()">
+</div>
+
+<nav class="sidebar-nav">
     <div class="logo-area">
-        <!-- Logo Here -->
         <h3>UMS Client</h3>
     </div>
     <ul class="nav-list">
@@ -10,6 +13,5 @@
                 <span>Dashboard</span>
             </a>
         </li>
-        <!-- More links will go here -->
     </ul>
 </nav>
