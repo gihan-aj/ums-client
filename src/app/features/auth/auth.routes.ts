@@ -14,8 +14,6 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 export const AUTH_ROUTES: Routes = [
   {
     path: '',
-    // Provide the feature state and effects for all auth-related routes
-    providers: [provideState(authFeature), provideEffects([AuthEffects])],
     children: [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },

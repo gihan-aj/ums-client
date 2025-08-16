@@ -116,6 +116,48 @@ export const authFeature = createFeature({
       ...state,
       isLoading: false,
       error: error,
+    })),
+
+    // --- Refresh token Reducers ---
+    on(AuthActions.refreshToken, (state) => ({
+      ...state,
+      isLoading: true,
+      error: null,
+    })),
+
+    on(
+      AuthActions.refreshTokenSuccess,
+      (state, { accessToken, tokenExpiryUtc }) => {
+        // Decode the token to get user details not in the main response body
+        const decodedToken: any = jwtDecode(accessToken);
+        const user: User = {
+          userId: decodedToken.uid,
+          email: decodedToken.email,
+          userCode: decodedToken.userCode,
+          given_name: decodedToken.given_name,
+          family_name: decodedToken.family_name,
+          role: decodedToken.role,
+          permissions: decodedToken.permission,
+        };
+
+        return {
+          ...state,
+          user: user,
+          accessToken: accessToken,
+          tokenExpiry: new Date(tokenExpiryUtc),
+          isLoading: false,
+          error: null,
+        };
+      }
+    ),
+
+    on(AuthActions.refreshTokenFailure, (state) => ({
+      ...state,
+      isLoading: false,
+      error: null,
+      user: null,
+      accessToken: null,
+      tokenExpiry: null,
     }))
   ),
 });
