@@ -36,7 +36,7 @@ export const AuthActions = createActionGroup({
       tokenExpiryUtc: string;
     }>(),
     'Login Failure': props<{ error: string }>(),
-    Logout: emptyProps(),
+    Logout: props<{ navigateToLogin?: boolean }>(),
 
     // --- Registration Actions ---
     Register: props<{ payload: RegisterPayload }>(),
@@ -63,5 +63,14 @@ export const AuthActions = createActionGroup({
     'Reset Password': props<{ payload: ResetPasswordPayload }>(),
     'Reset Password Success': props<{ successMessage: string }>(),
     'Reset Password Failure': props<{ error: string }>(),
+
+    // --- Refresh Token Actions ---
+    'Refresh Token': emptyProps(),
+    'Refresh Token Success': props<{
+      user: User;
+      accessToken: string;
+      tokenExpiryUtc: string;
+    }>(),
+    'Refresh Token Failure': emptyProps(), // No error message needed, will just log out
   },
 });

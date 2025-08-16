@@ -105,12 +105,19 @@ export class AuthService {
    * Submits the new password along with the reset token.
    * @param payload The command containing token, email, and new passwords.
    */
-  resetPassword(
-    payload: ResetPasswordPayload
-  ): Observable<string> {
-    return this.http.post<string>(
-      `${this.apiUrl}/reset-password`,
-      payload
+  resetPassword(payload: ResetPasswordPayload): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/reset-password`, payload);
+  }
+
+  /**
+   * Calls the endpoint to get a new JWT using the HttpOnly refresh token cookie.
+   */
+  refreshToken(): Observable<any> {
+    // The endpoint is called without a body; the browser automatically sends the cookie.
+    return this.http.post<any>(
+      `${this.apiUrl}/refresh-token`,
+      {},
+      { withCredentials: true }
     );
   }
 }

@@ -250,10 +250,41 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.logout),
-        tap(() => {
-          this.router.navigate(['/auth/login']);
+        tap((action) => {
+          if (action.navigateToLogin !== false) {
+            this.router.navigate(['/auth/login']);
+          }
         })
       ),
     { dispatch: false }
+  );
+
+  // --- New Refresh Token Effect ---
+  refreshToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.refreshToken),
+      exhaustMap(() =>
+        this.authService.refreshToken().pipe(
+          map((response) =>
+            AuthActions.refreshTokenSuccess({
+              user: {} as any, // Will be populated by reducer
+              accessToken: response.token,
+              tokenExpiryUtc: response.tokenExpiryUtc,
+            })
+          ),
+          catchError(() => {
+            // If refresh fails, the refresh token is invalid. Log the user out.
+            return of(AuthActions.refreshTokenFailure());
+          })
+        )
+      )
+    )
+  );
+
+  refreshTokenFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.refreshTokenFailure),
+      map(() => AuthActions.logout({})) // Dispatch the logout action
+    )
   );
 }
