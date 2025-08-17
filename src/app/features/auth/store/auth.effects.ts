@@ -141,6 +141,18 @@ export class AuthEffects {
     { dispatch: false }
   );
 
+  activationFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.activationFailure),
+        tap(() => {
+          this.notificationService.showError('Activation failed.');
+          this.router.navigate(['/auth/login']);
+        })
+      ),
+    { dispatch: false }
+  );
+
   // --- New Resend Activation Effects ---
   resendActivation$ = createEffect(() =>
     this.actions$.pipe(

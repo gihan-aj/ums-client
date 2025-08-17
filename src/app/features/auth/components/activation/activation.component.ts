@@ -54,7 +54,7 @@ export class ActivationComponent implements OnInit {
 
       if (!this.token || !this.email) {
         // Handle invalid link case
-        this.router.navigate(['/login']);
+        this.router.navigate(['/auth/login']);
         return;
       }
 
