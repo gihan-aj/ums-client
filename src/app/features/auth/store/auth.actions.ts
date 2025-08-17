@@ -36,7 +36,11 @@ export const AuthActions = createActionGroup({
       tokenExpiryUtc: string;
     }>(),
     'Login Failure': props<{ error: string }>(),
-    Logout: props<{ navigateToLogin?: boolean }>(),
+
+    // --- Logout Actions ---
+    Logout: emptyProps(), // This action starts the process
+    'Logout Success': emptyProps(), // Dispatched when API call succeeds
+    'Logout Failure': emptyProps(), // Dispatched when API call fails
 
     // --- Registration Actions ---
     Register: props<{ payload: RegisterPayload }>(),

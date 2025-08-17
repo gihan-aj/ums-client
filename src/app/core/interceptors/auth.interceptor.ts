@@ -66,7 +66,7 @@ function handle401Error(request: HttpRequest<any>, next: HttpHandlerFn, store: S
       }),
       catchError((err) => {
         isRefreshing = false;
-        store.dispatch(AuthActions.logout({}));
+        store.dispatch(AuthActions.logout());
         return throwError(() => err);
       })
     );

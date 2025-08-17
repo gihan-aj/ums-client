@@ -14,7 +14,7 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
-import { appInitializerFactory, initializeAuth } from './app.initializer';
+import { initializeAuth } from './app.initializer';
 import { authFeature } from './features/auth/store/auth.reducer';
 import { AuthEffects } from './features/auth/store/auth.effects';
 

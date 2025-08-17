@@ -24,6 +24,6 @@ export class HeaderComponent {
   }
 
   logout() {
-    this.store.dispatch(AuthActions.logout({ navigateToLogin: true }));
+    this.store.dispatch(AuthActions.logout());
   }
 }

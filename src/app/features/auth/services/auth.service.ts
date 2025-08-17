@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
@@ -118,6 +118,37 @@ export class AuthService {
       `${this.apiUrl}/refresh-token`,
       {},
       { withCredentials: true }
+    );
+  }
+
+  /**
+   * Calls the backend to invalidate the refresh token and clear the HttpOnly cookie.
+   */
+  // logout(): Observable<any> {
+  //   // This call sends the cookie, which the backend will then remove.
+  //   return this.http.post<any>(
+  //     `${this.apiUrl}/logout`,
+  //     {},
+  //     { withCredentials: true }
+  //   );
+  // }
+
+  /**
+   * Calls the backend to invalidate the refresh token and clear the cookie.
+   * This call requires the JWT to identify the user session to invalidate.
+   */
+  logout(token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.post<any>(
+      `${this.apiUrl}/logout`,
+      {},
+      {
+        headers: headers,
+        withCredentials: true,
+      }
     );
   }
 }

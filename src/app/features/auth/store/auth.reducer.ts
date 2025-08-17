@@ -48,7 +48,18 @@ export const authFeature = createFeature({
       tokenExpiry: null,
     })),
 
-    on(AuthActions.logout, () => initialAuthState),
+    // --- Logout Reducers (Refactored) ---
+    on(AuthActions.logout, (state) => ({
+      ...state,
+      isLoading: true, // Show a loading state if needed
+    })),
+
+    // Both success and failure result in the user being logged out
+    on(
+      AuthActions.logoutSuccess,
+      AuthActions.logoutFailure,
+      () => initialAuthState
+    ),
 
     // --- Registration Reducers ---
     on(AuthActions.register, (state) => ({
@@ -154,10 +165,7 @@ export const authFeature = createFeature({
     on(AuthActions.refreshTokenFailure, (state) => ({
       ...state,
       isLoading: false,
-      error: null,
-      user: null,
-      accessToken: null,
-      tokenExpiry: null,
+      error: 'Your session has expired. Please sign in again.',
     }))
   ),
 });

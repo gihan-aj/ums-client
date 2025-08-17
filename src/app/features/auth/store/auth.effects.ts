@@ -3,13 +3,16 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { AuthService } from "../services/auth.service";
 import { Router } from "@angular/router";
 import { AuthActions } from "./auth.actions";
-import { catchError, exhaustMap, map, of, tap } from "rxjs";
+import { catchError, exhaustMap, map, of, tap, withLatestFrom } from 'rxjs';
 import { ErrorHandlingService } from '../../../core/services/error-handling.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Store } from '@ngrx/store';
+import { selectAccessToken } from './auth.reducer';
 
 @Injectable()
 export class AuthEffects {
+  private store = inject(Store); // Inject the store
   private actions$ = inject(Actions);
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -258,14 +261,35 @@ export class AuthEffects {
   );
 
   // Effect to handle logout navigation
-  logout$ = createEffect(
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.logout),
+      withLatestFrom(this.store.select(selectAccessToken)),
+      exhaustMap(([action, token]) => {
+        if (!token) {
+          // If there's no token, the user is already logged out.
+          // Dispatch success to clear any lingering state and navigate.
+          return of(AuthActions.logoutSuccess());
+        }
+        // Call the service with the token to invalidate it on the server.
+        return this.authService.logout(token).pipe(
+          map(() => {
+            this.notificationService.showSuccess('Logout successful.');
+            return AuthActions.logoutSuccess();
+          }),
+          catchError(() => of(AuthActions.logoutFailure()))
+        );
+      })
+    )
+  );
+
+  // This effect runs AFTER the logoutSuccess/logoutFailure reducers have cleared the state.
+  logoutRedirect$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.logout),
-        tap((action) => {
-          if (action.navigateToLogin !== false) {
-            this.router.navigate(['/auth/login']);
-          }
+        ofType(AuthActions.logoutSuccess, AuthActions.logoutFailure),
+        tap(() => {
+          this.router.navigate(['/auth/login']);
         })
       ),
     { dispatch: false }
@@ -296,7 +320,7 @@ export class AuthEffects {
   refreshTokenFailure$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.refreshTokenFailure),
-      map(() => AuthActions.logout({})) // Dispatch the logout action
+      map(() => AuthActions.logout()) // Dispatch the logout action
     )
   );
 }

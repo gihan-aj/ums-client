@@ -2,30 +2,30 @@ import { inject } from "@angular/core";
 import { Actions, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { AuthActions } from "./features/auth/store/auth.actions";
-import { first, Observable } from "rxjs";
+import { first, Observable, of } from 'rxjs';
 
 /**
  * This factory returns a function that will be executed during app initialization.
  * It attempts to refresh the user's session by dispatching the refreshToken action
  * and waits for the process to complete before the app starts.
  */
-export function appInitializerFactory() {
-  // inject() can be used here because this factory is called in an injection context.
-  const store = inject(Store);
-  const actions$ = inject(Actions);
+// export function appInitializerFactory() {
+//   // inject() can be used here because this factory is called in an injection context.
+//   const store = inject(Store);
+//   const actions$ = inject(Actions);
 
-  return () => {
-    // Dispatch the action to start the token refresh process.
-    store.dispatch(AuthActions.refreshToken());
+//   return () => {
+//     // Dispatch the action to start the token refresh process.
+//     store.dispatch(AuthActions.refreshToken());
 
-    // Return an observable that completes when the refresh attempt is finished.
-    // The APP_INITIALIZER will wait for this observable to complete.
-    return actions$.pipe(
-      ofType(AuthActions.refreshTokenSuccess, AuthActions.refreshTokenFailure),
-      first() // The stream will complete after the first of these actions is dispatched.
-    );
-  };
-}
+//     // Return an observable that completes when the refresh attempt is finished.
+//     // The APP_INITIALIZER will wait for this observable to complete.
+//     return actions$.pipe(
+//       ofType(AuthActions.refreshTokenSuccess, AuthActions.refreshTokenFailure),
+//       first() // The stream will complete after the first of these actions is dispatched.
+//     );
+//   };
+// }
 
 /**
  * This is the initializer function that will be executed during app startup.
@@ -36,6 +36,17 @@ export function initializeAuth(): Observable<any> {
   const store = inject(Store);
   const actions$ = inject(Actions);
 
+  const currentPath = window.location.pathname;
+  console.log('Current path: ', currentPath);
+
+  // If the user is loading the app on an auth route (e.g., from an email link),
+  // do not attempt to refresh the token. Let the app load and navigate normally.
+  if (currentPath.startsWith('/auth')) {
+    // Return an observable that completes immediately.
+    return of(true);
+  }
+
+  // Otherwise, attempt a silent refresh.
   // Dispatch the action to start the token refresh process.
   store.dispatch(AuthActions.refreshToken());
 
