@@ -32,4 +32,11 @@ export class MainLayoutComponent {
   onResize(): void {
     this.layoutService.checkScreenSize(window.innerWidth);
   }
+
+  /**
+   * Closes the sidebar. This will be called by the new backdrop element.
+   */
+  closeSidebar(): void {
+    this.layoutService.toggleSidebar();
+  }
 }

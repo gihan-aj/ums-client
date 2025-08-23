@@ -1,5 +1,12 @@
 <app-sidebar></app-sidebar>
 <div class="content-wrapper">
+  <!-- This backdrop will appear on mobile when the sidebar is open -->
+  <div
+    *ngIf="isMobile && isSidebarOpen"
+    class="content-backdrop"
+    (click)="closeSidebar()"
+  ></div>
+  
   <app-header></app-header>
   <main class="content-area">
     <router-outlet></router-outlet>
