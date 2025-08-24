@@ -1,0 +1,97 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.table-container {
+  position: relative;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  background-color: var(--surface-color);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead tr {
+  background-color: var(--background-color);
+}
+
+th, td {
+  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  font-weight: 600;
+  font-size: calc(var(--font-size-base) * 0.9);
+  text-transform: uppercase;
+  color: var(--secondary-color);
+  user-select: none;
+
+  &.sortable {
+    cursor: pointer;
+    &:hover {
+      color: var(--text-color);
+    }
+  }
+}
+
+.sort-icon {
+  margin-left: var(--spacing-unit);
+  color: var(--primary-color);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover:not(.skeleton-row) {
+  background-color: var(--background-color);
+}
+
+.no-data-cell {
+  text-align: center;
+  padding: calc(var(--spacing-unit) * 4);
+  color: var(--secondary-color);
+}
+
+// --- Skeleton Loader Styles ---
+.skeleton-row .skeleton-cell {
+  height: 20px;
+  width: 100%;
+  background-color: var(--background-color);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+
+  // Shimmer animation
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 1.5s infinite;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// Dark theme styles for the shimmer effect
+@media (prefers-color-scheme: dark) {
+  .skeleton-row .skeleton-cell::after {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  }
+}

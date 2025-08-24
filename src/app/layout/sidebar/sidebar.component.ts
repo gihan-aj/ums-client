@@ -16,7 +16,13 @@ export class SidebarComponent {
   isSidebarOpen$: Observable<boolean> = this.layoutService.isSidebarOpen$;
   isMobile$: Observable<boolean> = this.layoutService.isMobile$;
 
-  closeSidebar() {
-    this.layoutService.toggleSidebar();
+  isMobile = false;
+
+  constructor() {
+    this.isMobile$.subscribe((val) => (this.isMobile = val));
+  }
+
+  closeSidebarLink() {
+    if (this.isMobile) this.layoutService.toggleSidebar();
   }
 }

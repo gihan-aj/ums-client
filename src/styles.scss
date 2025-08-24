@@ -266,3 +266,33 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: underline;
   }
 }
+
+/* =============================================== */
+/* == Global Page Layout Styles ==           */
+/* =============================================== */
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0; // Prevent the header from shrinking
+  margin-bottom: calc(var(--spacing-unit) * 3);
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+.page-content {
+  flex-grow: 1;
+  // Add any other common content styles here
+}

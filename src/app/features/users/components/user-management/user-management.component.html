@@ -1,0 +1,27 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>User Management</h1>
+    <app-button icon="fa-solid fa-plus">Add User</app-button>
+  </div>
+
+  <div class="page-content">
+    <app-table
+      [data]="users$ | async"
+      [columns]="columns"
+      [isLoading]="(isLoading$ | async) ?? false"
+      (sortChange)="onSortChange($event)"
+    ></app-table>
+  </div>
+</div>
+
+<!-- This template will be projected into the table's action column -->
+<ng-template #actionsCell let-user>
+  <div class="action-buttons">
+    <app-button variant="icon" (click)="editUser(user)" title="Edit User">
+      <i class="fa-solid fa-pencil"></i>
+    </app-button>
+    <app-button variant="icon" (click)="deleteUser(user)" title="Delete User">
+      <i class="fa-solid fa-trash-can"></i>
+    </app-button>
+  </div>
+</ng-template>

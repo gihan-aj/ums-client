@@ -1,0 +1,49 @@
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th 
+          *ngFor="let col of columns" 
+          [class.sortable]="col.sortable"
+          (click)="col.sortable && onSort(col.key)">
+          {{ col.header }}
+          <span *ngIf="currentSort?.column === col.key" class="sort-icon">
+            <i *ngIf="currentSort?.direction === 'asc'" class="fa-solid fa-arrow-up"></i>
+            <i *ngIf="currentSort?.direction === 'desc'" class="fa-solid fa-arrow-down"></i>
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Skeleton Loader Rows -->
+      <ng-container *ngIf="isLoading">
+        <tr *ngFor="let i of skeletonRows" class="skeleton-row">
+          <td *ngFor="let col of columns">
+            <div class="skeleton-cell"></div>
+          </td>
+        </tr>
+      </ng-container>
+
+      <!-- Actual Data Rows -->
+      <ng-container *ngIf="!isLoading">
+        <tr *ngFor="let item of data">
+          <td *ngFor="let col of columns">
+            <ng-container *ngIf="col.cellTemplate; else defaultCell">
+              <ng-container [ngTemplateOutlet]="col.cellTemplate" [ngTemplateOutletContext]="{ $implicit: item }"></ng-container>
+            </ng-container>
+            <ng-template #defaultCell>
+              {{ item | getValue: col.key }}
+            </ng-template>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+    <tfoot *ngIf="!isLoading && (!data || data.length === 0)">
+      <tr>
+        <td [attr.colspan]="columns.length" class="no-data-cell">
+          No data available.
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

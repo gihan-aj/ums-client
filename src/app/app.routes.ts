@@ -20,6 +20,11 @@ export const routes: Routes = [
     canActivate: [authGuard], // Protect this whole section
     children: [
       { path: 'dashboard', component: DashboardComponent },
+      {
+        path: 'users',
+        loadChildren: () =>
+          import('./features/users/users.routes').then((m) => m.USERS_ROUTES),
+      },
       // Redirect the root path of the protected area to the dashboard
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],

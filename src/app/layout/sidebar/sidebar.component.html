@@ -6,9 +6,15 @@
     </div>
     <ul class="nav-list">
         <li>
-            <a routerLink="/dashboard" routerLinkActive="active" (click)="closeSidebar()">
+            <a routerLink="/dashboard" routerLinkActive="active" (click)="closeSidebarLink()">
                 <i class="fa-solid fa-table-columns"></i>
                 <span>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a routerLink="/users" routerLinkActive="active" (click)="closeSidebarLink()">
+                <i class="fa-solid fa-users"></i>
+                <span>User Management</span>
             </a>
         </li>
     </ul>
