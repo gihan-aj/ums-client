@@ -21,7 +21,7 @@ thead tr {
 }
 
 th, td {
-  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+  padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 2 );
   text-align: left;
   border-bottom: 1px solid var(--border-color);
 }

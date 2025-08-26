@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: calc(var(--spacing-unit) * 1);
+  border-top: 1px solid var(--border-color);
+  background-color: var(--surface-color);
+}
+
+.info-text {
+  color: var(--secondary-color);
+  font-size: var(--font-size-base);
+}
+
+.controls {
+  display: flex;
+  gap: var(--spacing-unit);
+
+  app-button {
+    // Override the default 100% width for buttons in the pagination controls
+    width: auto;
+  }
+}

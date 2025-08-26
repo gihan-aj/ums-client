@@ -4,13 +4,19 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 import { ColumnDef, SortChange, TableComponent } from '../../../../shared/components/table/table.component';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { User } from '../../store/users.state';
-import { selectUsers, selectUsersIsLoading } from '../../store/users.reducer';
+import { User, UserQuery } from '../../store/users.state';
+import {
+  selectTotalCount,
+  selectUserQuery,
+  selectUsers,
+  selectUsersIsLoading,
+} from '../../store/users.reducer';
 import { UsersActions } from '../../store/users.actions';
+import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-user-management',
-  imports: [CommonModule, TableComponent, ButtonComponent],
+  imports: [CommonModule, TableComponent, ButtonComponent, PaginationComponent],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.scss',
 })
@@ -22,6 +28,8 @@ export class UserManagementComponent implements OnInit {
 
   users$: Observable<User[]> = this.store.select(selectUsers);
   isLoading$: Observable<boolean> = this.store.select(selectUsersIsLoading);
+  totalCount$: Observable<number> = this.store.select(selectTotalCount);
+  query$: Observable<UserQuery> = this.store.select(selectUserQuery);
 
   columns: ColumnDef<User>[] = [];
 
@@ -50,6 +58,10 @@ export class UserManagementComponent implements OnInit {
         },
       })
     );
+  }
+
+  onPageChange(newPage: number): void {
+    this.store.dispatch(UsersActions.loadUsers({ query: { page: newPage } }));
   }
 
   editUser(user: User): void {

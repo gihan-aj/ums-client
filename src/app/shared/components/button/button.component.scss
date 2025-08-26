@@ -99,15 +99,17 @@
 .btn-icon {
   width: auto;
   aspect-ratio: 1 / 1;
-  padding: calc(var(--spacing-unit) * 1.25);
+  padding: calc(var(--spacing-unit) * 1);
   border-radius: 50%;
 
   .icon-element {
-    font-size: 1.4em;
+    font-size: 1em;
   }
   .text-content {
     display: none;
   }
+
+  &:hover:not(:disabled) { background-color: var(--primary-color-hover); }
 }
 
 // --- Spinner Styles ---

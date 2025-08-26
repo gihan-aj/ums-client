@@ -2,3 +2,28 @@
   display: flex;
   gap: var(--spacing-unit);
 }
+
+// This is the new wrapper for the table and pagination
+.table-group {
+  // The group gets the border and rounded corners
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden; // This is important to enforce the rounded corners on children
+}
+
+// Use ::ng-deep to modify the styles of the child components
+:host ::ng-deep {
+  // Target the table's inner container
+  .table-group app-table .table-container {
+    // Remove the default border and radius so it fits flush in our group
+    border: none;
+    border-radius: 0;
+  }
+
+  // Target the pagination's inner container
+  .table-group app-pagination .pagination-container {
+    // The pagination already has a top border, which we want to keep,
+    // but we remove its background so it feels connected.
+    background-color: transparent;
+  }
+}

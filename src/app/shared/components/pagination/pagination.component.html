@@ -1,0 +1,19 @@
+<div class="pagination-container" *ngIf="totalPages > 0">
+  <div class="info-text">
+    Showing <strong>{{ startItem }}</strong>-<strong>{{ endItem }}</strong> of <strong>{{ totalItems }}</strong>
+  </div>
+  <div class="controls">
+    <app-button 
+      variant="secondary" 
+      (click)="goToPage(currentPage - 1)" 
+      [disabled]="currentPage === 1">
+      Previous
+    </app-button>
+    <app-button 
+      variant="secondary" 
+      (click)="goToPage(currentPage + 1)" 
+      [disabled]="currentPage === totalPages">
+      Next
+    </app-button>
+  </div>
+</div>
