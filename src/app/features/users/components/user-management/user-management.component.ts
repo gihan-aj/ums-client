@@ -13,6 +13,7 @@ import {
 } from '../../store/users.reducer';
 import { UsersActions } from '../../store/users.actions';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
+import { DialogService } from '../../../../core/services/dialog.service';
 
 @Component({
   selector: 'app-user-management',
@@ -22,6 +23,7 @@ import { PaginationComponent } from '../../../../shared/components/pagination/pa
 })
 export class UserManagementComponent implements OnInit {
   private store = inject(Store);
+  private dialogService = inject(DialogService);
 
   // Get a reference to the ng-template for our custom actions column
   @ViewChild('actionsCell', { static: true }) actionsCell!: TemplateRef<any>;
@@ -62,6 +64,10 @@ export class UserManagementComponent implements OnInit {
 
   onPageChange(newPage: number): void {
     this.store.dispatch(UsersActions.loadUsers({ query: { page: newPage } }));
+  }
+
+  addUser(): void {
+    this.dialogService.openAddUserModal();
   }
 
   editUser(user: User): void {

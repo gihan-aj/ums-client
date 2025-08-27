@@ -16,6 +16,12 @@ export interface PaginatedResult<T> {
   hasPreviousPage: boolean;
 }
 
+interface AddUserPayload {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -41,5 +47,13 @@ export class UserService {
     }
 
     return this.http.get<PaginatedResult<User>>(this.apiUrl, { params });
+  }
+
+  /**
+   * Creates a new user.
+   * @param payload The data for the new user.
+   */
+  addUser(payload: AddUserPayload): Observable<string> {
+    return this.http.post<string>(this.apiUrl, payload);
   }
 }

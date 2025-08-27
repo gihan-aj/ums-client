@@ -1,0 +1,43 @@
+<app-modal (closed)="close()">
+  <h2 modal-title>Add New User</h2>
+
+  <div modal-body>
+    <form [formGroup]="userForm" id="add-user-form" (ngSubmit)="saveUser()" novalidate>
+      <div class="form-grid">
+        <app-input 
+          label="First Name" 
+          placeholder="John" 
+          formControlName="firstName" 
+          [control]="firstNameCtrl"
+          [validationMessages]="{ required: 'First Name is required.' }">
+        </app-input>
+        <app-input 
+          label="Last Name" 
+          placeholder="Doe" 
+          formControlName="lastName" 
+          [control]="lastNameCtrl"
+          [validationMessages]="{ required: 'Last Name is required.' }">
+        </app-input>
+      </div>
+      <app-input 
+        label="Email Address" 
+        type="email" 
+        placeholder="name@company.com" 
+        formControlName="email" 
+        [control]="emailCtrl"
+        [validationMessages]="{ required: 'Email is required.', email: 'Please enter a valid email.' }">
+      </app-input>
+    </form>
+  </div>
+
+  <div modal-footer>
+    <app-button variant="secondary" (click)="close()">Cancel</app-button>
+    <app-button 
+      variant="primary" 
+      form="add-user-form" 
+      type="submit"
+      [loading]="(isLoading$ | async) ?? false">
+      Save User
+    </app-button>
+  </div>
+</app-modal>

@@ -1,6 +1,12 @@
 import { createActionGroup, props } from "@ngrx/store";
 import { User, UserQuery } from "./users.state";
 
+interface AddUserPayload {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 export const UsersActions = createActionGroup({
   source: 'Users API',
   events: {
@@ -15,5 +21,9 @@ export const UsersActions = createActionGroup({
 
     // Action to update the current query (e.g., for pagination or sorting)
     'Update User Query': props<{ query: Partial<UserQuery> }>(),
+
+    'Add User': props<{ payload: AddUserPayload }>(),
+    'Add User Success': props<{ newUserId: string }>(),
+    'Add User Failure': props<{ error: string }>(),
   },
 });
