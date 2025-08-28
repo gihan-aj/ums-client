@@ -47,7 +47,9 @@ export class UserEffects {
       ofType(UsersActions.addUser),
       exhaustMap((action) =>
         this.userService.addUser(action.payload).pipe(
-          map((newUserId) => UsersActions.addUserSuccess({ newUserId })),
+          map((response) =>
+            UsersActions.addUserSuccess({ userId: response.id })
+          ),
           catchError((error: HttpErrorResponse) => {
             const errorMessage =
               this.errorHandlingService.handleHttpError(error);
@@ -63,9 +65,20 @@ export class UserEffects {
       this.actions$.pipe(
         ofType(UsersActions.addUserSuccess),
         tap((action) => {
-          this.notificationService.showSuccess(`User created successfully.`);
+          this.notificationService.showSuccess('User created successfully.');
           // After adding a user, dispatch an action to reload the table data
           this.store.dispatch(UsersActions.loadUsers({}));
+        })
+      ),
+    { dispatch: false }
+  );
+
+  addUserFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(UsersActions.addUserFailure),
+        tap((action) => {
+          // this.notificationService.showError(action.error);
         })
       ),
     { dispatch: false }

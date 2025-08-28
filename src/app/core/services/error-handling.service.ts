@@ -16,6 +16,7 @@ export class ErrorHandlingService {
    * @returns A simple string to be used in the UI or stored in NgRx state.
    */
   public handleHttpError(error: HttpErrorResponse): string {
+    // 1. Handle network errors (request never reached the server)
     if (error.status === 0) {
       const message =
         'Could not connect to the server. Please check your network connection.';
@@ -25,26 +26,50 @@ export class ErrorHandlingService {
 
     const apiError = error.error;
 
-    // Check for standard validation problem details (status 400)
-    if (apiError.title === 'Validation Error' && apiError.errors) {
-      const validationErrors = Object.values(
-        apiError.errors
-      ).flat() as string[];
-      this.dialogService.openInfoDialog({
-        title: 'Validation Failed',
-        messages:
-          validationErrors.length > 0 ? validationErrors : [apiError.detail],
-        type: 'error',
-      });
-      let displayMessage = apiError.detail || 'Validation failed.';
-      this.notificationService.showError(displayMessage);
-      return displayMessage;
+    // 2. Handle structured errors from your .NET API (apiError has content)
+    if (apiError && typeof apiError === 'object') {
+      // Handle validation errors with a dialog
+      if (apiError.title === 'Validation Error' && apiError.errors) {
+        const validationErrors = Object.values(
+          apiError.errors
+        ).flat() as string[];
+        this.dialogService.openInfoDialog({
+          title: 'Validation Failed',
+          messages:
+            validationErrors.length > 0 ? validationErrors : [apiError.detail],
+          type: 'error',
+        });
+
+        const detailMessage = apiError.detail || 'Validation failed.';
+        this.notificationService.showError(detailMessage);
+        return detailMessage;
+      }
+
+      // Handle other structured errors with a toast
+      const detailMessage = apiError.detail || 'An unexpected error occurred.';
+      this.notificationService.showError(detailMessage);
+      return detailMessage;
     }
 
-    // Handle other structured errors with a toast notification
-    let displayMessage =
-      apiError.detail || error.message || 'An unexpected error occurred.';
-    this.notificationService.showError(displayMessage);
-    return displayMessage;
+    // 3. Fallback for non-structured errors (like raw 403, 404, 500 responses)
+    let fallbackMessage = `An unexpected error occurred. (Status: ${error.status})`;
+    switch (error.status) {
+      case 401:
+        fallbackMessage = 'You are not authenticated. Please sign in.';
+        break;
+      case 403:
+        fallbackMessage = 'You do not have permission to perform this action.';
+        break;
+      case 404:
+        fallbackMessage = 'The requested resource was not found.';
+        break;
+      case 500:
+        fallbackMessage =
+          'An internal server error occurred. Please try again later.';
+        break;
+    }
+
+    this.notificationService.showError(fallbackMessage);
+    return fallbackMessage;
   }
 }

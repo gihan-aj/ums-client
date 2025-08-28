@@ -1,11 +1,11 @@
 form {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacing-unit) * 2.5);
+  gap: calc(var(--spacing-unit) * 1);
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: calc(var(--spacing-unit) * 2);
+  gap: calc(var(--spacing-unit) * 1);
 }

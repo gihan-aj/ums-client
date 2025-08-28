@@ -23,7 +23,7 @@ export const UsersActions = createActionGroup({
     'Update User Query': props<{ query: Partial<UserQuery> }>(),
 
     'Add User': props<{ payload: AddUserPayload }>(),
-    'Add User Success': props<{ newUserId: string }>(),
+    'Add User Success': props<{ userId: string }>(),
     'Add User Failure': props<{ error: string }>(),
   },
 });

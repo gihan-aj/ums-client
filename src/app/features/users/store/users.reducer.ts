@@ -29,8 +29,26 @@ export const usersFeature = createFeature({
     })),
 
     on(UsersActions.updateUserQuery, (state, { query }) => ({
-        ...state,
-        query: { ...state.query, ...query },
+      ...state,
+      query: { ...state.query, ...query },
+    })),
+
+    on(UsersActions.addUser, (state) => ({
+      ...state,
+      isLoading: true,
+      error: null,
+    })),
+
+    on(UsersActions.addUserSuccess, (state) => ({
+      ...state,
+      isLoading: false,
+      error: null,
+    })),
+
+    on(UsersActions.addUserFailure, (state, { error }) => ({
+      ...state,
+      isLoading: false,
+      error: error,
     }))
   ),
 });

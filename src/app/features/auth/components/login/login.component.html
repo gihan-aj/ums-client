@@ -28,6 +28,7 @@
         <a routerLink="/auth/request-password-reset" class="secondary-link">Forgot password?</a>
         <app-button
           variant="primary"
+          type="submit"
           [loading]="(isLoading$ | async) ?? false"
           [disabled]="loginForm.invalid && (loginForm.dirty || loginForm.touched)"
         >

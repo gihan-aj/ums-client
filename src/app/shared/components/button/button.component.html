@@ -2,8 +2,10 @@
       class="btn"
       [ngClass]="['btn-' + variant, 'icon-' + iconPosition]"
       [disabled]="disabled || loading"
+      [attr.type]="type"
+      [attr.form]="form"
     >
-      <span *ngIf="!loading" class="btn-content">
+      <span class="btn-content">
         <i *ngIf="icon && iconPosition === 'left'" [ngClass]="icon" class="icon-element"></i>
         <span class="text-content">
           <ng-content></ng-content>
@@ -13,4 +15,4 @@
       <span *ngIf="loading" class="spinner-container">
         <span class="spinner"></span>
       </span>
-</button>
+  </button>

@@ -296,3 +296,22 @@ h1, h2, h3, h4, h5, h6 {
   flex-grow: 1;
   // Add any other common content styles here
 }
+
+/* =============================================== */
+/* == Status Badge Styles ==           */
+/* =============================================== */
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: var(--secondary-color);
+  color: var(--text-color-light);
+
+  &.status-active {
+    background-color: var(--success-color);
+  }
+}

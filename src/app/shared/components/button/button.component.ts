@@ -35,9 +35,20 @@ export class ButtonComponent {
   @Input() icon: string | null = null;
 
   /**
+   * The type of the button (e.g., 'button', 'submit', 'reset').
+   * Defaults to 'button'.
+   */
+  @Input() type: string = 'button';
+
+  /**
    * The position of the icon relative to the text.
    */
   @Input() iconPosition: 'left' | 'right' = 'left';
+
+  /**
+   * The ID of the form this button is associated with.
+   */
+  @Input() form: string | null = null;
 
   /**
    * Binds the 'disabled' attribute to the host element for accessibility

@@ -24,6 +24,13 @@
   </div>
 </div>
 
+<!-- Template for the status column -->
+<ng-template #statusCell let-user>
+  <span class="status-badge" [class.status-active]="user.isActive">
+    {{ user.isActive ? 'Active' : 'Inactive' }}
+  </span>
+</ng-template>
+
 <!-- This template will be projected into the table's action column -->
 <ng-template #actionsCell let-user>
   <div class="action-buttons">

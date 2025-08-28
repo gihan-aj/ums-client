@@ -27,6 +27,7 @@ export class UserManagementComponent implements OnInit {
 
   // Get a reference to the ng-template for our custom actions column
   @ViewChild('actionsCell', { static: true }) actionsCell!: TemplateRef<any>;
+  @ViewChild('statusCell', { static: true }) statusCell!: TemplateRef<any>;
 
   users$: Observable<User[]> = this.store.select(selectUsers);
   isLoading$: Observable<boolean> = this.store.select(selectUsersIsLoading);
@@ -42,7 +43,12 @@ export class UserManagementComponent implements OnInit {
       { key: 'email', header: 'Email', sortable: true },
       { key: 'firstName', header: 'First Name', sortable: true },
       { key: 'lastName', header: 'Last Name', sortable: true },
-      { key: 'isActive', header: 'Status', sortable: true },
+      {
+        key: 'isActive',
+        header: 'Status',
+        sortable: true,
+        cellTemplate: this.statusCell,
+      },
       { key: 'actions', header: 'Actions', cellTemplate: this.actionsCell },
     ];
 

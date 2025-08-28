@@ -53,7 +53,7 @@ export class UserService {
    * Creates a new user.
    * @param payload The data for the new user.
    */
-  addUser(payload: AddUserPayload): Observable<string> {
-    return this.http.post<string>(this.apiUrl, payload);
+  addUser(payload: AddUserPayload): Observable<{ id: string }> {
+    return this.http.post<{ id: string }>(this.apiUrl, payload);
   }
 }

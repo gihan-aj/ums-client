@@ -55,7 +55,7 @@ export class AddUserModalComponent {
       this.userForm.markAllAsTouched();
       return;
     }
-    console.log("Adding user: ", this.userForm.value)
-    // this.store.dispatch(UsersActions.addUser({ payload: this.userForm.value }));
+    // console.log("Adding user: ", this.userForm.value)
+    this.store.dispatch(UsersActions.addUser({ payload: this.userForm.value }));
   }
 }
