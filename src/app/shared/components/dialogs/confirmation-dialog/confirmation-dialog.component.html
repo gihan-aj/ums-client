@@ -1,0 +1,15 @@
+<app-modal (closed)="onCancel()">
+    <h2 modal-title class="title-content">
+        <i class="fa-solid fa-circle-question"></i>
+        <span>{{ title }}</span>
+    </h2>
+
+    <div modal-body>
+        <p class="message">{{ message }}</p>
+    </div>
+
+    <div modal-footer>
+        <app-button variant="secondary" (click)="onCancel()">Cancel</app-button>
+        <app-button variant="primary" (click)="onConfirm()">Confirm</app-button>
+    </div>
+</app-modal>

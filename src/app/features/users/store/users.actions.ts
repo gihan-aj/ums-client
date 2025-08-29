@@ -1,5 +1,5 @@
-import { createActionGroup, props } from "@ngrx/store";
-import { User, UserQuery } from "./users.state";
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { User, UserQuery } from './users.state';
 
 interface AddUserPayload {
   firstName: string;
@@ -25,5 +25,13 @@ export const UsersActions = createActionGroup({
     'Add User': props<{ payload: AddUserPayload }>(),
     'Add User Success': props<{ userId: string }>(),
     'Add User Failure': props<{ error: string }>(),
+
+    'Activate User': props<{ userId: string }>(),
+    'Activate User Status Success': props<{ userId: string }>(),
+    'Activate User Status Failure': props<{ error: string }>(),
+
+    'Deactivate User': props<{ userId: string }>(),
+    'Deactivate User Status Success': props<{ userId: string }>(),
+    'Deactivate User Status Failure': props<{ error: string }>(),
   },
 });

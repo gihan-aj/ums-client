@@ -1,0 +1,11 @@
+.title-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-unit);
+    color: var(--primary-color);
+}
+
+.message {
+    font-size: calc(var(--font-size-base) * 1.1);
+    line-height: 1.6;
+}

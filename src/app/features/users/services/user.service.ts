@@ -56,4 +56,18 @@ export class UserService {
   addUser(payload: AddUserPayload): Observable<{ id: string }> {
     return this.http.post<{ id: string }>(this.apiUrl, payload);
   }
+
+  /**
+   * Activates a user account.
+   */
+  activateUser(userId: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${userId}/activate`, {});
+  }
+
+  /**
+   * Deactivates a user account.
+   */
+  deactivateUser(userId: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${userId}/deactivate`, {});
+  }
 }

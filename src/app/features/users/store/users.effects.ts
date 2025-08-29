@@ -83,4 +83,71 @@ export class UserEffects {
       ),
     { dispatch: false }
   );
+
+  // --- User Status Effects ---
+  activateUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.activateUser),
+      exhaustMap((action) =>
+        this.userService.activateUser(action.userId).pipe(
+          map(() =>
+            UsersActions.activateUserStatusSuccess({ userId: action.userId })
+          ),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              this.errorHandlingService.handleHttpError(error);
+            return of(
+              UsersActions.activateUserStatusFailure({ error: errorMessage })
+            );
+          })
+        )
+      )
+    )
+  );
+
+  activateUserStatusSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(UsersActions.activateUserStatusSuccess),
+        tap(() => {
+          this.notificationService.showSuccess(
+            `User has been successfully activated.`
+          );
+        })
+      ),
+    { dispatch: false }
+  );
+
+  deactivateUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.deactivateUser),
+      exhaustMap((action) =>
+        this.userService.deactivateUser(action.userId).pipe(
+          map(() =>
+            UsersActions.deactivateUserStatusSuccess({ userId: action.userId })
+          ),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              this.errorHandlingService.handleHttpError(error);
+            return of(
+              UsersActions.deactivateUserStatusFailure({ error: errorMessage })
+            );
+          })
+        )
+      )
+    )
+  );
+
+  deactivateUserStatusSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(UsersActions.deactivateUserStatusSuccess),
+        tap(() => {
+          this.notificationService.showSuccess(
+            `User has been successfully deactivated.`
+          );
+        })
+      ),
+    { dispatch: false }
+  );
 }

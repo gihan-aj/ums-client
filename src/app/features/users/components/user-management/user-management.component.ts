@@ -3,7 +3,7 @@ import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { ColumnDef, SortChange, TableComponent } from '../../../../shared/components/table/table.component';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { User, UserQuery } from '../../store/users.state';
 import {
   selectTotalCount,
@@ -74,6 +74,31 @@ export class UserManagementComponent implements OnInit {
 
   addUser(): void {
     this.dialogService.openAddUserModal();
+  }
+
+  /**
+   * Dispatches an action to activate or deactivate a user based on their current status.
+   */
+  toggleUserStatus(user: User): void {
+    const action = user.isActive ? 'Deactivate' : 'Activate';
+    const dialogRef = this.dialogService.openConfirmationDialog({
+      title: `${action} User`,
+      message: `Are you sure you want to ${action.toLowerCase()} the user "${
+        user.email
+      }"?`,
+    });
+
+    dialogRef
+      .pipe(
+        filter((confirmed) => confirmed === true) // Only proceed if the user confirms
+      )
+      .subscribe(() => {
+        if (user.isActive) {
+          this.store.dispatch(UsersActions.deactivateUser({ userId: user.id }));
+        } else {
+          this.store.dispatch(UsersActions.activateUser({ userId: user.id }));
+        }
+      });
   }
 
   editUser(user: User): void {

@@ -1,9 +1,10 @@
 import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
 import { InfoDialogComponent } from '../../shared/components/dialogs/info-dialog/info-dialog.component';
 import { AddUserModalComponent } from '../../features/users/components/add-user-modal/add-user-modal.component';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
 import { UsersActions } from '../../features/users/store/users.actions';
+import { ConfirmationDialogComponent } from '../../shared/components/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -74,5 +75,41 @@ export class DialogService {
       .subscribe(() => {
         closeFn();
       });
+  }
+
+  /**
+   * Opens a confirmation dialog.
+   * @returns An observable that emits `true` if confirmed, and completes otherwise.
+   */
+  openConfirmationDialog(data: {
+    title: string;
+    message: string;
+  }): Observable<boolean> {
+    const confirmationSubject = new Subject<boolean>();
+
+    const componentRef: ComponentRef<ConfirmationDialogComponent> =
+      this.rootViewContainerRef.createComponent(ConfirmationDialogComponent);
+
+    componentRef.instance.title = data.title;
+    componentRef.instance.message = data.message;
+
+    const closeDialog = () => {
+      confirmationSubject.complete();
+      this.rootViewContainerRef.remove(
+        this.rootViewContainerRef.indexOf(componentRef.hostView)
+      );
+    };
+
+    componentRef.instance.onConfirm = () => {
+      confirmationSubject.next(true);
+      closeDialog();
+    };
+
+    componentRef.instance.onCancel = () => {
+      confirmationSubject.next(false);
+      closeDialog();
+    };
+
+    return confirmationSubject.asObservable().pipe(take(1));
   }
 }

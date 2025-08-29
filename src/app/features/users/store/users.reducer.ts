@@ -49,7 +49,40 @@ export const usersFeature = createFeature({
       ...state,
       isLoading: false,
       error: error,
-    }))
+    })),
+
+    // --- User Status Reducers ---
+    on(UsersActions.activateUser, UsersActions.deactivateUser, (state) => ({
+      ...state,
+      // We can set isLoading to true to show a global loader,
+      // or we can handle loading state per-row in the component.
+      // For now, we'll keep it simple.
+    })),
+
+    on(UsersActions.activateUserStatusSuccess, (state, { userId }) => ({
+      ...state,
+      // Find the user in the array and replace it with the updated version
+      users: state.users.map((user) =>
+        user.id === userId ? { ...user, isActive: true } : user
+      ),
+    })),
+
+    on(UsersActions.deactivateUserStatusSuccess, (state, { userId }) => ({
+      ...state,
+      // Find the user in the array and replace it with the updated version
+      users: state.users.map((user) =>
+        user.id === userId ? { ...user, isActive: false } : user
+      ),
+    })),
+
+    on(
+      UsersActions.activateUserStatusFailure,
+      UsersActions.deactivateUserStatusFailure,
+      (state, { error }) => ({
+        ...state,
+        error: error, // Optionally store the error
+      })
+    )
   ),
 });
 
