@@ -1,7 +1,11 @@
 <app-tabs-container>
+  <!-- Profile Tab -->
   <app-tab-panel title="Profile">
-    <p>Profile form will go here.</p>
-    <p>Is Edit Mode: <strong>{{ isEditMode }}</strong></p>
+    <!-- The profile form component goes here -->
+    <app-user-profile-form
+      [user]="user"
+      [isEditMode]="isEditMode">
+    </app-user-profile-form>
   </app-tab-panel>
   <app-tab-panel title="Assigned Roles">
     <p>Role management will go here.</p>

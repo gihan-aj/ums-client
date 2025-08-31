@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+
+.profile-form-container {
+  // Sets a max-width for better readability on wide screens
+  max-width: 700px;
+}
+
+.name-fields {
+  // On larger screens, use a 2-column grid with a gap
+  @media (min-width: 768px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: calc(var(--spacing-unit) * 2.5);
+  }
+}

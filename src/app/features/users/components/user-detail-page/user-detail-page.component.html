@@ -19,7 +19,7 @@
                         Back to User List
                     </app-button>
                     <!-- The Save button is here, in the parent component -->
-                    <app-button *ngIf="isEditMode$ | async" (click)="onSave(user)">
+                    <app-button *ngIf="isEditMode$ | async" (click)="onSave()">
                         <i class="fa-solid fa-save"></i>
                         Save Changes
                     </app-button>

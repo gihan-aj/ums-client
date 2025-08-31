@@ -9,17 +9,28 @@ import { UserDetails } from '../../store/users.state';
 import { selectSelectedUser, selectUsersIsLoading } from '../../store/users.reducer';
 import { UsersActions } from '../../store/users.actions';
 import { NotFoundComponent } from '../../../../shared/components/not-found/not-found.component';
+import { UserDetailStateService } from '../../services/user-detail-state.service';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
   selector: 'app-user-detail-page',
-  imports: [CommonModule, RouterLink, ButtonComponent, UserDetailsComponent, NotFoundComponent],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ButtonComponent,
+    UserDetailsComponent,
+    NotFoundComponent,
+  ],
   templateUrl: './user-detail-page.component.html',
   styleUrl: './user-detail-page.component.scss',
+  providers: [UserDetailStateService],
 })
 export class UserDetailPageComponent implements OnInit {
   private store = inject(Store);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private userDetailState = inject(UserDetailStateService);
+  private notificationService = inject(NotificationService);
 
   user$: Observable<UserDetails | null> = this.store.select(selectSelectedUser);
   isLoading$: Observable<boolean> = this.store.select(selectUsersIsLoading);
@@ -43,9 +54,19 @@ export class UserDetailPageComponent implements OnInit {
     }
   }
 
-  onSave(updatedUser: any): void {
-    console.log('Parent component received save event:', updatedUser);
-    // Here we will dispatch the NgRx action to update the user
-    // this.store.dispatch(UsersActions.updateUser({ payload: updatedUser }));
+  onSave(): void {
+    this.userDetailState.markAllAsTouched();
+
+    if (!this.userDetailState.isValid()) {
+      this.notificationService.showError(
+        'Please correct the validation errors.'
+      );
+      return;
+    }
+
+    const formData = this.userDetailState.getValue();
+    console.log('Saving data:', formData);
+    // Here we will eventually dispatch the NgRx action to update the user
+    // this.store.dispatch(UsersActions.updateUser({ payload: formData }));
   }
 }

@@ -1,0 +1,33 @@
+
+<div class="profile-form-container">
+    <form [formGroup]="profileForm" class="auth-form-body">
+      <div class="name-fields">
+        <app-input
+          label="First Name"
+          formControlName="firstName"
+          [control]="firstNameCtrl"
+          [validationMessages]="{ 
+            required: 'First name is required.',
+            minlength: 'First name must be at least 2 characters.',
+            maxlength: 'First name is too long.' }">
+        </app-input>
+    
+        <app-input
+          label="Last Name"
+          formControlName="lastName"
+          [control]="lastNameCtrl"
+          [validationMessages]="{ 
+            required: 'Last name is required.',
+            minlength: 'Last name must be at least 2 characters.',
+            maxlength: 'Last name is too long.' }">
+        </app-input>
+      </div>
+    
+      <app-input
+        label="Email Address"
+        formControlName="email"
+        [control]="emailCtrl"
+        [readonly]="true">
+      </app-input>
+    </form>
+</div>
