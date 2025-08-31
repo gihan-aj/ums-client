@@ -157,7 +157,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* =============================================== */
-/* == Global Page Layout Styles ==           */
+/* == Global Page Layout Styles                 == */
 /* =============================================== */
 
 .page-container {
@@ -171,7 +171,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-shrink: 0; // Prevent the header from shrinking
+  flex-shrink: 0; /* Prevent the header from shrinking */
   margin-bottom: calc(var(--spacing-unit) * 3);
 
   h1 {
@@ -181,9 +181,56 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 1.5);
+}
+
+.subtitle {
+  color: var(--secondary-color);
+  font-size: var(--font-size-base);
+  margin-top: 4px;
+}
+
 .page-content {
   flex-grow: 1;
-  // Add any other common content styles here
+}
+
+/* A reusable, centered loading state container */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 300px; /* A sensible default height */
+  width: 100%;
+  color: var(--secondary-color);
+  gap: calc(var(--spacing-unit) * 2);
+
+  .loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid var(--border-color);
+    border-bottom-color: var(--primary-color);
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+
+  p {
+    font-weight: 500;
+  }
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* =============================================== */

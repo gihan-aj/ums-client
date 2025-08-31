@@ -1,0 +1,44 @@
+<div class="page-container">
+    <ng-container *ngIf="isLoading$ | async; else content">
+        <div class="loading-container">
+            <p>Loading user details...</p>
+        </div>
+    </ng-container>
+
+    <ng-template #content>
+        <ng-container *ngIf="user$ | async as user; else notFound">
+            <div class="page-header">
+                <div class="header-title">
+                    <h1>{{ (isEditMode$ | async) ? 'Edit' : 'View' }} User: {{ user.firstName }} {{ user.lastName }}
+                    </h1>
+                    <p class="subtitle">{{ user.email }}</p>
+                </div>
+                <div class="header-actions">
+                    <app-button variant="secondary" routerLink="/users">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back to User List
+                    </app-button>
+                    <!-- The Save button is here, in the parent component -->
+                    <app-button *ngIf="isEditMode$ | async" (click)="onSave(user)">
+                        <i class="fa-solid fa-save"></i>
+                        Save Changes
+                    </app-button>
+                </div>
+            </div>
+
+            <div class="page-content">
+                <!-- Pass the user and mode down to the dumb component -->
+                <app-user-details [user]="user" [isEditMode]="(isEditMode$ | async) ?? false">
+                </app-user-details>
+            </div>
+
+        </ng-container>
+    </ng-template>
+
+    <ng-template #notFound>
+        <app-not-found title="User Not Found"
+            message="We couldn't find a user with the specified ID. They may have been deleted." backLink="/users"
+            backLinkText="Back to User List">
+        </app-not-found>
+    </ng-template>
+</div>

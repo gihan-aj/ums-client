@@ -150,4 +150,24 @@ export class UserEffects {
       ),
     { dispatch: false }
   );
+
+  // --- Fetching a single user ---
+  loadUserById$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.loadUserById),
+      exhaustMap((action) =>
+        this.userService.getUserById(action.userId).pipe(
+          map((user) => UsersActions.loadUserByIdSuccess({ user })),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              this.errorHandlingService.handleHttpError(error);
+            // Optionally navigate back to user list on failure
+            return of(
+              UsersActions.loadUserByIdFailure({ error: errorMessage })
+            );
+          })
+        )
+      )
+    )
+  );
 }

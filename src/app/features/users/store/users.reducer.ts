@@ -1,6 +1,6 @@
-import { createFeature, createReducer, on } from "@ngrx/store";
-import { initialUsersState } from "./users.state";
-import { UsersActions } from "./users.actions";
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
+import { initialUsersState } from './users.state';
+import { UsersActions } from './users.actions';
 
 export const usersFeature = createFeature({
   name: 'users',
@@ -82,23 +82,46 @@ export const usersFeature = createFeature({
         ...state,
         error: error, // Optionally store the error
       })
-    )
+    ),
+
+    // --- Reducers for fetching a single user ---
+    on(UsersActions.loadUserById, (state) => ({
+      ...state,
+      isLoading: true,
+      selectedUser: null,
+      error: null,
+    })),
+
+    on(UsersActions.loadUserByIdSuccess, (state, { user }) => ({
+      ...state,
+      isLoading: false,
+      selectedUser: user,
+      error: null,
+    })),
+
+    on(UsersActions.loadUserByIdFailure, (state, { error }) => ({
+      ...state,
+      isLoading: false,
+      selectedUser: null,
+      error: error,
+    }))
   ),
+
+  extraSelectors: ({ selectUsersState }) => ({
+    selectUserQuery: createSelector(selectUsersState, (state) => state.query),
+  }),
 });
 
-// Export the generated selectors, renaming them for clarity
-const {
+// --- Selectors ---
+export const {
+  name,
+  reducer,
+  selectUsersState,
   selectUsers,
-  selectTotalCount,
-  selectQuery,
-  selectIsLoading,
-  selectError,
+  selectIsLoading: selectUsersIsLoading,
+  selectError: selectUsersError,
+  selectTotalCount: selectUsersTotalCount,
+  selectSelectedUser,
 } = usersFeature;
 
-export {
-  selectUsers,
-  selectTotalCount,
-  selectQuery as selectUserQuery,
-  selectIsLoading as selectUsersIsLoading,
-  selectError as selectUsersError,
-};
+export const { selectUserQuery } = usersFeature;

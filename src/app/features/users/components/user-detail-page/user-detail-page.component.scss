@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+
+
+.tab-container-placeholder {
+  padding: calc(var(--spacing-unit) * 4);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  text-align: center;
+  color: var(--secondary-color);
+}

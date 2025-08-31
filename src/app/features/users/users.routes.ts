@@ -4,6 +4,7 @@ import { provideState } from "@ngrx/store";
 import { usersFeature } from "./store/users.reducer";
 import { provideEffects } from "@ngrx/effects";
 import { UserEffects } from "./store/users.effects";
+import { UserDetailPageComponent } from './components/user-detail-page/user-detail-page.component';
 
 export const USERS_ROUTES: Routes = [
   {
@@ -11,5 +12,9 @@ export const USERS_ROUTES: Routes = [
     component: UserManagementComponent,
     // Provide the feature state and effects only for this feature's routes
     providers: [provideState(usersFeature), provideEffects([UserEffects])],
+  },
+  {
+    path: 'edit/:id',
+    component: UserDetailPageComponent,
   },
 ];

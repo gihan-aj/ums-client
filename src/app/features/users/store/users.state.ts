@@ -14,6 +14,21 @@ export interface User {
   lastLoginAtUtc: string | null;
 }
 
+export interface Role {
+  roleId: string;
+  roleName: string;
+}
+
+export interface Permission {
+  permissionName: string;
+  description: string;
+}
+
+export interface UserDetails extends User {
+  roles: Role[];
+  permissions: Permission[];
+}
+
 /**
  * Interface representing the query parameters for fetching users.
  */
@@ -34,6 +49,7 @@ export interface UsersState {
   query: UserQuery;
   isLoading: boolean;
   error: string | null;
+  selectedUser: UserDetails | null;
 }
 
 /**
@@ -48,4 +64,5 @@ export const initialUsersState: UsersState = {
   },
   isLoading: false,
   error: null,
+  selectedUser: null,
 };

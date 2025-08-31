@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { User, UserQuery } from '../store/users.state';
+import { User, UserDetails, UserQuery } from '../store/users.state';
 import { Observable } from 'rxjs';
 
 /**
@@ -69,5 +69,12 @@ export class UserService {
    */
   deactivateUser(userId: string): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/${userId}/deactivate`, {});
+  }
+
+  /**
+   * Gets a single user by their ID, including roles and permissions.
+   */
+  getUserById(userId: string): Observable<UserDetails> {
+    return this.http.get<UserDetails>(`${this.apiUrl}/${userId}`);
   }
 }

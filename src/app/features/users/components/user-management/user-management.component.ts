@@ -6,14 +6,15 @@ import { Store } from '@ngrx/store';
 import { filter, Observable } from 'rxjs';
 import { User, UserQuery } from '../../store/users.state';
 import {
-  selectTotalCount,
   selectUserQuery,
   selectUsers,
   selectUsersIsLoading,
+  selectUsersTotalCount,
 } from '../../store/users.reducer';
 import { UsersActions } from '../../store/users.actions';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { DialogService } from '../../../../core/services/dialog.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-management',
@@ -24,6 +25,7 @@ import { DialogService } from '../../../../core/services/dialog.service';
 export class UserManagementComponent implements OnInit {
   private store = inject(Store);
   private dialogService = inject(DialogService);
+  private router = inject(Router);
 
   // Get a reference to the ng-template for our custom actions column
   @ViewChild('actionsCell', { static: true }) actionsCell!: TemplateRef<any>;
@@ -31,7 +33,7 @@ export class UserManagementComponent implements OnInit {
 
   users$: Observable<User[]> = this.store.select(selectUsers);
   isLoading$: Observable<boolean> = this.store.select(selectUsersIsLoading);
-  totalCount$: Observable<number> = this.store.select(selectTotalCount);
+  totalCount$: Observable<number> = this.store.select(selectUsersTotalCount);
   query$: Observable<UserQuery> = this.store.select(selectUserQuery);
 
   columns: ColumnDef<User>[] = [];
@@ -101,9 +103,11 @@ export class UserManagementComponent implements OnInit {
       });
   }
 
+  /**
+   * Navigates to the edit page for the selected user.
+   */
   editUser(user: User): void {
-    console.log('Edit user:', user.id);
-    // We will implement the edit logic later
+    this.router.navigate(['/users/edit', user.id]);
   }
 
   deleteUser(user: User): void {
