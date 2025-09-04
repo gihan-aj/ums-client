@@ -1,0 +1,39 @@
+:host {
+  display: inline-block; // Allows the component to sit nicely in grids/flex layouts
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 1.5);
+  cursor: pointer;
+  user-select: none; // Prevents text selection when clicking the label
+
+  .checkbox-label {
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+
+    .checkbox-label {
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Optional: Custom styling for the checkbox itself
+.checkbox-input {
+  // Add custom styles here if you want to move away from the browser default
+  // For example, you can hide the default input and style a pseudo-element on the label.
+  // For now, we'll keep the browser default for simplicity.
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}

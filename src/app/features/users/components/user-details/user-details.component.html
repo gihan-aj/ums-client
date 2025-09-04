@@ -7,10 +7,17 @@
       [isEditMode]="isEditMode">
     </app-user-profile-form>
   </app-tab-panel>
-  <app-tab-panel title="Assigned Roles">
-    <p>Role management will go here.</p>
+
+   <!-- Roles Tab -->
+  <app-tab-panel title="Roles" [disabled]="!isEditMode">
+    <!-- The roles management component now goes here -->
+    <app-user-roles-form
+      [user]="user"
+      [isEditMode]="isEditMode">
+    </app-user-roles-form>
   </app-tab-panel>
+  
   <app-tab-panel title="Effective Permissions">
-    <p>Permissions list will go here.</p>
+    <app-user-permissions [permissions]="user.permissions"></app-user-permissions>
   </app-tab-panel>
 </app-tabs-container>

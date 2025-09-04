@@ -1,0 +1,51 @@
+<div class="permission-tree-container">
+  <!-- ================= EDIT MODE TEMPLATE ================= -->
+  <ng-container *ngIf="mode === 'edit'; else viewMode">
+    <div [formGroup]="permissionForm">
+      <div *ngFor="let group of allPermissionGroups" class="permission-group">
+        
+        <div class="group-header">
+          <input 
+            type="checkbox" 
+            class="group-checkbox"
+            [id]="'group-' + group.groupName"
+            [checked]="isGroupChecked(group.groupName)"
+            [indeterminate]="isGroupIndeterminate(group.groupName)"
+            [disabled]="permissionForm.disabled"
+            (change)="toggleGroup(group.groupName, $event)">
+          <label [for]="'group-' + group.groupName">{{ group.groupName }}</label>
+        </div>
+
+        <div class="permissions-grid" [formGroupName]="group.groupName">
+          <app-checkbox
+            *ngFor="let permission of group.permissions"
+            [formControlName]="permission.name"
+            [label]="permission.description">
+          </app-checkbox>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- ================= VIEW MODE TEMPLATE ================= -->
+  <ng-template #viewMode>
+    <div *ngFor="let group of allPermissionGroups">
+      <!-- Only show a group header if at least one permission in it is selected -->
+      <ng-container *ngIf="hasAnySelectedInGroup(group)">
+        <div class="group-header view-mode">
+          <label>{{ group.groupName }}</label>
+        </div>
+
+        <div class="permissions-list-view">
+          <div *ngFor="let permission of group.permissions">
+            <!-- Only show the permissions that are actually selected -->
+            <div *ngIf="isPermissionSelected(permission.name)" class="permission-item-view">
+              <i class="fa-solid fa-check-circle"></i>
+              <span>{{ permission.description }}</span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-template>
+</div>

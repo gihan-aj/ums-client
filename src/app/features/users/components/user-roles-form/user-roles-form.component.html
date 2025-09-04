@@ -1,0 +1,17 @@
+<div *ngIf="isLoading$ | async; else formContent" class="loading-container">
+  <div class="spinner"></div>
+</div>
+
+<ng-template #formContent>
+  <form [formGroup]="rolesForm" class="roles-form-container">
+    <p class="form-description">Select the roles to assign to this user.</p>
+    <div class="roles-grid" *ngIf="(allRoles$ | async)?.length">
+      <!-- The template can now use the clean formControlName syntax -->
+      <app-checkbox
+        *ngFor="let role of allRoles$ | async"
+        [formControlName]="role.id.toString()"
+        [label]="role.name">
+      </app-checkbox>
+    </div>
+  </form>
+</ng-template>

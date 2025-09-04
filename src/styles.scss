@@ -20,10 +20,13 @@ except that its specificity is higher. We define our global CSS variables here f
   // --text-color-light: light-dark(#f9fafb, #111827); /* Light text for dark backgrounds */
   --text-color-light: light-dark(#f9fafb, #f9fafb); /* Light text for dark backgrounds */
 
-  --background-color: light-dark(#f9fafb, #111827); /* Page background */
-  --surface-color: light-dark(#ffffff, #1f2937); /* For cards, modals, inputs */
+  // --background-color: light-dark(#f9fafb, #111827); /* Page background */
+  --background-color: light-dark(#f9fafb, #161618); /* Page background */
+  // --surface-color: light-dark(#ffffff, #1f2937); /* For cards, modals, inputs */
+  --surface-color: light-dark(#ffffff, #242628); /* For cards, modals, inputs */
 
-  --border-color: light-dark(#d1d5db, #374151);
+  // --border-color: light-dark(#d1d5db, #374151);
+  --border-color: light-dark(#d1d5db, #57595B);
   --border-color-focus: var(--primary-color);
 
   --success-color: #10b981;

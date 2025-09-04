@@ -1,0 +1,55 @@
+:host {
+  display: block;
+}
+
+.permission-group {
+  margin-bottom: calc(var(--spacing-unit) * 3);
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 1.5);
+  padding: calc(var(--spacing-unit) * 1) 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: calc(var(--spacing-unit) * 2);
+
+  label {
+    font-size: 1.1em;
+    font-weight: 700;
+  }
+}
+
+.permissions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: calc(var(--spacing-unit) * 2);
+  padding-left: calc(var(--spacing-unit) * 3);
+}
+
+// --- View Mode Specific Styles ---
+.group-header.view-mode {
+  // Remove checkbox gap for view mode
+  gap: 0;
+}
+
+.permissions-list-view {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 1.5);
+  padding-left: calc(var(--spacing-unit) * 1);
+}
+
+.permission-item-view {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 1.5);
+
+  i {
+    color: var(--success-color);
+  }
+
+  span {
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,29 @@
+.roles-form-container {
+  max-width: 700px;
+}
+
+.form-description {
+  color: var(--secondary-color);
+  margin-bottom: calc(var(--spacing-unit) * 2.5);
+}
+
+.roles-grid {
+  display: grid;
+  // Create responsive columns
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: calc(var(--spacing-unit) * 2);
+}
+
+.role-item {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 1.5);
+  background-color: var(--surface-hover-color);
+  padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.5);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+
+  label {
+    font-weight: 500;
+  }
+}

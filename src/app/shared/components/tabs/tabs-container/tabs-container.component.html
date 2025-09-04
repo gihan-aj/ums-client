@@ -1,6 +1,6 @@
 <div class="tabs-container">
     <ul class="tab-headers">
-        <li *ngFor="let tab of tabs" class="tab-header-item" [class.active]="tab.isActive" (click)="selectTab(tab)">
+        <li *ngFor="let tab of tabs" class="tab-header-item" [class.active]="tab.isActive" [class.disabled]="tab.disabled" (click)="selectTab(tab)">
             {{ tab.title }}
         </li>
     </ul>

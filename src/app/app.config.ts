@@ -17,6 +17,8 @@ import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { initializeAuth } from './app.initializer';
 import { authFeature } from './features/auth/store/auth.reducer';
 import { AuthEffects } from './features/auth/store/auth.effects';
+import { rolesFeature } from './features/roles/store/roles.reducer';
+import { RolesEffects } from './features/roles/store/roles.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,11 +32,12 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       // Register the auth feature state globally
       [authFeature.name]: authFeature.reducer,
+      [rolesFeature.name]: rolesFeature.reducer,
     }),
 
     // 2. Provide the root effects. Pass an empty array []
     // Register the auth effects globally
-    provideEffects([AuthEffects]),
+    provideEffects([AuthEffects, RolesEffects]),
 
     // 3. Configure the Store Devtools.
     //    This should only be enabled in development mode.

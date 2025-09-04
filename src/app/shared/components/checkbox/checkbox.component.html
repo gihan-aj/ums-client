@@ -1,0 +1,12 @@
+<div class="checkbox-container" [class.disabled]="isDisabled">
+  <input
+    class="checkbox-input"
+    type="checkbox"
+    [id]="uniqueId"
+    [checked]="isChecked"
+    [disabled]="isDisabled"
+    (change)="onCheckboxChange($event)"
+    (blur)="onTouched()"
+  />
+  <label class="checkbox-label" [for]="uniqueId">{{ label }}</label>
+</div>
