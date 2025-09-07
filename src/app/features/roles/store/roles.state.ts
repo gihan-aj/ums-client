@@ -1,6 +1,12 @@
+export interface Permission {
+  name: string;
+  description: string;
+}
+
 export interface Role {
   id: number;
   name: string;
+  permissions: Permission[];
 }
 
 export interface RolesState {
@@ -14,4 +20,3 @@ export const initialRolesState: RolesState = {
   isLoading: false,
   error: null,
 };
-    

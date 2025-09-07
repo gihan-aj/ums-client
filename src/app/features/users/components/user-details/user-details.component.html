@@ -18,6 +18,6 @@
   </app-tab-panel>
   
   <app-tab-panel title="Effective Permissions">
-    <app-user-permissions [permissions]="user.permissions"></app-user-permissions>
+    <app-user-permissions [permissions]="isEditMode ? (previewPermissions ?? []) : user.permissions"></app-user-permissions>
   </app-tab-panel>
 </app-tabs-container>

@@ -132,6 +132,8 @@ export const authFeature = createFeature({
     // --- Refresh token Reducers ---
     on(AuthActions.refreshToken, (state) => ({
       ...state,
+      accessToken: null,
+      tokenExpiry: null,
       isLoading: true,
       error: null,
     })),
@@ -174,6 +176,7 @@ export const authFeature = createFeature({
 const {
   selectUser,
   selectAccessToken,
+  selectTokenExpiry,
   selectIsLoading,
   selectError,
   selectAuthState,
@@ -182,6 +185,7 @@ const {
 export {
   selectUser,
   selectAccessToken,
+  selectTokenExpiry,
   selectIsLoading as selectAuthIsLoading,
   selectError as selectAuthError,
   selectAuthState,

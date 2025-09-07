@@ -1,4 +1,5 @@
 import { environment } from "../../../../environments/environment";
+import { Permission, Role } from '../../roles/store/roles.state';
 
 /**
  * Interface representing a single user object from the API.
@@ -12,16 +13,6 @@ export interface User {
   isActive: boolean;
   createdAtUtc: string;
   lastLoginAtUtc: string | null;
-}
-
-export interface Role {
-  roleId: number;
-  roleName: string;
-}
-
-export interface Permission {
-  permissionName: string;
-  description: string;
 }
 
 export interface UserDetails extends User {

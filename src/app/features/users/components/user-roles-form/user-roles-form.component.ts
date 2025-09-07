@@ -53,7 +53,7 @@ export class UserRolesFormComponent implements OnInit, OnChanges, OnDestroy {
   private buildForm(allRoles: Role[]): void {
     allRoles.forEach((role) => {
       const isAssigned = this.user.roles.some(
-        (userRole) => userRole.roleId === role.id
+        (userRole) => userRole.id === role.id
       );
       this.rolesForm.addControl(
         role.id.toString(),

@@ -20,6 +20,16 @@
   }
 }
 
+.group-checkbox {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
 .permissions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -30,7 +40,8 @@
 // --- View Mode Specific Styles ---
 .group-header.view-mode {
   // Remove checkbox gap for view mode
-  gap: 0;
+  // gap: 0;
+  gap: calc(var(--spacing-unit) * 1.5);
 }
 
 .permissions-list-view {
@@ -38,6 +49,7 @@
   flex-direction: column;
   gap: calc(var(--spacing-unit) * 1.5);
   padding-left: calc(var(--spacing-unit) * 1);
+  margin-bottom: calc(var(--spacing-unit) * 3);
 }
 
 .permission-item-view {

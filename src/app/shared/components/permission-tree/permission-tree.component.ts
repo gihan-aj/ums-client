@@ -3,12 +3,13 @@ import { Component, forwardRef, inject, Input, OnChanges, OnDestroy, OnInit, Sim
 import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
 import { Subscription } from 'rxjs';
+import { Permission } from '../../../features/roles/store/roles.state';
 
 // --- Interfaces for the component's data structure ---
-export interface Permission {
-  name: string;
-  description: string;
-}
+// export interface Permission {
+//   name: string;
+//   description: string;
+// }
 
 export interface PermissionGroup {
   groupName: string;

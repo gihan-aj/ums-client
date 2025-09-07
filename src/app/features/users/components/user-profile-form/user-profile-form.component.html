@@ -6,6 +6,7 @@
           label="First Name"
           formControlName="firstName"
           [control]="firstNameCtrl"
+          [loading]="(isLoading$ | async) ?? false"
           [validationMessages]="{ 
             required: 'First name is required.',
             minlength: 'First name must be at least 2 characters.',
@@ -16,6 +17,7 @@
           label="Last Name"
           formControlName="lastName"
           [control]="lastNameCtrl"
+          [loading]="(isLoading$ | async) ?? false"
           [validationMessages]="{ 
             required: 'Last name is required.',
             minlength: 'Last name must be at least 2 characters.',
@@ -27,6 +29,7 @@
         label="Email Address"
         formControlName="email"
         [control]="emailCtrl"
+        [loading]="(isLoading$ | async) ?? false"
         [readonly]="true">
       </app-input>
     </form>

@@ -5,6 +5,9 @@
         </button>
     </div>
     <div class="right-side">
+        <!-- <div class="user-profile" *ngIf="tokenExpiry$ | async as time">
+            <span class="user-name">{{ time }}</span>
+        </div> -->
         <div class="user-profile" *ngIf="user$ | async as user">
             <span class="user-name">{{ user.given_name }} {{ user.family_name }}</span>
         </div>

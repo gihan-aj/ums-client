@@ -6,6 +6,7 @@ import { UserDetails } from '../../store/users.state';
 import { UserProfileFormComponent } from '../user-profile-form/user-profile-form.component';
 import { UserRolesFormComponent } from '../user-roles-form/user-roles-form.component';
 import { UserPermissionsComponent } from '../user-permissions/user-permissions.component';
+import { Permission } from '../../../roles/store/roles.state';
 
 @Component({
   selector: 'app-user-details',
@@ -23,4 +24,5 @@ import { UserPermissionsComponent } from '../user-permissions/user-permissions.c
 export class UserDetailsComponent {
   @Input() user!: UserDetails;
   @Input() isEditMode: boolean = false;
+  @Input() previewPermissions: Permission[] | null = null;
 }

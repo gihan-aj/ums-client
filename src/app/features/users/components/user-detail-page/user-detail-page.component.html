@@ -1,6 +1,7 @@
 <div class="page-container">
     <ng-container *ngIf="isLoading$ | async; else content">
         <div class="loading-container">
+            <div class="loader"></div>
             <p>Loading user details...</p>
         </div>
     </ng-container>
@@ -28,7 +29,7 @@
 
             <div class="page-content">
                 <!-- Pass the user and mode down to the dumb component -->
-                <app-user-details [user]="user" [isEditMode]="(isEditMode$ | async) ?? false">
+                <app-user-details [user]="user" [isEditMode]="(isEditMode$ | async) ?? false" [previewPermissions]="previewPermissions$ | async ">
                 </app-user-details>
             </div>
 

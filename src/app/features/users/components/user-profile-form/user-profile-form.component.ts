@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserDetails } from '../../store/users.state';
 import { UserDetailStateService } from '../../services/user-detail-state.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { selectUsersIsLoading } from '../../store/users.reducer';
 
 @Component({
   selector: 'app-user-profile-form',
@@ -16,14 +19,31 @@ export class UserProfileFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isEditMode: boolean = false;
 
   private fb = inject(FormBuilder);
+  private store = inject(Store);
   private userDetailState = inject(UserDetailStateService);
 
   profileForm: FormGroup;
 
+  isLoading$: Observable<boolean> = this.store.select(selectUsersIsLoading);
+
   constructor() {
     this.profileForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      firstName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ],
+      ],
+      lastName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ],
+      ],
       email: [
         { value: '', disabled: true },
         [Validators.required, Validators.email],

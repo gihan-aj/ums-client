@@ -1,11 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { PermissionGroup, PermissionTreeComponent } from '../../../../shared/components/permission-tree/permission-tree.component';
-import { Permission } from '../../store/users.state';
+import {
+  PermissionGroup,
+  PermissionTreeComponent,
+} from '../../../../shared/components/permission-tree/permission-tree.component';
+import { FormsModule } from '@angular/forms';
+import { Permission } from '../../../roles/store/roles.state';
 
 @Component({
   selector: 'app-user-permissions',
-  imports: [CommonModule, PermissionTreeComponent],
+  imports: [CommonModule, FormsModule, PermissionTreeComponent],
   templateUrl: './user-permissions.component.html',
   styleUrl: './user-permissions.component.scss',
 })
@@ -14,10 +18,12 @@ export class UserPermissionsComponent implements OnChanges {
   @Input() permissions: Permission[] = [];
 
   public groupedPermissions: PermissionGroup[] = [];
+  public selectedPermissionNames: string[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     // Re-calculate the groups whenever the input permissions change
     if (changes['permissions']) {
+      this.selectedPermissionNames = this.permissions.map((p) => p.name);
       this.groupPermissions();
     }
   }
@@ -36,7 +42,7 @@ export class UserPermissionsComponent implements OnChanges {
     >();
 
     this.permissions.forEach((p) => {
-      const parts = p.permissionName.split(':');
+      const parts = p.name.split(':');
       if (parts.length < 2) return; // Skip any malformed permissions
 
       const resource = parts[0];
@@ -52,7 +58,7 @@ export class UserPermissionsComponent implements OnChanges {
       }
 
       groups.get(groupName)!.permissions.push({
-        name: p.permissionName,
+        name: p.name,
         description: p.description,
       });
     });

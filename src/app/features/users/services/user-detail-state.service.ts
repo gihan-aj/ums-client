@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { BehaviorSubject, filter, map, Observable } from 'rxjs';
 
 /**
  * A state management service provided at the component level for the User Detail page.
@@ -8,6 +9,7 @@ import { FormGroup } from '@angular/forms';
 @Injectable()
 export class UserDetailStateService {
   private forms = new Map<string, FormGroup>();
+  private formRegistered$ = new BehaviorSubject<string | null>(null);
 
   constructor() {}
 
@@ -18,6 +20,8 @@ export class UserDetailStateService {
    */
   registerForm(name: string, form: FormGroup): void {
     this.forms.set(name, form);
+    // Announce that the form is ready
+    this.formRegistered$.next(name);
   }
 
   /**
@@ -67,5 +71,16 @@ export class UserDetailStateService {
       combinedValue = { ...combinedValue, ...form.getRawValue() };
     }
     return combinedValue;
+  }
+
+  /**
+   * Returns an observable that emits the FormGroup once it has been registered.
+   * This allows parent components to reactively wait for child forms.
+   */
+  whenFormReady(name: string): Observable<FormGroup> {
+    return this.formRegistered$.pipe(
+      filter((formName) => formName === name),
+      map(() => this.getForm(name)!)
+    );
   }
 }
