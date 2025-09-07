@@ -1,4 +1,4 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { initialAuthState, User } from './auth.state';
 import { AuthActions } from './auth.actions';
 import { jwtDecode } from 'jwt-decode';
@@ -143,6 +143,7 @@ export const authFeature = createFeature({
       (state, { accessToken, tokenExpiryUtc }) => {
         // Decode the token to get user details not in the main response body
         const decodedToken: any = jwtDecode(accessToken);
+        const permissionsClaim = decodedToken.permission;
         const user: User = {
           userId: decodedToken.uid,
           email: decodedToken.email,
@@ -150,7 +151,11 @@ export const authFeature = createFeature({
           given_name: decodedToken.given_name,
           family_name: decodedToken.family_name,
           role: decodedToken.role,
-          permissions: decodedToken.permission,
+          permissions: Array.isArray(permissionsClaim)
+            ? permissionsClaim
+            : permissionsClaim
+            ? [permissionsClaim]
+            : [],
         };
 
         return {
@@ -171,6 +176,12 @@ export const authFeature = createFeature({
     }))
   ),
 });
+
+// Create a new selector specifically for permissions
+export const selectUserPermissions = createSelector(
+  authFeature.selectUser,
+  (user) => user?.permissions ?? [] // Return permissions or an empty array
+);
 
 // Export the generated selectors for easy use in components
 const {

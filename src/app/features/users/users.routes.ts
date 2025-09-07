@@ -5,6 +5,7 @@ import { usersFeature } from "./store/users.reducer";
 import { provideEffects } from "@ngrx/effects";
 import { UserEffects } from "./store/users.effects";
 import { UserDetailPageComponent } from './components/user-detail-page/user-detail-page.component';
+import { permissionGuard } from '../../core/guards/permission.guard';
 
 export const USERS_ROUTES: Routes = [
   {
@@ -12,9 +13,19 @@ export const USERS_ROUTES: Routes = [
     component: UserManagementComponent,
     // Provide the feature state and effects only for this feature's routes
     providers: [provideState(usersFeature), provideEffects([UserEffects])],
+    canActivate: [permissionGuard],
+    data: { permission: 'users:', checkType: 'startsWith' },
+  },
+  {
+    path: 'view/:id',
+    component: UserDetailPageComponent,
+    canActivate: [permissionGuard],
+    data: { permission: 'users:read' },
   },
   {
     path: 'edit/:id',
     component: UserDetailPageComponent,
+    canActivate: [permissionGuard],
+    data: { permission: 'users:update' },
   },
 ];
