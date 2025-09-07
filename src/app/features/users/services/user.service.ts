@@ -57,6 +57,17 @@ export class UserService {
     return this.http.post<{ id: string }>(this.apiUrl, payload);
   }
 
+  updateUserProfile(
+    id: string,
+    payload: { firstName: string; lastName: string }
+  ): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}`, payload);
+  }
+
+  assignUserRoles(id: string, roleIds: number[]): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${id}/roles`, { roleIds });
+  }
+
   /**
    * Activates a user account.
    */

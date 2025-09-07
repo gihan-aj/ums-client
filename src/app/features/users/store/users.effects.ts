@@ -1,18 +1,29 @@
 import { inject, Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { act, Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { UserService } from '../services/user.service';
 import { ErrorHandlingService } from '../../../core/services/error-handling.service';
 import { UsersActions } from './users.actions';
-import { catchError, exhaustMap, map, of, tap, withLatestFrom } from 'rxjs';
+import {
+  catchError,
+  exhaustMap,
+  forkJoin,
+  map,
+  of,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { selectUserQuery } from './users.reducer';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationService } from '../../../core/services/notification.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class UserEffects {
   private actions$ = inject(Actions);
   private store = inject(Store);
+  private router = inject(Router);
   private userService = inject(UserService);
   private errorHandlingService = inject(ErrorHandlingService);
   private notificationService = inject(NotificationService);
@@ -169,5 +180,49 @@ export class UserEffects {
         )
       )
     )
+  );
+
+  // --- Update User Effects ---
+  updateUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.updateUser),
+      exhaustMap((action) => {
+        // Create the two API call observables
+        const updateProfile$ = this.userService.updateUserProfile(
+          action.userId,
+          action.profile
+        );
+        const assignUserRoles$ = this.userService.assignUserRoles(
+          action.userId,
+          action.roleIds
+        );
+
+        // Use forkJoin to run them in parallel and wait for both to complete
+        return forkJoin([updateProfile$, assignUserRoles$]).pipe(
+          // After both are successful, reload the user data to get the fresh permissions
+          switchMap(() => this.userService.getUserById(action.userId)),
+          map((updatedUser) =>
+            UsersActions.updateUserSuccess({ user: updatedUser })
+          ),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              this.errorHandlingService.handleHttpError(error);
+            return of(UsersActions.updateUserFailure({ error: errorMessage }));
+          })
+        );
+      })
+    )
+  );
+
+  updateUserSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(UsersActions.updateUserSuccess),
+        tap(() => {
+          this.notificationService.showSuccess('User updated successfully.');
+          this.router.navigate(['/users']);
+        })
+      ),
+    { dispatch: false }
   );
 }

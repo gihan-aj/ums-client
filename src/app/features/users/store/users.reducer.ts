@@ -7,6 +7,7 @@ export const usersFeature = createFeature({
   reducer: createReducer(
     initialUsersState,
 
+    // --- Load Users List Reducers ---
     on(UsersActions.loadUsers, (state, { query }) => ({
       ...state,
       isLoading: true,
@@ -33,6 +34,7 @@ export const usersFeature = createFeature({
       query: { ...state.query, ...query },
     })),
 
+    // --- Add User Reducers ---
     on(UsersActions.addUser, (state) => ({
       ...state,
       isLoading: true,
@@ -84,7 +86,7 @@ export const usersFeature = createFeature({
       })
     ),
 
-    // --- Reducers for fetching a single user ---
+    // --- Load Single User Reducers ---
     on(UsersActions.loadUserById, (state) => ({
       ...state,
       isLoading: true,
@@ -104,6 +106,25 @@ export const usersFeature = createFeature({
       isLoading: false,
       selectedUser: null,
       error: error,
+    })),
+
+    // --- Update User Reducers ---
+    on(UsersActions.updateUser, (state) => ({
+      ...state,
+      isLoading: true,
+      error: null,
+    })),
+
+    on(UsersActions.updateUserSuccess, (state, { user }) => ({
+      ...state,
+      isLoading: false,
+      selectedUser: user,
+    })),
+
+    on(UsersActions.updateUserFailure, (state, { error }) => ({
+      ...state,
+      isLoading: false,
+      error,
     }))
   ),
 

@@ -7,12 +7,14 @@ import { Store } from '@ngrx/store';
 import {
   asyncScheduler,
   combineLatest,
+  filter,
   map,
   Observable,
   observeOn,
   of,
   startWith,
   switchMap,
+  take,
 } from 'rxjs';
 import { UserDetails } from '../../store/users.state';
 import {
@@ -141,7 +143,29 @@ export class UserDetailPageComponent implements OnInit {
 
     const formData = this.userDetailState.getValue();
     console.log('Saving data:', formData);
-    // Here we will eventually dispatch the NgRx action to update the user
-    // this.store.dispatch(UsersActions.updateUser({ payload: formData }));
+
+    this.user$
+      .pipe(
+        take(1),
+        filter((user) => !!user)
+      )
+      .subscribe((user) => {
+        const formData = this.userDetailState.getValue();
+
+        // Separate the profile data from the roles data
+        const profile = {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+        };
+
+        const rolesForm = this.userDetailState.getForm('roles')?.value;
+        const roleIds = Object.keys(rolesForm)
+          .filter((id) => formData[id])
+          .map((id) => parseInt(id, 10));
+
+        this.store.dispatch(
+          UsersActions.updateUser({ userId: user!.id, profile, roleIds })
+        );
+      });
   }
 }
