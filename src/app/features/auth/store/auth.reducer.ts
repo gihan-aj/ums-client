@@ -19,6 +19,7 @@ export const authFeature = createFeature({
     on(AuthActions.loginSuccess, (state, { accessToken, tokenExpiryUtc }) => {
       // Decode the token to get user details not in the main response body
       const decodedToken: any = jwtDecode(accessToken);
+      const permissionsClaim = decodedToken.permission;
       const user: User = {
         userId: decodedToken.uid,
         email: decodedToken.email,
@@ -26,7 +27,11 @@ export const authFeature = createFeature({
         given_name: decodedToken.given_name,
         family_name: decodedToken.family_name,
         role: decodedToken.role,
-        permissions: decodedToken.permission,
+        permissions: Array.isArray(permissionsClaim)
+          ? permissionsClaim
+          : permissionsClaim
+          ? [permissionsClaim]
+          : [],
       };
 
       return {

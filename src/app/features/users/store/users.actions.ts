@@ -40,10 +40,10 @@ export const UsersActions = createActionGroup({
     // --- Update User Actions ---
     'Update User': props<{
       userId: string;
-      profile: { firstName: string; lastName: string };
-      roleIds: number[];
+      payload: any;
     }>(),
     'Update User Success': props<{ user: UserDetails }>(),
     'Update User Failure': props<{ error: string }>(),
+    'Update User No Changes': emptyProps(),
   },
 });

@@ -25,4 +25,6 @@ export class UserDetailsComponent {
   @Input() user!: UserDetails;
   @Input() isEditMode: boolean = false;
   @Input() previewPermissions: Permission[] | null = null;
+  @Input() canUpdateProfile: boolean = false;
+  @Input() canAssignRoles: boolean = false;
 }

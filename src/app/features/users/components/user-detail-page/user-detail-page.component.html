@@ -20,7 +20,9 @@
                         Back to User List
                     </app-button>
                     <!-- The Save button is here, in the parent component -->
-                    <app-button *ngIf="isEditMode$ | async" (click)="onSave()">
+                    <app-button
+                        *ngIf="(isEditMode$ | async) && ((canUpdateProfile$ | async) || (canAssignRoles$ | async))"
+                        (click)="onSave()">
                         <i class="fa-solid fa-save"></i>
                         Save Changes
                     </app-button>
@@ -29,7 +31,10 @@
 
             <div class="page-content">
                 <!-- Pass the user and mode down to the dumb component -->
-                <app-user-details [user]="user" [isEditMode]="(isEditMode$ | async) ?? false" [previewPermissions]="previewPermissions$ | async ">
+                <app-user-details [user]="user" [isEditMode]="(isEditMode$ | async) ?? false"
+                    [canUpdateProfile]="(canUpdateProfile$ | async) ?? false"
+                    [canAssignRoles]="(canAssignRoles$ | async) ?? false"
+                    [previewPermissions]="previewPermissions$ | async ">
                 </app-user-details>
             </div>
 

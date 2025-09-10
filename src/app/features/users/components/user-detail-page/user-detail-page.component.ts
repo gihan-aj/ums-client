@@ -28,6 +28,8 @@ import { UserDetailStateService } from '../../services/user-detail-state.service
 import { NotificationService } from '../../../../core/services/notification.service';
 import { Permission, Role } from '../../../roles/store/roles.state';
 import { selectRoles } from '../../../roles/store/roles.reducer';
+import { HasPermissionDirective } from '../../../../core/directives/has-permission.directive';
+import { selectUserPermissions } from '../../../auth/store/auth.reducer';
 
 @Component({
   selector: 'app-user-detail-page',
@@ -56,11 +58,23 @@ export class UserDetailPageComponent implements OnInit {
 
   previewPermissions$!: Observable<Permission[]>;
 
+  // --- Permission Observables
+  canUpdateProfile$: Observable<boolean>;
+  canAssignRoles$: Observable<boolean>;
+
   constructor() {
     this.isEditMode$ = this.route.url.pipe(
       map((urlSegments) =>
         urlSegments.some((segment) => segment.path === 'edit')
       )
+    );
+
+    const permissions$ = this.store.select(selectUserPermissions);
+    this.canUpdateProfile$ = permissions$.pipe(
+      map((p) => p.includes('users:update'))
+    );
+    this.canAssignRoles$ = permissions$.pipe(
+      map((p) => p.includes('users:assign_role'))
     );
   }
 
@@ -121,6 +135,7 @@ export class UserDetailPageComponent implements OnInit {
     allRoles
       .filter((role) => selectedRoleIds.includes(role.id.toString()))
       .forEach((role) => {
+        console.log(role);
         role.permissions.forEach((perm) => {
           if (!permissionsMap.has(perm.name)) {
             permissionsMap.set(perm.name, perm);
@@ -141,9 +156,6 @@ export class UserDetailPageComponent implements OnInit {
       return;
     }
 
-    const formData = this.userDetailState.getValue();
-    console.log('Saving data:', formData);
-
     this.user$
       .pipe(
         take(1),
@@ -151,20 +163,8 @@ export class UserDetailPageComponent implements OnInit {
       )
       .subscribe((user) => {
         const formData = this.userDetailState.getValue();
-
-        // Separate the profile data from the roles data
-        const profile = {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-        };
-
-        const rolesForm = this.userDetailState.getForm('roles')?.value;
-        const roleIds = Object.keys(rolesForm)
-          .filter((id) => formData[id])
-          .map((id) => parseInt(id, 10));
-
         this.store.dispatch(
-          UsersActions.updateUser({ userId: user!.id, profile, roleIds })
+          UsersActions.updateUser({ userId: user!.id, payload: formData })
         );
       });
   }

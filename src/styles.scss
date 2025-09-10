@@ -17,8 +17,8 @@ except that its specificity is higher. We define our global CSS variables here f
   --secondary-color: light-dark(#6b7280, #9ca3af); /* Gray for secondary text/elements */
 
   --text-color: light-dark(#111827, #f9fafb); /* Dark gray for primary text */
-  // --text-color-light: light-dark(#f9fafb, #111827); /* Light text for dark backgrounds */
-  --text-color-light: light-dark(#f9fafb, #f9fafb); /* Light text for dark backgrounds */
+  --text-color-light: light-dark(#f9fafb, #111827); /* Light text for dark backgrounds */
+  // --text-color-light: light-dark(#f9fafb, #f9fafb); /* Light text for dark backgrounds */
 
   // --background-color: light-dark(#f9fafb, #111827); /* Page background */
   --background-color: light-dark(#f9fafb, #161618); /* Page background */

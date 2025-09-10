@@ -125,6 +125,11 @@ export const usersFeature = createFeature({
       ...state,
       isLoading: false,
       error,
+    })),
+
+    on(UsersActions.updateUserNoChanges, (state) => ({
+      ...state,
+      isLoading: false,
     }))
   ),
 

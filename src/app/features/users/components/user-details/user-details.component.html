@@ -1,23 +1,20 @@
-<app-tabs-container>
+<app-tabs-container *ngIf="user">
   <!-- Profile Tab -->
-  <app-tab-panel title="Profile">
+  <app-tab-panel title="Profile" *ngIf="canUpdateProfile">
     <!-- The profile form component goes here -->
-    <app-user-profile-form
-      [user]="user"
-      [isEditMode]="isEditMode">
+    <app-user-profile-form [user]="user" [isEditMode]="isEditMode">
     </app-user-profile-form>
   </app-tab-panel>
 
-   <!-- Roles Tab -->
-  <app-tab-panel title="Roles" [disabled]="!isEditMode">
+  <!-- Roles Tab -->
+  <app-tab-panel title="Roles" [disabled]="!isEditMode" *ngIf="canAssignRoles">
     <!-- The roles management component now goes here -->
-    <app-user-roles-form
-      [user]="user"
-      [isEditMode]="isEditMode">
+    <app-user-roles-form [user]="user" [isEditMode]="isEditMode">
     </app-user-roles-form>
   </app-tab-panel>
-  
-  <app-tab-panel title="Effective Permissions">
-    <app-user-permissions [permissions]="isEditMode ? (previewPermissions ?? []) : user.permissions"></app-user-permissions>
+
+  <app-tab-panel title="Effective Permissions" *ngIf="canAssignRoles">
+    <app-user-permissions
+      [permissions]="isEditMode ? (previewPermissions ?? []) : user.permissions" ></app-user-permissions>
   </app-tab-panel>
 </app-tabs-container>

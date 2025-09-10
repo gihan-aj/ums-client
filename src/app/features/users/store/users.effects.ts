@@ -9,15 +9,22 @@ import {
   exhaustMap,
   forkJoin,
   map,
+  Observable,
   of,
   switchMap,
   tap,
   withLatestFrom,
 } from 'rxjs';
-import { selectUserQuery } from './users.reducer';
+import { selectSelectedUser, selectUserQuery } from './users.reducer';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationService } from '../../../core/services/notification.service';
 import { Router } from '@angular/router';
+import { selectUserPermissions } from '../../auth/store/auth.reducer';
+
+// A simple helper for deep object comparison
+function isDeepEqual(obj1: any, obj2: any): boolean {
+  return JSON.stringify(obj1) === JSON.stringify(obj2);
+}
 
 @Injectable()
 export class UserEffects {
@@ -186,19 +193,65 @@ export class UserEffects {
   updateUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UsersActions.updateUser),
-      exhaustMap((action) => {
-        // Create the two API call observables
-        const updateProfile$ = this.userService.updateUserProfile(
-          action.userId,
-          action.profile
-        );
-        const assignUserRoles$ = this.userService.assignUserRoles(
-          action.userId,
-          action.roleIds
-        );
+      withLatestFrom(
+        this.store.select(selectSelectedUser),
+        this.store.select(selectUserPermissions)
+      ),
+      exhaustMap(([action, originalUser, permissions]) => {
+        if (!originalUser) {
+          return of(
+            UsersActions.updateUserFailure({
+              error: 'Original user data not found in state.',
+            })
+          );
+        }
+        const apiCalls: Observable<any>[] = [];
+
+        if (permissions.includes('users:update')) {
+          const newProfile = {
+            firstName: action.payload.firstName,
+            lastName: action.payload.lastName,
+          };
+          const originalProfile = {
+            firstName: originalUser.firstName,
+            lastName: originalUser.lastName,
+          };
+          const isProfileChanged = !isDeepEqual(originalProfile, newProfile);
+
+          if (isProfileChanged) {
+            apiCalls.push(
+              this.userService.updateUserProfile(action.userId, newProfile)
+            );
+          }
+        }
+
+        if (permissions.includes('users:assign_role')) {
+          const newRoleIds = Object.keys(action.payload.roles)
+            .filter((id) => action.payload.roles[id])
+            .map((id) => parseInt(id, 10));
+
+          const originalRoleIds = originalUser.roles.map((r) => r.id);
+
+          const areRolesChanged = !isDeepEqual(
+            originalRoleIds.sort(),
+            newRoleIds.sort()
+          );
+
+          if (areRolesChanged) {
+            apiCalls.push(
+              this.userService.assignUserRoles(action.userId, newRoleIds)
+            );
+          }
+        }
+
+        if (apiCalls.length === 0) {
+          this.notificationService.showInfo('No changes to save.');
+          // Dispatch a no-op action to prevent the UI from staying in a loading state
+          return of(UsersActions.updateUserNoChanges());
+        }
 
         // Use forkJoin to run them in parallel and wait for both to complete
-        return forkJoin([updateProfile$, assignUserRoles$]).pipe(
+        return forkJoin(apiCalls).pipe(
           // After both are successful, reload the user data to get the fresh permissions
           switchMap(() => this.userService.getUserById(action.userId)),
           map((updatedUser) =>

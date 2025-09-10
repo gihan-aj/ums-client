@@ -15,10 +15,17 @@ import { UsersActions } from '../../store/users.actions';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { DialogService } from '../../../../core/services/dialog.service';
 import { Router } from '@angular/router';
+import { HasPermissionDirective } from '../../../../core/directives/has-permission.directive';
 
 @Component({
   selector: 'app-user-management',
-  imports: [CommonModule, TableComponent, ButtonComponent, PaginationComponent],
+  imports: [
+    CommonModule,
+    TableComponent,
+    ButtonComponent,
+    PaginationComponent,
+    HasPermissionDirective,
+  ],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.scss',
 })
