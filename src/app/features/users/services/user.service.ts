@@ -34,19 +34,19 @@ export class UserService {
    * @param query The query parameters for pagination, sorting, and searching.
    */
   getUsers(query: UserQuery): Observable<PaginatedResult<User>> {
-    let params = new HttpParams()
-      .set('page', query.page.toString())
-      .set('pageSize', query.pageSize.toString());
+    // let params = new HttpParams()
+    //   .set('page', query.page.toString())
+    //   .set('pageSize', query.pageSize.toString());
 
-    if (query.searchTerm) {
-      params = params.set('searchTerm', query.searchTerm);
-    }
-    if (query.sortColumn && query.sortDirection) {
-      params = params.set('sortColumn', query.sortColumn);
-      params = params.set('sortDirection', query.sortDirection);
-    }
+    // if (query.searchTerm) {
+    //   params = params.set('searchTerm', query.searchTerm);
+    // }
+    // if (query.sortColumn && query.sortDirection) {
+    //   params = params.set('sortColumn', query.sortColumn);
+    //   params = params.set('sortDirection', query.sortDirection);
+    // }
 
-    return this.http.get<PaginatedResult<User>>(this.apiUrl, { params });
+    return this.http.post<PaginatedResult<User>>(`${this.apiUrl}/list`, query);
   }
 
   /**

@@ -6,6 +6,7 @@ import { ErrorHandlingService } from '../../../core/services/error-handling.serv
 import { UsersActions } from './users.actions';
 import {
   catchError,
+  debounceTime,
   exhaustMap,
   forkJoin,
   map,
@@ -35,18 +36,29 @@ export class UserEffects {
   private errorHandlingService = inject(ErrorHandlingService);
   private notificationService = inject(NotificationService);
 
+  searchUsers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.setUsersSearchTerm),
+      // Wait for 300ms of silence before dispatching the load action
+      debounceTime(300),
+      map(() => UsersActions.loadUsers({}))
+    )
+  );
+
   loadUsers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UsersActions.loadUsers),
       // Get the latest query state from the store
       withLatestFrom(this.store.select(selectUserQuery)),
       // We now have [action, query]
-      exhaustMap(([action, query]) =>
-        this.userService.getUsers(query).pipe(
-          map((response) =>
+      exhaustMap(([action, query]) => {
+        // We now combine the query from the state with any overrides from the action
+        const finalQuery = { ...query, ...action.query };
+        return this.userService.getUsers(finalQuery).pipe(
+          map((pagedResult) =>
             UsersActions.loadUsersSuccess({
-              users: response.items,
-              totalCount: response.totalCount,
+              users: pagedResult.items,
+              totalCount: pagedResult.totalCount,
             })
           ),
           catchError((error: HttpErrorResponse) => {
@@ -54,8 +66,8 @@ export class UserEffects {
               this.errorHandlingService.handleHttpError(error);
             return of(UsersActions.loadUsersFailure({ error: errorMessage }));
           })
-        )
-      )
+        );
+      })
     )
   );
 

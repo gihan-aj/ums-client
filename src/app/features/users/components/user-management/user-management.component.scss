@@ -27,3 +27,63 @@
     background-color: transparent;
   }
 }
+
+// Styles for the header actions container
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 2);
+}
+
+// Target the search input component
+.search-input {
+  width: 250px;
+}
+
+// Container for the table and pagination
+// .table-group {
+//   border: 1px solid var(--border-color);
+//   border-radius: var(--border-radius);
+//   overflow: hidden; // This keeps the child corners contained
+
+//   // Override the table's border-radius to fit the container
+//   // ::ng-deep is used to pierce style encapsulation for layout composition
+//   ::ng-deep app-table .table-container {
+//     border-radius: 0;
+//     border-top-left-radius: var(--border-radius);
+//     border-top-right-radius: var(--border-radius);
+//     border: none;
+//   }
+// }
+
+// Styles for the status badge in the table
+// .status-badge {
+//   display: inline-block;
+//   padding: 4px 10px;
+//   border-radius: 9999px;
+//   font-weight: 600;
+//   font-size: 12px;
+//   cursor: pointer;
+//   transition: all var(--transition-speed) ease;
+
+//   &.status-active {  
+//     background-color: var(--success-color);
+//     color: var(--success-color);
+//   }
+
+//   &:not(.active) {
+//     background-color: var(--secondary-color-translucent);
+//     color: var(--secondary-color);
+//   }
+
+//   &:hover {
+//     opacity: 0.8;
+//   }
+// }
+
+// Styles for the action buttons in the table
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: calc(var(--spacing-unit) * 1);
+}

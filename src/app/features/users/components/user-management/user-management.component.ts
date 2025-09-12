@@ -1,9 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { ColumnDef, SortChange, TableComponent } from '../../../../shared/components/table/table.component';
+import {
+  ColumnDef,
+  SortChange,
+  TableComponent,
+} from '../../../../shared/components/table/table.component';
 import { Store } from '@ngrx/store';
-import { filter, Observable } from 'rxjs';
+import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { User, UserQuery } from '../../store/users.state';
 import {
   selectUserQuery,
@@ -16,6 +27,8 @@ import { PaginationComponent } from '../../../../shared/components/pagination/pa
 import { DialogService } from '../../../../core/services/dialog.service';
 import { Router } from '@angular/router';
 import { HasPermissionDirective } from '../../../../core/directives/has-permission.directive';
+import { FormControl } from '@angular/forms';
+import { InputComponent } from '../../../../shared/components/input/input.component';
 
 @Component({
   selector: 'app-user-management',
@@ -25,11 +38,12 @@ import { HasPermissionDirective } from '../../../../core/directives/has-permissi
     ButtonComponent,
     PaginationComponent,
     HasPermissionDirective,
+    InputComponent,
   ],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.scss',
 })
-export class UserManagementComponent implements OnInit {
+export class UserManagementComponent implements OnInit, OnDestroy {
   private store = inject(Store);
   private dialogService = inject(DialogService);
   private router = inject(Router);
@@ -43,7 +57,11 @@ export class UserManagementComponent implements OnInit {
   totalCount$: Observable<number> = this.store.select(selectUsersTotalCount);
   query$: Observable<UserQuery> = this.store.select(selectUserQuery);
 
+  searchControl = new FormControl('');
+
   columns: ColumnDef<User>[] = [];
+
+  destroy$ = new Subject<void>();
 
   ngOnInit(): void {
     // Define the columns for our table, including the custom template
@@ -63,6 +81,14 @@ export class UserManagementComponent implements OnInit {
 
     // Dispatch the action to load the initial set of users
     this.store.dispatch(UsersActions.loadUsers({}));
+
+    this.searchControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((searchTerm) => {
+        this.store.dispatch(
+          UsersActions.setUsersSearchTerm({ searchTerm: searchTerm ?? '' })
+        );
+      });
   }
 
   onSortChange(sort: SortChange): void {
@@ -70,8 +96,9 @@ export class UserManagementComponent implements OnInit {
     this.store.dispatch(
       UsersActions.loadUsers({
         query: {
+          page: 1,
           sortColumn: sort.column,
-          sortDirection: sort.direction,
+          sortOrder: sort.direction,
         },
       })
     );
@@ -120,5 +147,10 @@ export class UserManagementComponent implements OnInit {
   deleteUser(user: User): void {
     console.log('Delete user:', user.id);
     // We will implement the delete logic later
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

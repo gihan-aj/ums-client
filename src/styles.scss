@@ -249,11 +249,16 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
   background-color: var(--secondary-color);
   color: var(--text-color-light);
-  border: none; // Add this for button reset
+  border: none; // Add this for button reset 
   cursor: pointer; // Make it look clickable
+  transition: all var(--transition-speed) ease;
 
   &.status-active {
     background-color: var(--success-color);
+  }
+
+    &:hover {
+    opacity: 0.8;
   }
 
 }

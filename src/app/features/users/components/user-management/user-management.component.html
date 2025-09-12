@@ -1,7 +1,22 @@
 <div class="page-container">
   <div class="page-header">
     <h1>User Management</h1>
-    <app-button *appHasPermission="'users:create'" icon="fa-solid fa-plus" (click)="addUser()">Add User</app-button>
+
+    <div class="header-actions">
+      <app-input
+        class="search-input"
+        placeholder="Search users..."
+        [control]="searchControl"
+        icon="fa-solid fa-search"
+      >
+      </app-input>
+      <app-button
+        *appHasPermission="'users:create'"
+        icon="fa-solid fa-plus"
+        (click)="addUser()"
+        >Add User</app-button
+      >
+    </div>
   </div>
 
   <div class="page-content">
@@ -12,9 +27,9 @@
         [isLoading]="(isLoading$ | async) ?? false"
         (sortChange)="onSortChange($event)"
       ></app-table>
-  
+
       <app-pagination
-        *ngIf="(query$ | async) as query"
+        *ngIf="query$ | async as query"
         [currentPage]="query.page"
         [pageSize]="query.pageSize"
         [totalItems]="(totalCount$ | async) ?? 0"
@@ -26,29 +41,34 @@
 
 <!-- Template for the status column -->
 <ng-template #statusCell let-user>
-  <button 
-    class="status-badge" 
+  <button
+    class="status-badge"
     [class.status-active]="user.isActive"
     (click)="toggleUserStatus(user)"
-    [title]="user.isActive ? 'Click to Deactivate' : 'Click to Activate'">
-    {{ user.isActive ? 'Active' : 'Inactive' }}
+    [title]="user.isActive ? 'Click to Deactivate' : 'Click to Activate'"
+  >
+    {{ user.isActive ? "Active" : "Inactive" }}
   </button>
 </ng-template>
 
 <!-- This template will be projected into the table's action column -->
 <ng-template #actionsCell let-user>
   <div class="action-buttons">
-    <app-button 
-      variant="icon" 
-      icon="fa-solid fa-pencil" 
-      (click)="editUser(user)" 
-      title="Edit User">
+    <app-button
+      *appHasPermission="'users:update'"
+      variant="icon"
+      icon="fa-solid fa-pencil"
+      (click)="editUser(user)"
+      title="Edit User"
+    >
     </app-button>
-    <app-button 
-      variant="icon" 
-      icon="fa-solid fa-trash-can" 
-      (click)="deleteUser(user)" 
-      title="Delete User">
+    <app-button
+      *appHasPermission="'users:delete'"
+      variant="icon"
+      icon="fa-solid fa-trash-can"
+      (click)="deleteUser(user)"
+      title="Delete User"
+    >
     </app-button>
   </div>
 </ng-template>

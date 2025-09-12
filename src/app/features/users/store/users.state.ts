@@ -1,6 +1,8 @@
 import { environment } from "../../../../environments/environment";
 import { Permission, Role } from '../../roles/store/roles.state';
 
+// --- Interfaces for User Lists ---
+
 /**
  * Interface representing a single user object from the API.
  */
@@ -20,15 +22,23 @@ export interface UserDetails extends User {
   permissions: Permission[];
 }
 
+// --- State and Query Interfaces ---
+
+export interface Filter {
+  columnName: string;
+  operator: string;
+  value: any;
+}
+
 /**
  * Interface representing the query parameters for fetching users.
  */
 export interface UserQuery {
   page: number;
   pageSize: number;
-  searchTerm?: string;
   sortColumn?: string;
-  sortDirection?: 'asc' | 'desc';
+  sortOrder?: 'asc' | 'desc';
+  filters: Filter[];
 }
 
 /**
@@ -52,6 +62,7 @@ export const initialUsersState: UsersState = {
   query: {
     page: 1, // Pages are typically 1-based for user display
     pageSize: environment.defaultPageSize,
+    filters: []
   },
   isLoading: false,
   error: null,

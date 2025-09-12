@@ -10,6 +10,9 @@ interface AddUserPayload {
 export const UsersActions = createActionGroup({
   source: 'Users API',
   events: {
+    // --- UI Events ---
+    'Set Users Search Term': props<{ searchTerm: string }>(),
+
     // --- Load Users List Actions ---
     'Load Users': props<{ query?: Partial<UserQuery> }>(),
     'Load Users Success': props<{ users: User[]; totalCount: number }>(),

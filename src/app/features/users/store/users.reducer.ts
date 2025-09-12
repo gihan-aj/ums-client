@@ -7,6 +7,29 @@ export const usersFeature = createFeature({
   reducer: createReducer(
     initialUsersState,
 
+    on(UsersActions.setUsersSearchTerm, (state, { searchTerm }) => ({
+      ...state,
+      query: {
+        ...state.query,
+        page: 1,
+        filters: searchTerm
+          ? [
+              {
+                columnName: 'firstName',
+                operator: 'contains',
+                value: searchTerm,
+              },
+              {
+                columnName: 'lastName',
+                operator: 'contains',
+                value: searchTerm,
+              },
+              { columnName: 'email', operator: 'contains', value: searchTerm },
+            ]
+          : [],
+      },
+    })),
+
     // --- Load Users List Reducers ---
     on(UsersActions.loadUsers, (state, { query }) => ({
       ...state,
