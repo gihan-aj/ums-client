@@ -238,6 +238,7 @@ export class UserEffects {
         }
 
         if (permissions.includes('users:assign_role')) {
+          console.log('payload', action);
           const newRoleIds = Object.keys(action.payload.roles)
             .filter((id) => action.payload.roles[id])
             .map((id) => parseInt(id, 10));

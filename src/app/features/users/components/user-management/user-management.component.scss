@@ -84,6 +84,6 @@
 // Styles for the action buttons in the table
 .action-buttons {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: calc(var(--spacing-unit) * 1);
 }

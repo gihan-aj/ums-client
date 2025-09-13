@@ -10,6 +10,7 @@ export interface ColumnDef<T> {
   header: string; // The text to display in the table header
   sortable?: boolean; // Whether the column can be sorted
   cellTemplate?: TemplateRef<any>; // Optional custom template for the cell
+  align?: 'left' | 'center' | 'right'; // Defines the horizontal alignment for the column's header and cells.
 }
 
 /**

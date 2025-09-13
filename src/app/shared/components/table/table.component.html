@@ -5,6 +5,7 @@
         <th 
           *ngFor="let col of columns" 
           [class.sortable]="col.sortable"
+          [ngClass]="'align-' + (col.align || 'left')"
           (click)="col.sortable && onSort(col.key)">
           {{ col.header }}
           <span *ngIf="currentSort?.column === col.key" class="sort-icon">
@@ -27,7 +28,7 @@
       <!-- Actual Data Rows -->
       <ng-container *ngIf="!isLoading">
         <tr *ngFor="let item of data">
-          <td *ngFor="let col of columns">
+          <td *ngFor="let col of columns" [ngClass]="'align-' + (col.align || 'left')">
             <ng-container *ngIf="col.cellTemplate; else defaultCell">
               <ng-container [ngTemplateOutlet]="col.cellTemplate" [ngTemplateOutletContext]="{ $implicit: item }"></ng-container>
             </ng-container>

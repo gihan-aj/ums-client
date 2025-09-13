@@ -14,7 +14,7 @@ import {
   TableComponent,
 } from '../../../../shared/components/table/table.component';
 import { Store } from '@ngrx/store';
-import { filter, Observable, Subject, takeUntil } from 'rxjs';
+import { filter, map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { User, UserQuery } from '../../store/users.state';
 import {
   selectUserQuery,
@@ -29,6 +29,7 @@ import { Router } from '@angular/router';
 import { HasPermissionDirective } from '../../../../core/directives/has-permission.directive';
 import { FormControl } from '@angular/forms';
 import { InputComponent } from '../../../../shared/components/input/input.component';
+import { selectUserPermissions } from '../../../auth/store/auth.reducer';
 
 @Component({
   selector: 'app-user-management',
@@ -57,11 +58,20 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   totalCount$: Observable<number> = this.store.select(selectUsersTotalCount);
   query$: Observable<UserQuery> = this.store.select(selectUserQuery);
 
+  canManageStatus$: Observable<boolean>;
+  canManageStatus = false;
+
   searchControl = new FormControl('');
 
   columns: ColumnDef<User>[] = [];
 
   destroy$ = new Subject<void>();
+
+  constructor() {
+    this.canManageStatus$ = this.store
+      .select(selectUserPermissions)
+      .pipe(map((permissions) => permissions.includes('users:manage_status')));
+  }
 
   ngOnInit(): void {
     // Define the columns for our table, including the custom template
@@ -75,8 +85,14 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         header: 'Status',
         sortable: true,
         cellTemplate: this.statusCell,
+        align: 'center',
       },
-      { key: 'actions', header: 'Actions', cellTemplate: this.actionsCell },
+      {
+        key: 'actions',
+        header: 'Actions',
+        cellTemplate: this.actionsCell,
+        align: 'center',
+      },
     ];
 
     // Dispatch the action to load the initial set of users
@@ -89,6 +105,10 @@ export class UserManagementComponent implements OnInit, OnDestroy {
           UsersActions.setUsersSearchTerm({ searchTerm: searchTerm ?? '' })
         );
       });
+
+    this.canManageStatus$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => (this.canManageStatus = value));
   }
 
   onSortChange(sort: SortChange): void {
@@ -135,6 +155,10 @@ export class UserManagementComponent implements OnInit, OnDestroy {
           this.store.dispatch(UsersActions.activateUser({ userId: user.id }));
         }
       });
+  }
+
+  viewUser(user: User): void {
+    this.router.navigate(['users/view', user.id]);
   }
 
   /**

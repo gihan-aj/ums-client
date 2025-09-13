@@ -45,7 +45,8 @@
   <button
     class="status-badge"
     [class.status-active]="user.isActive"
-    (click)="toggleUserStatus(user)"
+    [class.can-toggle]="canManageStatus$ | async"
+    (click)="canManageStatus && toggleUserStatus(user)"
     [title]="user.isActive ? 'Click to Deactivate' : 'Click to Activate'"
   >
     {{ user.isActive ? "Active" : "Inactive" }}
@@ -55,6 +56,14 @@
 <!-- This template will be projected into the table's action column -->
 <ng-template #actionsCell let-user>
   <div class="action-buttons">
+    <app-button
+      *appHasPermission="'users:read'"
+      variant="icon"
+      icon="fa-solid fa-eye"
+      (click)="viewUser(user)"
+      title="View User"
+    >
+    </app-button>
     <app-button
       *appHasPermission="'users:update'"
       variant="icon"

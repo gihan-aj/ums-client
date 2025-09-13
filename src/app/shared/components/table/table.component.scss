@@ -46,6 +46,18 @@ th {
   color: var(--primary-color);
 }
 
+.align-left { text-align: left; }
+.align-center { text-align: center; }
+.align-right { text-align: right; }
+
+// For cell templates that might contain flex containers
+td.align-center {
+  & > * { justify-content: center; }
+}
+td.align-right {
+  & > * { justify-content: flex-end; }
+}
+
 tbody tr:last-child td {
   border-bottom: none;
 }
