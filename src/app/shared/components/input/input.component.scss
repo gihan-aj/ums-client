@@ -19,8 +19,13 @@
 .input-container {
   position: relative;
   width: 100%;
-  display: flex;
-  align-items: center;
+  //display: flex;
+  //align-items: center;
+
+  // When an icon is present, we add padding to the input
+  &.has-icon .input-element {
+    padding-right: calc(var(--spacing-unit) * 4.5);
+  }
 }
 
 .input-element {
@@ -35,10 +40,10 @@
   transition: border-color var(--transition-speed) ease-in-out,
               box-shadow var(--transition-speed) ease-in-out;
 
-  &.has-loader {
-    // Add padding to prevent text from overlapping the spinner
-    padding-right: calc(var(--spacing-unit) * 5);
-  }
+  // &.has-loader {
+  //   // Add padding to prevent text from overlapping the spinner
+  //   padding-right: calc(var(--spacing-unit) * 5);
+  // }
 
   &::placeholder {
     color: var(--secondary-color);
@@ -46,8 +51,8 @@
 
   &:focus {
     outline: none;
-    border-color: var(--border-color-focus);
-    box-shadow: 0 0 0 3px var(--primary-color-focus);
+    border-color: var(--border-color);
+    box-shadow: 0 0 0 3px var(--primary-color-translucent);
   }
 
   &.is-readonly {
@@ -61,6 +66,13 @@
       box-shadow: none;
     }
   }
+
+  &:disabled,
+  &[readonly] {
+    background-color: var(--surface-color);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
 }
 
 // Style the input when it's invalid
@@ -68,8 +80,19 @@
   border-color: var(--error-color);
 
   &:focus {
-     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+     box-shadow: 0 0 0 3px var(--error-color-translucent);
   }
+}
+
+.adornment-container {
+  position: absolute;
+  right: calc(var(--spacing-unit) * 1.5);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-color);
 }
 
 // This container reserves space for the error message to prevent layout shifts.
@@ -88,13 +111,14 @@
 
 // --- Loading Spinner Styles ---
 .loader-spinner {
-  position: absolute;
+  // position: absolute;
   right: calc(var(--spacing-unit) * 1.5);
   width: 18px;
   height: 18px;
   border: 2px solid var(--secondary-color);
+  border-top-color: var(--primary-color);
   border-radius: 50%;
-  border-top-color: transparent;
+  // border-top-color: transparent;
   animation: spin 1s ease-in-out infinite;
 }
 

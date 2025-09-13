@@ -31,10 +31,20 @@ export class InputComponent implements ControlValueAccessor {
   @Input() readonly: boolean = false;
 
   /**
+   * If true, hides the label and validation error message space for a more compact UI.
+   */
+  @Input() compact: boolean = false;
+
+  /**
    * An object to map validation error keys to user-friendly messages.
    * Example: { required: 'This field is mandatory.', minlength: 'Too short.' }
    */
   @Input() validationMessages: { [key: string]: string } = {};
+
+  /**
+   * An optional icon to display inside the input (e.g., 'fa-solid fa-search').
+   */
+  @Input() icon: string = '';
 
   id = `app-input-${nextId++}`;
 

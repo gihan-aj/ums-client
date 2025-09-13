@@ -1,21 +1,24 @@
 <div class="input-wrapper">
-  <label [for]="id" class="input-label">{{ label }}</label>
-  <div class="input-container">
+  <label *ngIf="!compact && label" [for]="id" class="input-label">{{ label }}</label>
+  <div class="input-container" [class.has-icon]="!!icon">
     <input
       [id]="id"
       [type]="type"
       [formControl]="control"
       [placeholder]="placeholder"
-      [readOnly]="readonly"
+      [readOnly]="readonly || loading"
       class="input-element"
-      [class.has-loader]="loading"
+
       [class.is-readonly]="readonly"
       (input)="onInput($event)"
       (blur)="onTouched()"
     />
-    <div *ngIf="loading" class="loader-spinner"></div>
+    <div class="adornment-container">
+      <div *ngIf="loading" class="loader-spinner"></div>
+      <i *ngIf="!loading && icon" [class]="icon"></i>
+    </div>
   </div>
-  <div class="error-container">
+  <div *ngIf="!compact" class="error-container">
     <div *ngIf="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>

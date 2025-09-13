@@ -33,6 +33,14 @@ except that its specificity is higher. We define our global CSS variables here f
   --warning-color: #f59e0b;
   --error-color: #ef4444;
 
+    /* --- Translucent Color Variants --- */
+  /* These are perfect for focus rings, hover states, and badges. */
+  --primary-color-translucent: light-dark(rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.2));
+  --success-color-translucent: light-dark(rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2));
+  --warning-color-translucent: light-dark(rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.2));
+  --error-color-translucent: light-dark(rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.2));
+  --secondary-color-translucent: light-dark(rgba(107, 114, 128, 0.1), rgba(156, 163, 175, 0.1));
+
   /* Typography */
   --font-family: 'Inter', sans-serif;
   --font-size-base: 14px; /* A compact base font size */
