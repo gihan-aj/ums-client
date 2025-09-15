@@ -30,7 +30,7 @@ export class UserRolesFormComponent implements OnInit, OnChanges, OnDestroy {
   isLoading$: Observable<boolean> = this.store.select(selectRolesIsLoading);
 
   ngOnInit(): void {
-    this.store.dispatch(RolesActions.loadRoles());
+    this.store.dispatch(RolesActions.loadAllRoles());
 
     this.rolesSubscription = this.allRoles$
       .pipe(

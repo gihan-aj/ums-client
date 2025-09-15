@@ -1,4 +1,5 @@
 import { environment } from "../../../../environments/environment";
+import { Filter } from '../../../shared/models/filter.model';
 import { Permission, Role } from '../../roles/store/roles.state';
 
 // --- Interfaces for User Lists ---
@@ -20,14 +21,6 @@ export interface User {
 export interface UserDetails extends User {
   roles: Role[];
   permissions: Permission[];
-}
-
-// --- State and Query Interfaces ---
-
-export interface Filter {
-  columnName: string;
-  operator: string;
-  value: any;
 }
 
 /**
