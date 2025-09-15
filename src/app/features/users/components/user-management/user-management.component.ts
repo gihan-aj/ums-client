@@ -30,6 +30,7 @@ import { HasPermissionDirective } from '../../../../core/directives/has-permissi
 import { FormControl } from '@angular/forms';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { selectUserPermissions } from '../../../auth/store/auth.reducer';
+import { BreadcrumbService } from '../../../../core/services/breadcrumb.service';
 
 @Component({
   selector: 'app-user-management',
@@ -48,6 +49,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   private store = inject(Store);
   private dialogService = inject(DialogService);
   private router = inject(Router);
+  private breadcrumbService = inject(BreadcrumbService);
 
   // Get a reference to the ng-template for our custom actions column
   @ViewChild('actionsCell', { static: true }) actionsCell!: TemplateRef<any>;
@@ -109,6 +111,11 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     this.canManageStatus$
       .pipe(takeUntil(this.destroy$))
       .subscribe((value) => (this.canManageStatus = value));
+
+    this.breadcrumbService.setBreadcrumbs([
+      { label: 'Dashboard', url: '/dashboard' },
+      { label: 'User Management', url: '/users' },
+    ]);
   }
 
   onSortChange(sort: SortChange): void {

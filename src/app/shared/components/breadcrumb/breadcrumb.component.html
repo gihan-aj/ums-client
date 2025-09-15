@@ -1,0 +1,17 @@
+<!-- Only render the nav if there are breadcrumbs to display -->
+    <nav *ngIf="(breadcrumbs$ | async)?.length" aria-label="breadcrumb">
+      <ol class="breadcrumb-list">
+        <li *ngFor="let crumb of (breadcrumbs$ | async); let last = last" class="breadcrumb-item">
+          <!-- If it's not the last item and has a URL, make it a link -->
+          <a *ngIf="!last && crumb.url" [routerLink]="crumb.url">{{ crumb.label }}</a>
+          
+          <!-- If it is the last item or has no URL, display it as text -->
+          <span *ngIf="last || !crumb.url" [attr.aria-current]="last ? 'page' : null">
+            {{ crumb.label }}
+          </span>
+
+          <!-- Separator for all but the last item -->
+          <span *ngIf="!last" class="separator" aria-hidden="true">/</span>
+        </li>
+      </ol>
+    </nav>

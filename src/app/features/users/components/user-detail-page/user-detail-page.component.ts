@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { UserDetailsComponent } from '../user-details/user-details.component';
 import { Store } from '@ngrx/store';
@@ -13,8 +13,10 @@ import {
   observeOn,
   of,
   startWith,
+  Subject,
   switchMap,
   take,
+  takeUntil,
 } from 'rxjs';
 import { UserDetails } from '../../store/users.state';
 import {
@@ -28,8 +30,8 @@ import { UserDetailStateService } from '../../services/user-detail-state.service
 import { NotificationService } from '../../../../core/services/notification.service';
 import { Permission, Role } from '../../../roles/store/roles.state';
 import { selectRoles } from '../../../roles/store/roles.reducer';
-import { HasPermissionDirective } from '../../../../core/directives/has-permission.directive';
 import { selectUserPermissions } from '../../../auth/store/auth.reducer';
+import { BreadcrumbService } from '../../../../core/services/breadcrumb.service';
 
 @Component({
   selector: 'app-user-detail-page',
@@ -44,17 +46,18 @@ import { selectUserPermissions } from '../../../auth/store/auth.reducer';
   styleUrl: './user-detail-page.component.scss',
   providers: [UserDetailStateService],
 })
-export class UserDetailPageComponent implements OnInit {
+export class UserDetailPageComponent implements OnInit, OnDestroy {
   private store = inject(Store);
   private route = inject(ActivatedRoute);
-  private router = inject(Router);
   private userDetailState = inject(UserDetailStateService);
   private notificationService = inject(NotificationService);
+  private breadcrumbService = inject(BreadcrumbService);
 
   isLoading$: Observable<boolean> = this.store.select(selectUsersIsLoading);
   error$: Observable<string | null> = this.store.select(selectUsersError);
   user$: Observable<UserDetails | null> = this.store.select(selectSelectedUser);
   isEditMode$: Observable<boolean>;
+  destroy$ = new Subject<void>();
 
   previewPermissions$!: Observable<Permission[]>;
 
@@ -90,6 +93,22 @@ export class UserDetailPageComponent implements OnInit {
         })
       )
       .subscribe();
+
+    this.user$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((user) => !!user)
+      )
+      .subscribe((user) => {
+        const isEditMode = this.route.snapshot.url[0]?.path === 'edit';
+        const userFullName = `${user!.firstName} ${user!.lastName}`;
+
+        this.breadcrumbService.setBreadcrumbs([
+          { label: 'Dashboard', url: '/dashboard' },
+          { label: 'User Management', url: '/users' },
+          { label: (isEditMode ? 'Edit: ' : 'View: ') + userFullName },
+        ]);
+      });
 
     // const userId = this.route.snapshot.paramMap.get('id');
     // if (userId) {
@@ -172,5 +191,10 @@ export class UserDetailPageComponent implements OnInit {
           UsersActions.updateUser({ userId: user!.id, payload: formData })
         );
       });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
