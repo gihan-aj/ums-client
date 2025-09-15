@@ -7,7 +7,7 @@
   </app-tab-panel>
 
   <!-- Roles Tab -->
-  <app-tab-panel title="Roles" [disabled]="!isEditMode" *ngIf="canAssignRoles">
+  <app-tab-panel title="Roles" *ngIf="canAssignRoles">
     <!-- The roles management component now goes here -->
     <app-user-roles-form [user]="user" [isEditMode]="isEditMode">
     </app-user-roles-form>

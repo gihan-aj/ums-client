@@ -184,11 +184,20 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   flex-shrink: 0; /* Prevent the header from shrinking */
   margin-bottom: calc(var(--spacing-unit) * 3);
+  // Allow elements to wrap onto the next line if needed
+  flex-wrap: wrap;
+  gap: calc(var(--spacing-unit) * 2); // Add a gap for wrapped items
 
   h1 {
     font-size: 28px;
     font-weight: 700;
     margin: 0;
+  }
+
+  // On smaller screens, stack the header items vertically
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start; // Align items to the start
   }
 }
 
@@ -196,6 +205,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   gap: calc(var(--spacing-unit) * 1.5);
+  flex-wrap: wrap; // Allow action buttons to wrap as well
 }
 
 .subtitle {

@@ -4,7 +4,10 @@ import { AddUserModalComponent } from '../../features/users/components/add-user-
 import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { Actions, ofType } from '@ngrx/effects';
 import { UsersActions } from '../../features/users/store/users.actions';
-import { ConfirmationDialogComponent } from '../../shared/components/dialogs/confirmation-dialog/confirmation-dialog.component';
+import {
+  ConfirmationDialogComponent,
+  DialogConfig,
+} from '../../shared/components/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -78,20 +81,20 @@ export class DialogService {
   }
 
   /**
-   * Opens a confirmation dialog.
-   * @returns An observable that emits `true` if confirmed, and completes otherwise.
+   * Opens a confirmation dialog with customizable options.
+   * @param config The configuration for the dialog.
+   * @returns An observable that emits `true` if confirmed, `false` if canceled.
    */
-  openConfirmationDialog(data: {
-    title: string;
-    message: string;
-  }): Observable<boolean> {
+  openConfirmationDialog(config: DialogConfig): Observable<boolean> {
     const confirmationSubject = new Subject<boolean>();
 
     const componentRef: ComponentRef<ConfirmationDialogComponent> =
       this.rootViewContainerRef.createComponent(ConfirmationDialogComponent);
 
-    componentRef.instance.title = data.title;
-    componentRef.instance.message = data.message;
+    componentRef.instance.config = {
+      type: 'info',
+      ...config,
+    };
 
     const closeDialog = () => {
       confirmationSubject.complete();

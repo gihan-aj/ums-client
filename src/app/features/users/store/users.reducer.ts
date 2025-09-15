@@ -153,6 +153,26 @@ export const usersFeature = createFeature({
     on(UsersActions.updateUserNoChanges, (state) => ({
       ...state,
       isLoading: false,
+    })),
+
+    // --- Delete User Reducers ---
+    on(UsersActions.deleteUser, (state) => ({
+      ...state,
+      isLoading: true,
+      error: null,
+    })),
+
+    on(UsersActions.deleteUserSuccess, (state, { userId }) => ({
+      ...state,
+      isLoading: false,
+      users: state.users.filter((u) => u.id !== userId),
+      totalCount: state.totalCount - 1,
+    })),
+
+    on(UsersActions.deleteUserFailure, (state, { error }) => ({
+      ...state,
+      isLoading: false,
+      error,
     }))
   ),
 

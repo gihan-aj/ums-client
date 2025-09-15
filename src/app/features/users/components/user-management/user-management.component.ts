@@ -161,16 +161,24 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     this.router.navigate(['users/view', user.id]);
   }
 
-  /**
-   * Navigates to the edit page for the selected user.
-   */
   editUser(user: User): void {
     this.router.navigate(['/users/edit', user.id]);
   }
 
   deleteUser(user: User): void {
-    console.log('Delete user:', user.id);
-    // We will implement the delete logic later
+    this.dialogService
+      .openConfirmationDialog({
+        title: 'Delete User',
+        message: `Are you sure you want to delete the user "${user.firstName} ${user.lastName}"? This action cannot be undone.`,
+        confirmButtonText: 'Delete',
+        confirmButtonColor: 'danger',
+        type: 'danger',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.store.dispatch(UsersActions.deleteUser({ userId: user.id }));
+        }
+      });
   }
 
   ngOnDestroy(): void {

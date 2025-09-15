@@ -88,4 +88,9 @@ export class UserService {
   getUserById(userId: string): Observable<UserDetails> {
     return this.http.get<UserDetails>(`${this.apiUrl}/${userId}`);
   }
+
+  deleteUser(id: string): Observable<void> {
+    // Returns 204 No Content on success
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

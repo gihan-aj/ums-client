@@ -40,7 +40,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UsersActions.setUsersSearchTerm),
       // Wait for 300ms of silence before dispatching the load action
-      debounceTime(300),
+      debounceTime(500),
       map(() => UsersActions.loadUsers({}))
     )
   );
@@ -238,7 +238,6 @@ export class UserEffects {
         }
 
         if (permissions.includes('users:assign_role')) {
-          console.log('payload', action);
           const newRoleIds = Object.keys(action.payload.roles)
             .filter((id) => action.payload.roles[id])
             .map((id) => parseInt(id, 10));
@@ -287,6 +286,34 @@ export class UserEffects {
         tap(() => {
           this.notificationService.showSuccess('User updated successfully.');
           this.router.navigate(['/users']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  // --- Delete User Effects ---
+  deleteUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.deleteUser),
+      exhaustMap((action) =>
+        this.userService.deleteUser(action.userId).pipe(
+          map(() => UsersActions.deleteUserSuccess({ userId: action.userId })),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              this.errorHandlingService.handleHttpError(error);
+            return of(UsersActions.deleteUserFailure({ error: errorMessage }));
+          })
+        )
+      )
+    )
+  );
+
+  deleteUserSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(UsersActions.deleteUserSuccess),
+        tap(() => {
+          this.notificationService.showSuccess('User deleted successfully.');
         })
       ),
     { dispatch: false }

@@ -4,7 +4,7 @@
 
 <ng-template #formContent>
   <form [formGroup]="rolesForm" class="roles-form-container">
-    <p class="form-description">Select the roles to assign to this user.</p>
+    <p *ngIf="isEditMode" class="form-description">Select the roles to assign to this user.</p>
     <div class="roles-grid" *ngIf="(allRoles$ | async)?.length">
       <!-- The template can now use the clean formControlName syntax -->
       <app-checkbox

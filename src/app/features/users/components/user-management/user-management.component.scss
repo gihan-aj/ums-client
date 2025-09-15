@@ -1,6 +1,12 @@
 .action-buttons {
   display: flex;
+  justify-content: center;
   gap: var(--spacing-unit);
+}
+
+.table-scroll-wrapper {
+  overflow-x: auto;
+  width: 100%;
 }
 
 // This is the new wrapper for the table and pagination
@@ -8,7 +14,15 @@
   // The group gets the border and rounded corners
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  overflow: hidden; // This is important to enforce the rounded corners on children
+  // overflow: hidden; // This is important to enforce the rounded corners on children
+  // Use flexbox to ensure the pagination component is not part of the scrollable area
+  display: flex;
+  flex-direction: column;
+
+  // The wrapper takes up the available space
+  .table-scroll-wrapper {
+    flex-grow: 1;
+  }
 }
 
 // Use ::ng-deep to modify the styles of the child components
@@ -17,7 +31,10 @@
   .table-group app-table .table-container {
     // Remove the default border and radius so it fits flush in our group
     border: none;
-    border-radius: 0;
+    border-top-left-radius:  var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
   // Target the pagination's inner container
@@ -32,58 +49,15 @@
 .header-actions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: calc(var(--spacing-unit) * 2);
+   @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start; // Align items to the start
+  }
 }
 
 // Target the search input component
 .search-input {
   width: 250px;
-}
-
-// Container for the table and pagination
-// .table-group {
-//   border: 1px solid var(--border-color);
-//   border-radius: var(--border-radius);
-//   overflow: hidden; // This keeps the child corners contained
-
-//   // Override the table's border-radius to fit the container
-//   // ::ng-deep is used to pierce style encapsulation for layout composition
-//   ::ng-deep app-table .table-container {
-//     border-radius: 0;
-//     border-top-left-radius: var(--border-radius);
-//     border-top-right-radius: var(--border-radius);
-//     border: none;
-//   }
-// }
-
-// Styles for the status badge in the table
-// .status-badge {
-//   display: inline-block;
-//   padding: 4px 10px;
-//   border-radius: 9999px;
-//   font-weight: 600;
-//   font-size: 12px;
-//   cursor: pointer;
-//   transition: all var(--transition-speed) ease;
-
-//   &.status-active {  
-//     background-color: var(--success-color);
-//     color: var(--success-color);
-//   }
-
-//   &:not(.active) {
-//     background-color: var(--secondary-color-translucent);
-//     color: var(--secondary-color);
-//   }
-
-//   &:hover {
-//     opacity: 0.8;
-//   }
-// }
-
-// Styles for the action buttons in the table
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: calc(var(--spacing-unit) * 1);
 }

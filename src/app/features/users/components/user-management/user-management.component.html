@@ -22,12 +22,14 @@
 
   <div class="page-content">
     <div class="table-group">
-      <app-table
-        [data]="users$ | async"
-        [columns]="columns"
-        [isLoading]="(isLoading$ | async) ?? false"
-        (sortChange)="onSortChange($event)"
-      ></app-table>
+      <div class="table-scroll-wrapper">
+        <app-table
+          [data]="users$ | async"
+          [columns]="columns"
+          [isLoading]="(isLoading$ | async) ?? false"
+          (sortChange)="onSortChange($event)"
+        ></app-table>
+      </div>
 
       <app-pagination
         *ngIf="query$ | async as query"

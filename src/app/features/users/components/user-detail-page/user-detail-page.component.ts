@@ -135,7 +135,6 @@ export class UserDetailPageComponent implements OnInit {
     allRoles
       .filter((role) => selectedRoleIds.includes(role.id.toString()))
       .forEach((role) => {
-        console.log(role);
         role.permissions.forEach((perm) => {
           if (!permissionsMap.has(perm.name)) {
             permissionsMap.set(perm.name, perm);
@@ -162,7 +161,13 @@ export class UserDetailPageComponent implements OnInit {
         filter((user) => !!user)
       )
       .subscribe((user) => {
-        const formData = this.userDetailState.getValue();
+        // const formData = this.userDetailState.getValue();
+        const profile = this.userDetailState.getForm('profile')?.value;
+        const roles = this.userDetailState.getForm('roles')?.value;
+        const formData = {
+          ...profile,
+          roles,
+        };
         this.store.dispatch(
           UsersActions.updateUser({ userId: user!.id, payload: formData })
         );
