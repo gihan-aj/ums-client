@@ -3,18 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { User, UserDetails, UserQuery } from '../store/users.state';
 import { Observable } from 'rxjs';
-
-/**
- * Interface for the paginated API response.
- */
-export interface PaginatedResult<T> {
-  items: T[];
-  page: number;
-  pageSize: number;
-  totalCount: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-}
+import { PaginatedResult } from '../../../shared/models/paginated-result.model';
 
 interface AddUserPayload {
   firstName: string;
