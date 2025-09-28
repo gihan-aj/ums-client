@@ -16,35 +16,53 @@ export class HasPermissionDirective implements OnInit, OnDestroy {
   private checkType: 'exact' | 'startsWith' = 'exact';
   private userPermissions: string[] = [];
 
-  @Input('appHasPermission')
-  set permission(value: string) {
-    this.requiredPermission = value;
-    this.updateView();
-  }
+  // @Input('appHasPermission')
+  // set permission(value: string) {
+  //   this.requiredPermission = value;
+  //   this.updateView();
+  // }
 
   // An optional input to change the check type, e.g., [appHasPermissionCheckType]="'startsWith'"
-  @Input('appHasPermissionCheckType')
-  set permissionCheckType(value: 'exact' | 'startsWith') {
-    this.checkType = value;
+  // @Input('appHasPermissionCheckType')
+  // set permissionCheckType(value: 'exact' | 'startsWith') {
+  //   this.checkType = value;
+  //   this.updateView();
+  // }
+
+  @Input('appHasPermission')
+  set permission(
+    config: string | [string, 'exact' | 'startsWith'] | undefined | null
+  ) {
+    if (Array.isArray(config)) {
+      // Handle array syntax, e.g., [*appHasPermission]="['users:', 'startsWith']"
+      this.requiredPermission = config[0];
+      this.checkType = config[1];
+    } else {
+      // Handle simple string syntax, e.g., *appHasPermission="'users:read'"
+      this.requiredPermission = config ?? '';
+      this.checkType = 'exact';
+    }
+
     this.updateView();
   }
 
   ngOnInit(): void {
-    this.store.select(selectUserPermissions)
+    this.store
+      .select(selectUserPermissions)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(permissiions => {
+      .subscribe((permissiions) => {
         this.userPermissions = permissiions;
         this.updateView();
       });
   }
 
   private updateView(): void {
-    if(!this.requiredPermission){
+    if (!this.requiredPermission) {
       this.viewContainer.clear();
       return;
     }
 
-    if(this.checkHasPermission()){
+    if (this.checkHasPermission()) {
       // If the user has permission and the view isn't already created, create it.
       if (!this.viewContainer.length) {
         this.viewContainer.createEmbeddedView(this.templateRef);
@@ -56,16 +74,18 @@ export class HasPermissionDirective implements OnInit, OnDestroy {
   }
 
   private checkHasPermission(): boolean {
-    if(this.checkType === 'exact'){
+    if (this.checkType === 'exact') {
       return this.userPermissions.includes(this.requiredPermission);
-    }else if(this.checkType === 'startsWith') {
-      return this.userPermissions.some(perm => perm.startsWith(this.requiredPermission))
+    } else if (this.checkType === 'startsWith') {
+      return this.userPermissions.some((perm) =>
+        perm.startsWith(this.requiredPermission)
+      );
     }
     return false;
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
-    this.destroy$.complete()
+    this.destroy$.complete();
   }
 }

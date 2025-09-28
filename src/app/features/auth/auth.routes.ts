@@ -1,9 +1,5 @@
 import { Routes } from "@angular/router";
-import { LoginComponent } from "./components/login/login.component";
-import { provideState } from "@ngrx/store";
-import { authFeature } from "./store/auth.reducer";
-import { provideEffects } from "@ngrx/effects";
-import { AuthEffects } from "./store/auth.effects";
+import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AwaitingActivationComponent } from './components/awaiting-activation/awaiting-activation.component';
 import { ActivationComponent } from './components/activation/activation.component';

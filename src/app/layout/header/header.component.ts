@@ -1,9 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  selectTokenExpiry,
-  selectUser,
-} from '../../features/auth/store/auth.reducer';
+import { selectUser } from '../../features/auth/store/auth.reducer';
 import { filter, map, Observable } from 'rxjs';
 import { AuthActions } from '../../features/auth/store/auth.actions';
 import { CommonModule } from '@angular/common';
