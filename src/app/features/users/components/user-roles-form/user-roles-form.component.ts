@@ -6,7 +6,10 @@ import { Role } from '../../../roles/store/roles.state';
 import { Store } from '@ngrx/store';
 import { UserDetailStateService } from '../../services/user-detail-state.service';
 import { filter, first, Observable, Subscription } from 'rxjs';
-import { selectRoles, selectRolesIsLoading } from '../../../roles/store/roles.reducer';
+import {
+  selectAllRoles,
+  selectRolesIsLoading,
+} from '../../../roles/store/roles.reducer';
 import { RolesActions } from '../../../roles/store/roles.actions';
 import { CheckboxComponent } from '../../../../shared/components/checkbox/checkbox.component';
 
@@ -26,7 +29,7 @@ export class UserRolesFormComponent implements OnInit, OnChanges, OnDestroy {
   private rolesSubscription: Subscription | undefined;
 
   rolesForm: FormGroup = this.fb.group({});
-  allRoles$: Observable<Role[]> = this.store.select(selectRoles);
+  allRoles$: Observable<Role[]> = this.store.select(selectAllRoles);
   isLoading$: Observable<boolean> = this.store.select(selectRolesIsLoading);
 
   ngOnInit(): void {

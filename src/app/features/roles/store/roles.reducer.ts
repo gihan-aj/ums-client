@@ -15,7 +15,7 @@ export const rolesFeature = createFeature({
 
     on(RolesActions.loadAllRolesSuccess, (state, { roles }) => ({
       ...state,
-      roles,
+      allRoles: roles,
       isLoading: false,
     })),
 
@@ -164,6 +164,7 @@ export const {
   reducer,
   selectRolesState,
   selectRoles,
+  selectAllRoles,
   selectIsLoading: selectRolesIsLoading,
   selectError: selectRolesError,
   selectTotalCount: selectRolesTotalCount,

@@ -10,6 +10,7 @@ export interface Permission {
 export interface Role {
   id: number;
   name: string;
+  description: string;
   permissions: Permission[];
 }
 
@@ -23,6 +24,7 @@ export interface RolesQuery {
 
 export interface RolesState {
   roles: Role[];
+  allRoles: Role[];
   totalCount: number;
   query: RolesQuery;
   isLoading: boolean;
@@ -32,6 +34,7 @@ export interface RolesState {
 
 export const initialRolesState: RolesState = {
   roles: [],
+  allRoles: [],
   totalCount: 0,
   query: {
     page: 1,

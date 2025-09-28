@@ -15,5 +15,11 @@
                 <span>User Management</span>
             </a>
         </li>
+        <li *appHasPermission="['roles:', 'startsWith']">
+            <a routerLink="/roles" routerLinkActive="active" (click)="closeSidebarLink()">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Role Management</span>
+            </a>
+        </li>
     </ul>
 </nav>

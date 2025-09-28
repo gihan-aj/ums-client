@@ -1,0 +1,57 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Roles Management</h1>
+    <div class="header-actions">
+      <app-button
+        *appHasPermission="'roles:create'"
+        icon="fa-solid fa-plus"
+        (click)="addRole()"
+      >
+        Add Role
+      </app-button>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <div class="table-group">
+      <div class="table-scroll-wrapper">
+        <app-table
+          [data]="roles$ | async"
+          [columns]="columns"
+          [isLoading]="(isLoading$ | async) ?? false"
+          (sortChange)="onSortChange($event)"
+        ></app-table>
+      </div>
+
+      <app-pagination
+        *ngIf="query$ | async as query"
+        [currentPage]="query.page"
+        [pageSize]="query.pageSize"
+        [totalItems]="(totalCount$ | async) ?? 0"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
+    </div>
+  </div>
+</div>
+
+<!-- Template for the actions column -->
+<ng-template #actionsCell let-role>
+  <div class="action-buttons">
+    <app-button
+      *appHasPermission="'roles:update'"
+      variant="icon"
+      icon="fa-solid fa-pencil"
+      (click)="editRole(role)"
+      title="Edit Role"
+    >
+    </app-button>
+    <app-button
+      *appHasPermission="'roles:delete'"
+      variant="icon"
+      icon="fa-solid fa-trash-can"
+      (click)="deleteRole(role)"
+      title="Delete Role"
+    >
+    </app-button>
+  </div>
+</ng-template>

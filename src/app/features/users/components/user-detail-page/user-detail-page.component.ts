@@ -29,7 +29,7 @@ import { NotFoundComponent } from '../../../../shared/components/not-found/not-f
 import { UserDetailStateService } from '../../services/user-detail-state.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { Permission, Role } from '../../../roles/store/roles.state';
-import { selectRoles } from '../../../roles/store/roles.reducer';
+import { selectAllRoles } from '../../../roles/store/roles.reducer';
 import { selectUserPermissions } from '../../../auth/store/auth.reducer';
 import { BreadcrumbService } from '../../../../core/services/breadcrumb.service';
 
@@ -122,7 +122,7 @@ export class UserDetailPageComponent implements OnInit, OnDestroy {
   }
 
   private setupPermissionPreview(): void {
-    const allRoles$ = this.store.select(selectRoles);
+    const allRoles$ = this.store.select(selectAllRoles);
 
     // Reactively wait for the 'roles, form to be ready
     this.previewPermissions$ = this.userDetailState.whenFormReady('roles').pipe(
