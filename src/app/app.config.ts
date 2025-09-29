@@ -32,12 +32,12 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       // Register the auth feature state globally
       [authFeature.name]: authFeature.reducer,
-      [rolesFeature.name]: rolesFeature.reducer,
+      // [rolesFeature.name]: rolesFeature.reducer,
     }),
 
     // 2. Provide the root effects. Pass an empty array []
     // Register the auth effects globally
-    provideEffects([AuthEffects, RolesEffects]),
+    provideEffects([AuthEffects]),
 
     // 3. Configure the Store Devtools.
     //    This should only be enabled in development mode.

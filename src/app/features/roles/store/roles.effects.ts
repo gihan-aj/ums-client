@@ -70,4 +70,23 @@ export class RolesEffects {
       })
     )
   );
+
+  loadRoleById$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RolesActions.loadRoleById),
+      exhaustMap((action) =>
+        this.rolesService.getRoleById(action.roleId).pipe(
+          map((role) => RolesActions.loadRoleByIdSuccess({ role })),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              this.errorHandlingService.handleHttpError(error);
+
+            return of(
+              RolesActions.loadRoleByIdFailure({ error: errorMessage })
+            );
+          })
+        )
+      )
+    )
+  );
 }

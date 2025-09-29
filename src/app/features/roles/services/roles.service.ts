@@ -26,4 +26,8 @@ export class RolesService {
   getRoles(query: RolesQuery): Observable<PaginatedResult<Role>> {
     return this.http.post<PaginatedResult<Role>>(`${this.apiUrl}/list`, query);
   }
+
+  getRoleById(roleId: number): Observable<Role> {
+    return this.http.get<Role>(`${this.apiUrl}/${roleId}`);
+  }
 }

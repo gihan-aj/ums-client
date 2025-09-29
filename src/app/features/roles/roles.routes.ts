@@ -6,28 +6,37 @@ import { provideState } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { permissionsFeature } from '../permissions/store/permissions.reducer';
 import { PermissionEffects } from '../permissions/store/permissions.effects';
+import { rolesFeature } from './store/roles.reducer';
+import { RolesEffects } from './store/roles.effects';
 
 export const ROLES_ROUTES: Routes = [
   {
     path: '',
-    component: RoleManagementComponent,
+    // Provide both feature states and effects for these routes
     providers: [
+      provideState(rolesFeature),
       provideState(permissionsFeature),
-      provideEffects([PermissionEffects]),
+      provideEffects([RolesEffects, PermissionEffects]),
     ],
-    canActivate: [permissionGuard],
-    data: { permission: 'roles:', checkType: 'startsWith' },
-  },
-  {
-    path: 'add',
-    component: RoleDetailComponent,
-    canActivate: [permissionGuard],
-    data: { permission: 'roles:read' },
-  },
-  {
-    path: 'edit/:id',
-    component: RoleDetailComponent,
-    canActivate: [permissionGuard],
-    data: { permission: 'roles:update' },
+    children: [
+      {
+        path: '',
+        component: RoleManagementComponent,
+        canActivate: [permissionGuard],
+        data: { permission: 'roles:read' },
+      },
+      {
+        path: 'add',
+        component: RoleDetailComponent,
+        canActivate: [permissionGuard],
+        data: { permission: 'roles:create' },
+      },
+      {
+        path: 'edit/:id',
+        component: RoleDetailComponent,
+        canActivate: [permissionGuard],
+        data: { permission: 'roles:update' },
+      },
+    ],
   },
 ];

@@ -13,7 +13,16 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 import { PermissionTreeComponent } from '../../../../shared/components/permission-tree/permission-tree.component';
 import { Store } from '@ngrx/store';
 import { BreadcrumbService } from '../../../../core/services/breadcrumb.service';
-import { Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import {
+  combineLatest,
+  filter,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  take,
+  takeUntil,
+} from 'rxjs';
 import { PermissionGroup } from '../../../permissions/store/permissions.state';
 import { selectAllPermissions } from '../../../permissions/store/permissions.reducer';
 import {
@@ -74,17 +83,26 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
           if (id) {
             this.isEditMode = true;
             this.roleId = +id;
+
             this.store.dispatch(
               RolesActions.loadRoleById({ roleId: this.roleId })
             );
-            return this.store.select(selectSelectedRole);
+
+            // return this.store.select(selectSelectedRole);
+            return combineLatest([
+              this.store.select(selectSelectedRole),
+              this.store.select(selectAllPermissions),
+            ]).pipe(
+              filter(([role, permissions]) => !!role && permissions.length > 0),
+              take(1)
+            );
           }
 
-          return of(null);
+          return of([null, []] as [Role | null, PermissionGroup[]]);
         })
       )
-      .subscribe((role) => {
-        if (role) {
+      .subscribe(([role, permissions]) => {
+        if (this.isEditMode && role) {
           this.roleForm.patchValue({
             name: role.name,
             description: role.description,
