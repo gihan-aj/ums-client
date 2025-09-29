@@ -28,10 +28,11 @@ import { UsersActions } from '../../store/users.actions';
 import { NotFoundComponent } from '../../../../shared/components/not-found/not-found.component';
 import { UserDetailStateService } from '../../services/user-detail-state.service';
 import { NotificationService } from '../../../../core/services/notification.service';
-import { Permission, Role } from '../../../roles/store/roles.state';
+import { Role } from '../../../roles/store/roles.state';
 import { selectAllRoles } from '../../../roles/store/roles.reducer';
 import { selectUserPermissions } from '../../../auth/store/auth.reducer';
 import { BreadcrumbService } from '../../../../core/services/breadcrumb.service';
+import { Permission } from '../../../permissions/store/permissions.state';
 
 @Component({
   selector: 'app-user-detail-page',

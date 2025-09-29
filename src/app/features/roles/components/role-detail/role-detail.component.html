@@ -1,0 +1,49 @@
+<div class="page-container">
+  <form [formGroup]="roleForm" (ngSubmit)="saveRole()">
+    <div class="page-header">
+      <div class="header-title">
+        <h1>{{ isEditMode ? 'Edit Role' : 'Add New Role' }}</h1>
+        <p class="subtitle">
+          {{ isEditMode ? 'Modify the role details and permissions below.' : 'Define a new role and assign permissions.' }}
+        </p>
+      </div>
+      <div class="header-actions">
+        <app-button variant="secondary" routerLink="/roles">
+          <i class="fa-solid fa-arrow-left"></i> Cancel
+        </app-button>
+        <app-button type="submit" [loading]="(isLoading$ | async) ?? false">
+          <i class="fa-solid fa-save"></i> Save Changes
+        </app-button>
+      </div>
+    </div>
+
+    <div class="page-content">
+      <div class="form-panel">
+        <h2 class="panel-title">Role Details</h2>
+        <div class="form-grid">
+          <app-input
+            label="Role Name"
+            placeholder="e.g., Administrator"
+            formControlName="name"
+            [control]="nameCtrl"
+            [validationMessages]="{ required: 'Role name is required.' }"
+          ></app-input>
+          <app-input
+            label="Description"
+            placeholder="e.g., Has full access to all system features."
+            formControlName="description"
+            [control]="descriptionCtrl"
+          ></app-input>
+        </div>
+      </div>
+
+      <div class="form-panel">
+        <h2 class="panel-title">Assign Permissions</h2>
+        <app-permission-tree
+          formControlName="permissions"
+          [allPermissionGroups]="(allPermissionGroups$ | async) ?? []"
+        ></app-permission-tree>
+      </div>
+    </div>
+  </form>
+</div>

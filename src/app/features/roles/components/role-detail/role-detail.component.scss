@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+.form-panel {
+  background-color: var(--surface-color);
+  padding: calc(var(--spacing-unit) * 3);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  margin-bottom: calc(var(--spacing-unit) * 3);
+}
+
+.panel-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 calc(var(--spacing-unit) * 2) 0;
+  padding-bottom: calc(var(--spacing-unit) * 2);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: calc(var(--spacing-unit) * 2);
+}

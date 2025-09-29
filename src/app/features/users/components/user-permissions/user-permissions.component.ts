@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import {
-  PermissionGroup,
-  PermissionTreeComponent,
-} from '../../../../shared/components/permission-tree/permission-tree.component';
+import { PermissionTreeComponent } from '../../../../shared/components/permission-tree/permission-tree.component';
 import { FormsModule } from '@angular/forms';
-import { Permission } from '../../../roles/store/roles.state';
+import {
+  Permission,
+  PermissionGroup,
+} from '../../../permissions/store/permissions.state';
 
 @Component({
   selector: 'app-user-permissions',

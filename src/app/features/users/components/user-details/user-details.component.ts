@@ -6,7 +6,7 @@ import { UserDetails } from '../../store/users.state';
 import { UserProfileFormComponent } from '../user-profile-form/user-profile-form.component';
 import { UserRolesFormComponent } from '../user-roles-form/user-roles-form.component';
 import { UserPermissionsComponent } from '../user-permissions/user-permissions.component';
-import { Permission } from '../../../roles/store/roles.state';
+import { Permission } from '../../../permissions/store/permissions.state';
 
 @Component({
   selector: 'app-user-details',

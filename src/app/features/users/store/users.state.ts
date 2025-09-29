@@ -1,6 +1,7 @@
 import { environment } from "../../../../environments/environment";
 import { Filter } from '../../../shared/models/filter.model';
-import { Permission, Role } from '../../roles/store/roles.state';
+import { Permission } from '../../permissions/store/permissions.state';
+import { Role } from '../../roles/store/roles.state';
 
 // --- Interfaces for User Lists ---
 

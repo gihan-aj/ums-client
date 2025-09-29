@@ -37,7 +37,7 @@ export const RolesActions = createActionGroup({
 
     // --- Update Role Actions ---
     'Update Role': props<{
-      roleId: string;
+      roleId: number;
       payload: any;
     }>(),
     'Update Role Success': props<{ role: Role }>(),

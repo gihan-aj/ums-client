@@ -1,11 +1,6 @@
 import { environment } from '../../../../environments/environment';
 import { Filter } from '../../../shared/models/filter.model';
-
-export interface Permission {
-  id?: number;
-  name: string;
-  description: string;
-}
+import { Permission } from '../../permissions/store/permissions.state';
 
 export interface Role {
   id: number;

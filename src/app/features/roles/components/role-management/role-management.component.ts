@@ -11,6 +11,7 @@ import { Role, RolesQuery } from '../../store/roles.state';
 import { selectRoles, selectRolesIsLoading, selectRolesQuery, selectRolesTotalCount } from '../../store/roles.reducer';
 import { FormControl } from '@angular/forms';
 import { RolesActions } from '../../store/roles.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-role-management',
@@ -26,6 +27,7 @@ import { RolesActions } from '../../store/roles.actions';
 })
 export class RoleManagementComponent implements OnInit {
   private store = inject(Store);
+  private router = inject(Router);
   private breadcrumbService = inject(BreadcrumbService);
 
   @ViewChild('actionsCell', { static: true }) actionsCell!: TemplateRef<any>;
@@ -86,11 +88,11 @@ export class RoleManagementComponent implements OnInit {
   }
 
   addRole(): void {
-    // Logic for adding a role will be implemented later
+    this.router.navigate(['/roles/add']);
   }
 
   editRole(role: Role): void {
-    // Logic for editing a role will be implemented later
+    this.router.navigate(['/roles/edit', role.id]);
   }
 
   deleteRole(role: Role): void {
