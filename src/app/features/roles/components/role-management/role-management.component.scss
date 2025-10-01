@@ -37,3 +37,20 @@
     background-color: transparent;
   }
 }
+
+// Styles for the header actions container
+.header-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: calc(var(--spacing-unit) * 2);
+   @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start; // Align items to the start
+  }
+}
+
+// Target the search input component
+.search-input {
+  width: 250px;
+}

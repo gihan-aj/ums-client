@@ -1,8 +1,8 @@
-import { inject, Injectable } from "@angular/core";
-import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { RolesService } from "../services/roles.service";
-import { ErrorHandlingService } from "../../../core/services/error-handling.service";
-import { HttpErrorResponse } from "@angular/common/http";
+import { inject, Injectable } from '@angular/core';
+import { act, Actions, createEffect, ofType } from '@ngrx/effects';
+import { RolesService } from '../services/roles.service';
+import { ErrorHandlingService } from '../../../core/services/error-handling.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   exhaustMap,
   map,
@@ -10,10 +10,20 @@ import {
   of,
   debounceTime,
   withLatestFrom,
+  tap,
+  switchMap,
 } from 'rxjs';
 import { RolesActions } from './roles.actions';
 import { Store } from '@ngrx/store';
-import { selectRolesQuery } from './roles.reducer';
+import { selectRolesQuery, selectSelectedRole } from './roles.reducer';
+import { NotificationService } from '../../../core/services/notification.service';
+import { selectUserPermissions } from '../../auth/store/auth.reducer';
+import { Router } from '@angular/router';
+
+// A simple helper for deep object comparison
+function isDeepEqual(obj1: any, obj2: any): boolean {
+  return JSON.stringify(obj1) === JSON.stringify(obj2);
+}
 
 @Injectable()
 export class RolesEffects {
@@ -21,6 +31,8 @@ export class RolesEffects {
   private store = inject(Store);
   private rolesService = inject(RolesService);
   private errorHandlingService = inject(ErrorHandlingService);
+  private notificationService = inject(NotificationService);
+  private router = inject(Router);
 
   loadAllRoles$ = createEffect(() =>
     this.actions$.pipe(
@@ -88,5 +100,94 @@ export class RolesEffects {
         )
       )
     )
+  );
+
+  addRole$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RolesActions.addRole),
+      exhaustMap((action) =>
+        this.rolesService.addRole(action.payload).pipe(
+          map((response) =>
+            RolesActions.addRoleSuccess({ roleId: response.id })
+          ),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              this.errorHandlingService.handleHttpError(error);
+
+            return of(RolesActions.addRoleFailure({ error: errorMessage }));
+          })
+        )
+      )
+    )
+  );
+
+  addRoleSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(RolesActions.addRoleSuccess),
+        tap((action) => {
+          this.notificationService.showSuccess('Role created successfully.');
+          this.store.dispatch(RolesActions.loadRoles({}));
+        })
+      ),
+    { dispatch: false }
+  );
+
+  updateRole$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RolesActions.updateRole),
+      withLatestFrom(this.store.select(selectSelectedRole)),
+      exhaustMap(([action, originalRole]) => {
+        if (!originalRole) {
+          const errorMessage = 'Original role data not found in state.';
+          this.notificationService.showError(errorMessage);
+          return of(
+            RolesActions.updateRoleFailure({
+              error: errorMessage,
+            })
+          );
+        }
+
+        const originalPayload = {
+          name: originalRole.name,
+          description: originalRole.description,
+          permissionNames: originalRole.permissions.map((p) => p.name).sort(),
+        };
+
+        const newPayload = {
+          ...action.payload,
+          permissionNames: [...action.payload.permissionNames].sort(),
+        };
+
+        if (isDeepEqual(newPayload, originalPayload)) {
+          this.notificationService.showInfo('No changes to save.');
+          return of(RolesActions.updateRoleNoChanges());
+        }
+
+        return this.rolesService.updateRole(action.roleId, action.payload).pipe(
+          switchMap(() => this.rolesService.getRoleById(action.roleId)),
+          map((updatedRole) =>
+            RolesActions.updateRoleSuccess({ role: updatedRole })
+          ),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              this.errorHandlingService.handleHttpError(error);
+            return of(RolesActions.updateRoleFailure({ error: errorMessage }));
+          })
+        );
+      })
+    )
+  );
+
+  updateRoleSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(RolesActions.updateRoleSuccess),
+        tap(() => {
+          this.notificationService.showSuccess('Role updated successfully.');
+          this.router.navigate(['/roles']);
+        })
+      ),
+    { dispatch: false }
   );
 }

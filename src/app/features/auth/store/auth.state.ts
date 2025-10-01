@@ -13,6 +13,7 @@ export interface AuthState {
   accessToken: string | null;
   tokenExpiry: Date | null;
   isLoading: boolean;
+  isRefreshing: boolean;
   error: string | null;
 }
 
@@ -22,5 +23,6 @@ export const initialAuthState: AuthState = {
   accessToken: null,
   tokenExpiry: null,
   isLoading: false,
+  isRefreshing: false,
   error: null,
 };

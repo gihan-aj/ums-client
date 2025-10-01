@@ -5,6 +5,12 @@ import { Observable } from 'rxjs';
 import { Role, RolesQuery } from '../store/roles.state';
 import { PaginatedResult } from '../../../shared/models/paginated-result.model';
 
+interface RolePayload {
+  name: string;
+  description?: string;
+  permissionNames: string[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -29,5 +35,13 @@ export class RolesService {
 
   getRoleById(roleId: number): Observable<Role> {
     return this.http.get<Role>(`${this.apiUrl}/${roleId}`);
+  }
+
+  addRole(payload: RolePayload): Observable<{ id: number }> {
+    return this.http.post<{ id: number }>(this.apiUrl, payload);
+  }
+
+  updateRole(roleId: number, payload: RolePayload): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${roleId}`, payload);
   }
 }

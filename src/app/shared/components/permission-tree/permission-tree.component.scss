@@ -65,3 +65,61 @@
     font-weight: 500;
   }
 }
+
+// --- Skeleton Loader Styles ---
+.skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 3);
+}
+
+.skeleton-header {
+  height: 24px;
+  width: 40%;
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  margin-bottom: calc(var(--spacing-unit) * 2);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: calc(var(--spacing-unit) * 2);
+  padding-left: calc(var(--spacing-unit) * 3);
+}
+
+.skeleton-item {
+  height: 20px;
+  width: 80%;
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  position: relative;
+  overflow: hidden;
+}
+
+// Shimmer animation for all skeleton elements
+.skeleton-header::after,
+.skeleton-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

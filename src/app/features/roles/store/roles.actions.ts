@@ -3,6 +3,7 @@ import { Role, RolesQuery } from './roles.state';
 
 interface AddRolePayload {
   name: string;
+  description?: string
   permissionNames: string[];
 }
 

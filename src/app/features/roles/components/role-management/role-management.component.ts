@@ -6,12 +6,18 @@ import { PaginationComponent } from '../../../../shared/components/pagination/pa
 import { HasPermissionDirective } from '../../../../core/directives/has-permission.directive';
 import { Store } from '@ngrx/store';
 import { BreadcrumbService } from '../../../../core/services/breadcrumb.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Role, RolesQuery } from '../../store/roles.state';
-import { selectRoles, selectRolesIsLoading, selectRolesQuery, selectRolesTotalCount } from '../../store/roles.reducer';
+import {
+  selectRoles,
+  selectRolesIsLoading,
+  selectRolesQuery,
+  selectRolesTotalCount,
+} from '../../store/roles.reducer';
 import { FormControl } from '@angular/forms';
 import { RolesActions } from '../../store/roles.actions';
 import { Router } from '@angular/router';
+import { InputComponent } from '../../../../shared/components/input/input.component';
 
 @Component({
   selector: 'app-role-management',
@@ -19,6 +25,7 @@ import { Router } from '@angular/router';
     CommonModule,
     TableComponent,
     ButtonComponent,
+    InputComponent,
     PaginationComponent,
     HasPermissionDirective,
   ],
@@ -64,6 +71,14 @@ export class RoleManagementComponent implements OnInit {
     ];
 
     this.store.dispatch(RolesActions.loadRoles({}));
+
+    this.searchControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((searchTerm) => {
+        this.store.dispatch(
+          RolesActions.setRolesSearchTerm({ searchTerm: searchTerm ?? '' })
+        );
+      });
 
     this.breadcrumbService.setBreadcrumbs([
       { label: 'Dashboard', url: '/dashboard' },

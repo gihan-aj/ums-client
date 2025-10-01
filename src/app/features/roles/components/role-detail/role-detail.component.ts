@@ -16,6 +16,7 @@ import { BreadcrumbService } from '../../../../core/services/breadcrumb.service'
 import {
   combineLatest,
   filter,
+  map,
   Observable,
   of,
   Subject,
@@ -24,7 +25,10 @@ import {
   takeUntil,
 } from 'rxjs';
 import { PermissionGroup } from '../../../permissions/store/permissions.state';
-import { selectAllPermissions } from '../../../permissions/store/permissions.reducer';
+import {
+  selectAllPermissions,
+  selectPermissionsAreLoading,
+} from '../../../permissions/store/permissions.reducer';
 import {
   name,
   selectRolesIsLoading,
@@ -64,11 +68,18 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
   private roleId: number | null = null;
 
   constructor() {
-    this.isLoading$ = this.store.select(selectRolesIsLoading);
+    // this.isLoading$ = this.store.select(selectRolesIsLoading);
+    this.isLoading$ = combineLatest([
+      this.store.select(selectRolesIsLoading),
+      this.store.select(selectPermissionsAreLoading),
+    ]).pipe(
+      map(([rolesLoading, permsLoading]) => rolesLoading || permsLoading)
+    );
+
     this.roleForm = this.fb.group({
       name: ['', Validators.required],
       description: [''],
-      permissions: [[]],
+      permissionNames: [[]],
     });
   }
 
@@ -106,7 +117,7 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
           this.roleForm.patchValue({
             name: role.name,
             description: role.description,
-            permissions: role.permissions.map((p) => p.name),
+            permissionNames: role.permissions.map((p) => p.name),
           });
         }
 

@@ -23,6 +23,7 @@ export class PermissionTreeComponent
 {
   @Input() allPermissionGroups: PermissionGroup[] = [];
   @Input() mode: 'view' | 'edit' = 'edit';
+  @Input() isLoading: boolean = false;
 
   private fb = inject(FormBuilder);
   private formSubscription: Subscription | undefined;
@@ -31,6 +32,9 @@ export class PermissionTreeComponent
 
   // A Set for quick lookups of selected permissions, used in 'view' mode.
   private selectedPermissionsSet = new Set<string>();
+
+  // Store the last value from writeValue()
+  private lastValue: string[] | null = [];
 
   // ControlValueAccessor methods
   onChange: (value: string[]) => void = () => {};
@@ -41,8 +45,11 @@ export class PermissionTreeComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['allPermissionGroups']) {
+    if (!this.isLoading && changes['allPermissionGroups']) {
       this.buildForm();
+
+      // After building the form, re-apply the current value
+      this.writeValue(this.lastValue);
     }
   }
 
@@ -71,10 +78,16 @@ export class PermissionTreeComponent
 
   // --- ControlValueAccessor Implementation ---
   writeValue(value: string[] | null): void {
+    // Cache the incoming value
+    this.lastValue = value;
+
     const selected = value || [];
     this.selectedPermissionsSet = new Set(selected);
 
-    if (this.mode === 'edit') {
+    if (
+      this.mode === 'edit' &&
+      Object.keys(this.permissionForm.controls).length
+    ) {
       const formValue = this.unflattenPermissions(selected);
       this.permissionForm.patchValue(formValue, { emitEvent: false });
     }

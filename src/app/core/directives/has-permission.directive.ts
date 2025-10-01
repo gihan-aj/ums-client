@@ -1,7 +1,10 @@
 import { Directive, inject, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject, takeUntil } from 'rxjs';
-import { selectUserPermissions } from '../../features/auth/store/auth.reducer';
+import { combineLatest, map, Subject, takeUntil } from 'rxjs';
+import {
+  selectIsRefreshing,
+  selectUserPermissions,
+} from '../../features/auth/store/auth.reducer';
 
 @Directive({
   selector: '[appHasPermission]',
@@ -14,20 +17,6 @@ export class HasPermissionDirective implements OnInit, OnDestroy {
 
   private requiredPermission!: string;
   private checkType: 'exact' | 'startsWith' = 'exact';
-  private userPermissions: string[] = [];
-
-  // @Input('appHasPermission')
-  // set permission(value: string) {
-  //   this.requiredPermission = value;
-  //   this.updateView();
-  // }
-
-  // An optional input to change the check type, e.g., [appHasPermissionCheckType]="'startsWith'"
-  // @Input('appHasPermissionCheckType')
-  // set permissionCheckType(value: 'exact' | 'startsWith') {
-  //   this.checkType = value;
-  //   this.updateView();
-  // }
 
   @Input('appHasPermission')
   set permission(
@@ -42,42 +31,49 @@ export class HasPermissionDirective implements OnInit, OnDestroy {
       this.requiredPermission = config ?? '';
       this.checkType = 'exact';
     }
-
-    this.updateView();
   }
 
   ngOnInit(): void {
-    this.store
-      .select(selectUserPermissions)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((permissiions) => {
-        this.userPermissions = permissiions;
-        this.updateView();
+    combineLatest([
+      this.store.select(selectUserPermissions),
+      this.store.select(selectIsRefreshing),
+    ])
+      .pipe(
+        map(([permissions, isRefreshing]) => {
+          // if a refresh is happening, do not make any changes.
+          // This prevents the element from dissapearing.
+          if (isRefreshing) {
+            return this.viewContainer.length > 0; // Return true if it's already visible
+          }
+
+          // Otherwise, run the permission check
+          return this.checkHasPermission(permissions);
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((hasPermission) => {
+        this.updateView(hasPermission);
       });
   }
 
-  private updateView(): void {
-    if (!this.requiredPermission) {
-      this.viewContainer.clear();
-      return;
-    }
-
-    if (this.checkHasPermission()) {
-      // If the user has permission and the view isn't already created, create it.
+  private updateView(hasPermission: boolean): void {
+    if (hasPermission) {
       if (!this.viewContainer.length) {
         this.viewContainer.createEmbeddedView(this.templateRef);
-      } else {
-        // If the user does not have permission, clear the view.
-        this.viewContainer.clear();
       }
+    } else {
+      this.viewContainer.clear();
     }
   }
 
-  private checkHasPermission(): boolean {
+  private checkHasPermission(userPermissions: string[]): boolean {
+    if (!this.requiredPermission) {
+      return false;
+    }
     if (this.checkType === 'exact') {
-      return this.userPermissions.includes(this.requiredPermission);
+      return userPermissions.includes(this.requiredPermission);
     } else if (this.checkType === 'startsWith') {
-      return this.userPermissions.some((perm) =>
+      return userPermissions.some((perm) =>
         perm.startsWith(this.requiredPermission)
       );
     }

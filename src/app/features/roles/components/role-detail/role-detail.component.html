@@ -9,7 +9,7 @@
       </div>
       <div class="header-actions">
         <app-button variant="secondary" routerLink="/roles">
-          <i class="fa-solid fa-arrow-left"></i> Cancel
+          <i class="fa-solid fa-arrow-left"></i> Back to Roles List
         </app-button>
         <app-button type="submit" [loading]="(isLoading$ | async) ?? false">
           <i class="fa-solid fa-save"></i> Save Changes
@@ -40,7 +40,7 @@
       <div class="form-panel">
         <h2 class="panel-title">Assign Permissions</h2>
         <app-permission-tree
-          formControlName="permissions"
+          formControlName="permissionNames"
           [allPermissionGroups]="(allPermissionGroups$ | async) ?? []"
         ></app-permission-tree>
       </div>

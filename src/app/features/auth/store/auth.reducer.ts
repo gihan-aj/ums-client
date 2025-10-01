@@ -140,6 +140,7 @@ export const authFeature = createFeature({
       accessToken: null,
       tokenExpiry: null,
       isLoading: true,
+      isRefreshing: true,
       error: null,
     })),
 
@@ -169,6 +170,7 @@ export const authFeature = createFeature({
           accessToken: accessToken,
           tokenExpiry: new Date(tokenExpiryUtc),
           isLoading: false,
+          isRefreshing: false,
           error: null,
         };
       }
@@ -177,6 +179,7 @@ export const authFeature = createFeature({
     on(AuthActions.refreshTokenFailure, (state) => ({
       ...state,
       isLoading: false,
+      isRefreshing: false,
       error: 'Your session has expired. Please sign in again.',
     }))
   ),
@@ -194,6 +197,7 @@ const {
   selectAccessToken,
   selectTokenExpiry,
   selectIsLoading,
+  selectIsRefreshing,
   selectError,
   selectAuthState,
 } = authFeature;
@@ -203,6 +207,7 @@ export {
   selectAccessToken,
   selectTokenExpiry,
   selectIsLoading as selectAuthIsLoading,
+  selectIsRefreshing,
   selectError as selectAuthError,
   selectAuthState,
 };
