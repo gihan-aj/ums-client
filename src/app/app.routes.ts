@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { authGuard } from './core/guards/auth.guard';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 
 export const routes: Routes = [
   // --- Public Authentication Routes ---
@@ -35,9 +36,13 @@ export const routes: Routes = [
     ],
   },
 
-  // Fallback route if no other route matches
+  // --- Fallback Route for Not Found ---
   {
     path: '**',
-    redirectTo: '/auth/login',
+    component: NotFoundComponent,
+    data: {
+      title: 'Page Not Found',
+      message: "We're sorry, the page you're looking for doesn't exist.",
+    },
   },
 ];
