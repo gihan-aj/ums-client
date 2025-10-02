@@ -1,0 +1,66 @@
+:host {
+    display: inline-block;
+    position: relative;
+}
+
+.trigger {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.content-panel {
+  position: absolute;
+  top: calc(100% + var(--spacing-unit));
+  z-index: 1002;
+  background-color: var(--surface-color);
+//   border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  overflow: hidden;
+  padding-bottom: var(--spacing-unit);
+
+  &.align-right {
+    right: 0;
+  }
+  &.align-left {
+    left: 0;
+  }
+
+  // Styles for items placed inside the dropdown via ng-content
+  // This gives us consistent styling for links and buttons.
+  ::ng-deep > a,
+  ::ng-deep > button {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-unit);
+    width: 100%;
+    padding: calc(var(--spacing-unit) * 1.25) calc(var(--spacing-unit) * 2);
+    background: none;
+    border: none;
+    color: var(--text-color);
+    text-align: left;
+    font-size: var(--font-size-base);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 150ms ease;
+
+    &:hover {
+      background-color: var(--background-color);
+      color: var(--primary-color);
+    }
+
+    i {
+      width: 16px; // Ensures icons are aligned
+      text-align: center;
+      color: var(--secondary-color);
+    }
+  }
+
+  // Divider style
+  ::ng-deep > .divider {
+    height: 1px;
+    margin: var(--spacing-unit) 0;
+    background-color: var(--border-color);
+  }
+}

@@ -27,19 +27,37 @@
   cursor: pointer;
 }
 
-.user-name {
+.avatar-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: var(--text-color-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-weight: 600;
-}
-
-.logout-btn {
-  background: none;
-  border: none;
-  color: var(--secondary-color);
-  font-size: 20px;
-  cursor: pointer;
-  transition: color var(--transition-speed) ease;
+  font-size: 14px;
+  text-transform: uppercase;
+  user-select: none;
+  transition: opacity 150ms ease;
 
   &:hover {
-    color: var(--error-color);
+    opacity: 0.9;
+  }
+}
+
+.user-menu-header {
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+  // border-bottom: 1px solid var(--border-color);
+
+  .user-name {
+    font-weight: 600;
+  }
+  .user-email {
+    font-size: 0.9em;
+    color: var(--secondary-color);
   }
 }

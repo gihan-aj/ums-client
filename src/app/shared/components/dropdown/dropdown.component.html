@@ -1,0 +1,16 @@
+<div class="dropdown-container">
+    <!-- Trigger for the drodown -->
+    <div class="trigger" (click)="toggle()">
+        <ng-content select="[dropdown-trigger]"></ng-content>
+    </div>
+
+    <!-- Content panel -->
+     <div 
+        *ngIf="isOpen"
+        class="content-panel"
+        [class.align-left]="align === 'right'"
+        [class.align-right]="align === 'left'"
+        [@fadeSlide]>
+        <ng-content></ng-content>
+     </div>
+</div>

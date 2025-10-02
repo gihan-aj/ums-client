@@ -1,18 +1,56 @@
 <header class="header-container">
-    <div class="left-side">
-        <button class="menu-toggle" (click)="toggleSidebar()">
-            <i class="fa-solid fa-align-left"></i>
-        </button>
-    </div>
-    <div class="right-side">
-        <!-- <div class="user-profile" *ngIf="tokenExpiry$ | async as time">
-            <span class="user-name">{{ time }}</span>
-        </div> -->
-        <div class="user-profile" *ngIf="user$ | async as user">
-            <span class="user-name">{{ user.given_name }} {{ user.family_name }}</span>
-        </div>
-        <button (click)="logout()" class="logout-btn" title="Logout">
-            <i class="fa-solid fa-right-from-bracket"></i>
-        </button>
-    </div>
+  <div class="left-side">
+    <button class="menu-toggle" (click)="toggleSidebar()">
+      <i class="fa-solid fa-align-left"></i>
+    </button>
+  </div>
+
+  <div class="right-side" *ngIf="user$ | async as user">
+    <!-- <div class="user-profile" *ngIf="tokenExpiry$ | async as time">
+                    <span class="user-name">{{ time }}</span>
+                </div> -->
+    <!-- <div class="user-profile">
+                    <span class="user-name">{{ user.given_name }} {{ user.family_name }}</span>
+                    </div>
+                <button (click)="logout()" class="logout-btn" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button> -->
+
+    <app-dropdown align="left">
+      <!-- The Avatar button -->
+      <div dropdown-trigger class="avatar-button">
+        <span>{{ user.given_name[0] }}{{ user.family_name[0] }}</span>
+      </div>
+
+      <!-- Dropdown menu -->
+      <div class="user-menu-header">
+        <span class="user-name"
+          >{{ user.given_name }} {{ user.family_name }}</span
+        >
+        <span class="user-email">{{ user.email }}</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <a routerLink="/profile/details" *appHasPermission="'profile:read'">
+        <i class="fa-solid fa-user-pen"></i>
+        <span>My Profile</span>
+      </a>
+
+      <a
+        routerLink="/profile/change-password"
+        *appHasPermission="'profile:change_password'"
+      >
+        <i class="fa-solid fa-key"></i>
+        <span>Change Password</span>
+      </a>
+
+      <div class="divider"></div>
+
+      <button (click)="logout()">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+      </button>
+    </app-dropdown>
+  </div>
 </header>
