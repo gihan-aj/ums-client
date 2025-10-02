@@ -37,6 +37,12 @@ export const ROLES_ROUTES: Routes = [
         canActivate: [permissionGuard],
         data: { permission: 'roles:update' },
       },
+      {
+        path: 'view/:id',
+        component: RoleDetailComponent,
+        canActivate: [permissionGuard],
+        data: { permission: 'roles:read' },
+      },
     ],
   },
 ];

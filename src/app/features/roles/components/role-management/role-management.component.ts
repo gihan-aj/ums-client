@@ -112,6 +112,10 @@ export class RoleManagementComponent implements OnInit {
     this.router.navigate(['/roles/add']);
   }
 
+  viewRole(role: Role): void {
+    this.router.navigate(['/roles/view', role.id]);
+  }
+
   editRole(role: Role): void {
     this.router.navigate(['/roles/edit', role.id]);
   }

@@ -46,6 +46,14 @@
 <ng-template #actionsCell let-role>
   <div class="action-buttons" *ngIf="currentUser$ | async as currentUser">
     <app-button
+      *appHasPermission="'roles:read'"
+      variant="icon"
+      icon="fa-solid fa-eye"
+      (click)="viewRole(role)"
+      title="View Role"
+    >
+    </app-button>
+    <app-button
       *appHasPermission="'roles:update'"
       variant="icon"
       icon="fa-solid fa-pencil"

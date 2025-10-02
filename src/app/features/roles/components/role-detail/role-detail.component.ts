@@ -60,13 +60,16 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
 
   roleForm: FormGroup;
   isEditMode = false;
+  isViewMode = false;
+  headerTitle = 'Add New Role';
   isLoading$: Observable<boolean>;
   arePermissionsLoading$: Observable<boolean>;
   allPermissionGroups$: Observable<PermissionGroup[]> =
     this.store.select(selectAllPermissions);
 
-  private destroy$ = new Subject<void>();
   private roleId: number | null = null;
+
+  private destroy$ = new Subject<void>();
 
   constructor() {
     this.isLoading$ = this.store.select(selectRolesIsLoading);
@@ -90,13 +93,21 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.store.dispatch(PermissionsActions.loadAllPermissions());
 
+    this.route.url.pipe(takeUntil(this.destroy$)).subscribe((urlSegments) => {
+      // Determine the mode from the URL path
+      this.isEditMode = urlSegments.some((s) => s.path === 'edit');
+      this.isViewMode = urlSegments.some((s) => s.path === 'view');
+
+      if(this.isEditMode) this.headerTitle = 'Edit Role'
+      if(this.isViewMode) this.headerTitle = 'View Role'
+    });
+
     this.route.paramMap
       .pipe(
         takeUntil(this.destroy$),
         switchMap((params) => {
           const id = params.get('id');
           if (id) {
-            this.isEditMode = true;
             this.roleId = +id;
 
             this.store.dispatch(
@@ -117,12 +128,16 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(([role, permissions]) => {
-        if (this.isEditMode && role) {
+        if ((this.isEditMode || this.isViewMode) && role) {
           this.roleForm.patchValue({
             name: role.name,
             description: role.description,
             permissionNames: role.permissions.map((p) => p.name),
           });
+        }
+
+        if (this.isViewMode) {
+          this.roleForm.disable();
         }
 
         this.updateBreadcrumbs(role);
@@ -134,13 +149,15 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
   }
 
   updateBreadcrumbs(role: Role | null | undefined): void {
+    let modelLabel = 'Add New';
+    if (this.isEditMode) modelLabel = 'Edit:';
+    if (this.isViewMode) modelLabel = 'View:';
+
     const breadcrumbs = [
       { label: 'Dashboard', url: '/dasboard' },
       { label: 'Roles Management', url: '/roles' },
       {
-        label: this.isEditMode
-          ? `Edit: ${role?.name ?? 'Role'}`
-          : 'Add New Role',
+        label: `${modelLabel} ${role?.name ?? 'Role'}`,
       },
     ];
 

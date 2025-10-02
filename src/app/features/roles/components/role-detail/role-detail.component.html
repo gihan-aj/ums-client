@@ -2,7 +2,7 @@
   <form [formGroup]="roleForm" (ngSubmit)="saveRole()">
     <div class="page-header">
       <div class="header-title">
-        <h1>{{ isEditMode ? 'Edit Role' : 'Add New Role' }}</h1>
+        <h1>{{ headerTitle }}</h1>
         <p class="subtitle">
           {{ isEditMode ? 'Modify the role details and permissions below.' : 'Define a new role and assign permissions.' }}
         </p>
@@ -11,7 +11,7 @@
         <app-button variant="secondary" routerLink="/roles">
           <i class="fa-solid fa-arrow-left"></i> Back to Roles List
         </app-button>
-        <app-button type="submit" [loading]="(isLoading$ | async) ?? false">
+        <app-button *ngIf="!isViewMode" type="submit" [loading]="(isLoading$ | async) ?? false">
           <i class="fa-solid fa-save"></i> Save Changes
         </app-button>
       </div>
@@ -27,12 +27,14 @@
             formControlName="name"
             [control]="nameCtrl"
             [validationMessages]="{ required: 'Role name is required.' }"
+            [loading]="(isLoading$ | async) ?? false"
           ></app-input>
           <app-input
             label="Description"
             placeholder="e.g., Has full access to all system features."
             formControlName="description"
             [control]="descriptionCtrl"
+            [loading]="(isLoading$ | async) ?? false"
           ></app-input>
         </div>
       </div>
