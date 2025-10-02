@@ -42,6 +42,7 @@
         <app-permission-tree
           formControlName="permissionNames"
           [allPermissionGroups]="(allPermissionGroups$ | async) ?? []"
+          [isLoading]="(arePermissionsLoading$ | async) ?? false"
         ></app-permission-tree>
       </div>
     </div>

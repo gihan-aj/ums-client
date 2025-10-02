@@ -33,15 +33,31 @@ export class RolesService {
     return this.http.post<PaginatedResult<Role>>(`${this.apiUrl}/list`, query);
   }
 
+  /**
+   * Fetches a single role by its ID.
+   */
   getRoleById(roleId: number): Observable<Role> {
     return this.http.get<Role>(`${this.apiUrl}/${roleId}`);
   }
 
+  /**
+   * Creates a new role.
+   */
   addRole(payload: RolePayload): Observable<{ id: number }> {
     return this.http.post<{ id: number }>(this.apiUrl, payload);
   }
 
+  /**
+   * Updates an existing role.
+   */
   updateRole(roleId: number, payload: RolePayload): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/${roleId}`, payload);
+  }
+
+  /**
+   * Deletes a role by its ID.
+   */
+  deleteRole(roleId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${roleId}`);
   }
 }

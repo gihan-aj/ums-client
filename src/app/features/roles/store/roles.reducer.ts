@@ -142,8 +142,8 @@ export const rolesFeature = createFeature({
     on(RolesActions.deleteRoleSuccess, (state, { roleId }) => ({
       ...state,
       isLoading: false,
-      roles: state.roles.filter((u) => u.id !== roleId),
-      totalCount: state.totalCount - 1,
+      roles: state.roles.filter((r) => r.id !== roleId),
+      totalCount: state.totalCount > 0 ? state.totalCount - 1 : 0,
     })),
 
     on(RolesActions.deleteRoleFailure, (state, { error }) => ({

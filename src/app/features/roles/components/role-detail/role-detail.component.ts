@@ -61,6 +61,7 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
   roleForm: FormGroup;
   isEditMode = false;
   isLoading$: Observable<boolean>;
+  arePermissionsLoading$: Observable<boolean>;
   allPermissionGroups$: Observable<PermissionGroup[]> =
     this.store.select(selectAllPermissions);
 
@@ -68,13 +69,16 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
   private roleId: number | null = null;
 
   constructor() {
-    // this.isLoading$ = this.store.select(selectRolesIsLoading);
-    this.isLoading$ = combineLatest([
-      this.store.select(selectRolesIsLoading),
-      this.store.select(selectPermissionsAreLoading),
-    ]).pipe(
-      map(([rolesLoading, permsLoading]) => rolesLoading || permsLoading)
+    this.isLoading$ = this.store.select(selectRolesIsLoading);
+    this.arePermissionsLoading$ = this.store.select(
+      selectPermissionsAreLoading
     );
+    // this.isLoading$ = combineLatest([
+    //   this.store.select(selectRolesIsLoading),
+    //   this.store.select(selectPermissionsAreLoading),
+    // ]).pipe(
+    //   map(([rolesLoading, permsLoading]) => rolesLoading || permsLoading)
+    // );
 
     this.roleForm = this.fb.group({
       name: ['', Validators.required],

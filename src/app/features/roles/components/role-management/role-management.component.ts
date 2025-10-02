@@ -6,7 +6,7 @@ import { PaginationComponent } from '../../../../shared/components/pagination/pa
 import { HasPermissionDirective } from '../../../../core/directives/has-permission.directive';
 import { Store } from '@ngrx/store';
 import { BreadcrumbService } from '../../../../core/services/breadcrumb.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { Role, RolesQuery } from '../../store/roles.state';
 import {
   selectRoles,
@@ -18,6 +18,9 @@ import { FormControl } from '@angular/forms';
 import { RolesActions } from '../../store/roles.actions';
 import { Router } from '@angular/router';
 import { InputComponent } from '../../../../shared/components/input/input.component';
+import { DialogService } from '../../../../core/services/dialog.service';
+import { selectUser } from '../../../auth/store/auth.reducer';
+import { User } from '../../../auth/store/auth.state';
 
 @Component({
   selector: 'app-role-management',
@@ -36,6 +39,7 @@ export class RoleManagementComponent implements OnInit {
   private store = inject(Store);
   private router = inject(Router);
   private breadcrumbService = inject(BreadcrumbService);
+  private dialogService = inject(DialogService);
 
   @ViewChild('actionsCell', { static: true }) actionsCell!: TemplateRef<any>;
 
@@ -43,6 +47,8 @@ export class RoleManagementComponent implements OnInit {
   isLoading$: Observable<boolean> = this.store.select(selectRolesIsLoading);
   totalCount$: Observable<number> = this.store.select(selectRolesTotalCount);
   query$: Observable<RolesQuery> = this.store.select(selectRolesQuery);
+
+  currentUser$: Observable<User | null> = this.store.select(selectUser);
 
   searchControl = new FormControl('');
 
@@ -111,6 +117,17 @@ export class RoleManagementComponent implements OnInit {
   }
 
   deleteRole(role: Role): void {
-    // Logic for deleting a role will be implemented later
+    this.dialogService
+      .openConfirmationDialog({
+        title: 'Delete Role',
+        message: `Are you sure you want to delete the role "${role.name}"? This action cannot be undone.`,
+        confirmButtonText: 'Delete',
+        confirmButtonColor: 'danger',
+        type: 'danger',
+      })
+      .pipe(filter((confirmed) => confirmed === true))
+      .subscribe(() =>
+        this.store.dispatch(RolesActions.deleteRole({ roleId: role.id }))
+      );
   }
 }

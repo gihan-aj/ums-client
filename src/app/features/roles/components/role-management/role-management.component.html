@@ -44,13 +44,14 @@
 
 <!-- Template for the actions column -->
 <ng-template #actionsCell let-role>
-  <div class="action-buttons">
+  <div class="action-buttons" *ngIf="currentUser$ | async as currentUser">
     <app-button
       *appHasPermission="'roles:update'"
       variant="icon"
       icon="fa-solid fa-pencil"
       (click)="editRole(role)"
       title="Edit Role"
+      [disabled]="currentUser?.role === role.name"
     >
     </app-button>
     <app-button
@@ -59,6 +60,7 @@
       icon="fa-solid fa-trash-can"
       (click)="deleteRole(role)"
       title="Delete Role"
+      [disabled]="currentUser?.role === role.name"
     >
     </app-button>
   </div>

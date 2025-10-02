@@ -127,7 +127,8 @@ export class RolesEffects {
         ofType(RolesActions.addRoleSuccess),
         tap((action) => {
           this.notificationService.showSuccess('Role created successfully.');
-          this.store.dispatch(RolesActions.loadRoles({}));
+          // this.store.dispatch(RolesActions.loadRoles({}));
+          this.router.navigate(['/roles']);
         })
       ),
     { dispatch: false }
@@ -186,6 +187,33 @@ export class RolesEffects {
         tap(() => {
           this.notificationService.showSuccess('Role updated successfully.');
           this.router.navigate(['/roles']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  deleteRole$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RolesActions.deleteRole),
+      exhaustMap((action) =>
+        this.rolesService.deleteRole(action.roleId).pipe(
+          map(() => RolesActions.deleteRoleSuccess({ roleId: action.roleId })),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              this.errorHandlingService.handleHttpError(error);
+            return of(RolesActions.deleteRoleFailure({ error: errorMessage }));
+          })
+        )
+      )
+    )
+  );
+
+  deleteRoleSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(RolesActions.deleteRoleSuccess),
+        tap(() => {
+          this.notificationService.showSuccess('Role deleted successfully.');
         })
       ),
     { dispatch: false }
