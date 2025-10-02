@@ -8,10 +8,10 @@
   gap: var(--spacing-unit);
 }
 
-.table-scroll-wrapper {
-  overflow-x: auto;
-  width: 100%;
-}
+// .table-scroll-wrapper {
+//   overflow-x: auto;
+//   width: 100%;
+// }
 
 .table-group {
   border: 1px solid var(--border-color);
@@ -19,23 +19,9 @@
   display: flex;
   flex-direction: column;
 
-  .table-scroll-wrapper {
-    flex-grow: 1;
-  }
-}
-
-:host ::ng-deep {
-  .table-group app-table .table-container {
-    border: none;
-    border-top-left-radius: var(--border-radius);
-    border-top-right-radius: var(--border-radius);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  .table-group app-pagination .pagination-container {
-    background-color: transparent;
-  }
+  // .table-scroll-wrapper {
+  //   flex-grow: 1;
+  // }
 }
 
 // Styles for the header actions container

@@ -7,13 +7,15 @@
   position: relative;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  overflow: hidden;
+  // overflow: hidden;
   background-color: var(--surface-color);
+  overflow-x: auto;
 }
 
 .data-table {
   width: 100%;
   border-collapse: collapse;
+  // min-width: 500px;
 }
 
 thead tr {
@@ -70,6 +72,11 @@ tbody tr:hover:not(.skeleton-row) {
   text-align: center;
   padding: calc(var(--spacing-unit) * 4);
   color: var(--secondary-color);
+}
+
+:host-context(.table-group) .table-container {
+  border: none;
+  border-radius: 0;
 }
 
 // --- Skeleton Loader Styles ---

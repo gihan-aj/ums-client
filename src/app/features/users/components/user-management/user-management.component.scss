@@ -4,10 +4,12 @@
   gap: var(--spacing-unit);
 }
 
-.table-scroll-wrapper {
-  overflow-x: auto;
-  width: 100%;
-}
+// .table-scroll-wrapper {
+//   overflow-x: auto;
+//   width: 100%;
+//   min-width: 0;
+//   border-radius: var(--border-radius);
+// }
 
 // This is the new wrapper for the table and pagination
 .table-group {
@@ -20,29 +22,9 @@
   flex-direction: column;
 
   // The wrapper takes up the available space
-  .table-scroll-wrapper {
-    flex-grow: 1;
-  }
-}
-
-// Use ::ng-deep to modify the styles of the child components
-:host ::ng-deep {
-  // Target the table's inner container
-  .table-group app-table .table-container {
-    // Remove the default border and radius so it fits flush in our group
-    border: none;
-    border-top-left-radius:  var(--border-radius);
-    border-top-right-radius: var(--border-radius);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  // Target the pagination's inner container
-  .table-group app-pagination .pagination-container {
-    // The pagination already has a top border, which we want to keep,
-    // but we remove its background so it feels connected.
-    background-color: transparent;
-  }
+  // .table-scroll-wrapper {
+  //   flex-grow: 1;
+  // }
 }
 
 // Styles for the header actions container

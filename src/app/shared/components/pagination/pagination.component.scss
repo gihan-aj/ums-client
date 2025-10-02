@@ -26,3 +26,7 @@
     width: auto;
   }
 }
+
+:host-context(.table-group) .pagination-container {
+  background-color: transparent;
+}
