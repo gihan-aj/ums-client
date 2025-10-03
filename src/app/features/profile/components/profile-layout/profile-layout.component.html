@@ -1,0 +1,25 @@
+<div class="page-container">
+    <div class="page-header">
+        <h1>My Profile</h1>
+    </div>
+
+    <div class="page-content">
+        <div class="profile-layout-grid">
+            <nav class="profile-nav">
+                <a routerLink="/profile/details" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="fa-solid fa-user-pen"></i>
+                    <span>Profile Details</span>
+                </a>
+                
+                <a routerLink="/profile/change-password" routerLinkActive="active">
+                    <i class="fa-solid fa-key"></i>
+                    <span>Change Password</span>
+                </a>
+            </nav>
+
+            <div class="profile-content">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+:host {
+  display: block;
+}
+
+.profile-layout-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: calc(var(--spacing-unit) * 2);
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit);
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-unit);
+    padding: calc(var(--spacing-unit) * 1.5);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    color: var(--secondary-color);
+    font-weight: 500;
+    transition: all 150ms ease;
+
+    &:hover {
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+
+    &.active {
+      background-color: var(--primary-color-translucent);
+      color: var(--primary-color);
+    }
+  }
+}
+
+.profile-content {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: calc(var(--spacing-unit) * 2);
+}

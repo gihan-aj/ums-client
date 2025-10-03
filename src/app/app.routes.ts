@@ -31,6 +31,13 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/roles/roles.routes').then((m) => m.ROLES_ROUTES),
       },
+      {
+        path: 'profile',
+        loadChildren: () =>
+          import('./features/profile/profile.routes').then(
+            (m) => m.PROFILE_ROUTES
+          ),
+      },
       // Redirect the root path of the protected area to the dashboard
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],

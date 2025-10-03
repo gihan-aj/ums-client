@@ -10,6 +10,7 @@
         class="content-panel"
         [class.align-left]="align === 'right'"
         [class.align-right]="align === 'left'"
+        (click)="close()"
         [@fadeSlide]>
         <ng-content></ng-content>
      </div>

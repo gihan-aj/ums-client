@@ -4,12 +4,12 @@
   gap: var(--spacing-unit);
 }
 
-// .table-scroll-wrapper {
-//   overflow-x: auto;
-//   width: 100%;
-//   min-width: 0;
-//   border-radius: var(--border-radius);
-// }
+.table-scroll-wrapper {
+  overflow-x: auto;
+  width: 100%;
+  min-width: 0;
+  border-radius: var(--border-radius);
+}
 
 // This is the new wrapper for the table and pagination
 .table-group {

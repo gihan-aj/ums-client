@@ -39,11 +39,15 @@ export class DropdownComponent implements AfterContentInit {
   @HostListener('document:click', ['$event'])
   onDoucumentClick(event: MouseEvent): void {
     if (!this.elementRef.nativeElement.contains(event.target)) {
-      this.isOpen = false;
+      this.close();
     }
   }
 
   toggle(): void {
     this.isOpen = !this.isOpen;
+  }
+
+  close(): void {
+    this.isOpen = false;
   }
 }

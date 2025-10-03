@@ -1,0 +1,42 @@
+<form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="profile-form">
+  <h2>Edit Profile</h2>
+  <p class="subtitle">Update your personal information below.</p>
+
+  <div class="form-grid">
+    <app-input
+      label="First Name"
+      formControlName="firstName"
+      [control]="firstNameCtrl"
+      [validationMessages]="{
+        required: 'First name is required.',
+        minlength: 'First name must be at least 2 characters.',
+        maxlength: 'First name cannot exceed 100 characters.'
+      }"
+    ></app-input>
+
+    <app-input
+      label="Last Name"
+      formControlName="lastName"
+      [control]="lastNameCtrl"
+      [validationMessages]="{
+        required: 'Last name is required.',
+        minlength: 'Last name must be at least 2 characters.',
+        maxlength: 'Last name cannot exceed 100 characters.'
+      }"
+    ></app-input>
+
+</div>
+<div class="form-actions">
+  <app-button
+    type="submit"
+    [loading]="(isLoading$ | async) ?? false"
+    [disabled]="
+      !profileForm.dirty ||
+      profileForm.invalid ||
+      ((isLoading$ | async) ?? false)
+    "
+  >
+    Save Changes
+  </app-button>
+</div>
+</form>

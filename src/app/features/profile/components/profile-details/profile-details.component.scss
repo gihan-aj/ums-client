@@ -1,0 +1,40 @@
+:host {
+  display: block;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 1.5);
+}
+
+h2 {
+  margin: 0;
+}
+
+// .subtitle {
+//   color: var(--secondary-color);
+//   margin-top: calc(var(--spacing-unit) * 0.5);
+// }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--spacing-unit) * 2);
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid var(--border-color);
+  padding-top: calc(var(--spacing-unit) * 3);
+  margin-top: var(--spacing-unit);
+
+  app-button {
+    width: auto;
+  }
+}

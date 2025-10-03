@@ -59,8 +59,8 @@
     i { font-size: 18px; width: 20px; text-align: center; }
     &:hover { color: var(--primary-color); }
     &.active {
-      // color: var(--primary-color);
-      color: var(--text-color);
+      color: var(--primary-color);
+      // color: var(--text-color);
       background-color: var(--primary-color-focus);
       border-right: 3px solid var(--primary-color);
     }
