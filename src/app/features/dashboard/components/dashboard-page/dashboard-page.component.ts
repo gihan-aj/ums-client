@@ -6,10 +6,17 @@ import { BreadcrumbService } from '../../../../core/services/breadcrumb.service'
 import { Observable } from 'rxjs';
 import { User } from '../../../auth/store/auth.state';
 import { selectUser } from '../../../auth/store/auth.reducer';
+import { NewUsersChartComponent } from '../widgets/new-users-chart/new-users-chart.component';
+import { ActivityFeedComponent } from '../widgets/activity-feed/activity-feed.component';
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [CommonModule, StatsCardComponent],
+  imports: [
+    CommonModule,
+    StatsCardComponent,
+    NewUsersChartComponent,
+    ActivityFeedComponent,
+  ],
   templateUrl: './dashboard-page.component.html',
   styleUrl: './dashboard-page.component.scss',
 })

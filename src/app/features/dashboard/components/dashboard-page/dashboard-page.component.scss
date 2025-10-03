@@ -1,16 +1,29 @@
 :host {
-    display: block;
+  display: block;
 }
 
 .welcome-header {
-    margin-bottom: calc(var(--spacing-unit) * 2);
-    h1 {
-        margin: 0;
-    }
+  margin-bottom: calc(var(--spacing-unit) * 2);
+  h1 {
+    margin: 0;
+  }
 }
 
 .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: calc(var(--spacing-unit) * 2);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: calc(var(--spacing-unit) * 2);
+}
+
+.main-content-grid {
+  overflow-x: auto;
+  margin-top: calc(var(--spacing-unit) * 2);
+  display: grid;
+  // This will create a responsive layout for our larger widgets
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: calc(var(--spacing-unit) * 2);
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr; // Stack on smaller screens
+  }
 }

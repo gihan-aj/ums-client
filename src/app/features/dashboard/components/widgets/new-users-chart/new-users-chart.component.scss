@@ -1,0 +1,23 @@
+:host {
+  display: block;
+}
+
+.chart-container {
+  background-color: var(--surface-color);
+  padding: calc(var(--spacing-unit) * 3);
+  border: 1px solid var(--border-color);
+  border-radius: calc(var(--border-radius) * 1.5);
+  height: 100%;
+}
+
+.chart-title {
+  margin: 0 0 calc(var(--spacing-unit) * 3) 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+// This wrapper is crucial for Chart.js's responsiveness
+.chart-wrapper {
+  position: relative;
+  height: 300px;
+}

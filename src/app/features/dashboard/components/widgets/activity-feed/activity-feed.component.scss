@@ -1,0 +1,64 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.activity-feed-container {
+  background-color: var(--surface-color);
+  padding: calc(var(--spacing-unit) * 3);
+  border: 1px solid var(--border-color);
+  border-radius: calc(var(--border-radius) * 1.5);
+  height: 100%;
+}
+
+.feed-title {
+  margin: 0 0 calc(var(--spacing-unit) * 3) 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.activity-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 2.5);
+}
+
+.activity-item {
+  display: flex;
+  gap: calc(var(--spacing-unit) * 2);
+}
+
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 16px;
+  background-color: var(--background-color);
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  .description {
+    margin: 0;
+    font-weight: 500;
+  }
+  .time {
+    font-size: 0.85em;
+    color: var(--secondary-color);
+  }
+}
+
+// Color Variants for the icons
+.blue { color: #3b82f6; }
+.green { color: #22c55e; }
+.orange { color: #f97316; }
+.purple { color: #8b5cf6; }
+.red { color: var(--error-color); }

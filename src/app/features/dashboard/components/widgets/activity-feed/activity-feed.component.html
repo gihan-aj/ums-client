@@ -1,0 +1,15 @@
+<div class="activity-feed-container">
+    <h3 class="feed-title">Recent Activity</h3>
+    <ul class="activity-list">
+        <li *ngFor="let item of activityItems" class="activity-item">
+            <div class="icon-wrapper" [ngClass]="item.color">
+                <i [ngClass]="item.icon"></i>
+            </div>
+
+            <div class="content-wrapper">
+                <p class="description">{{item.description}}</p>
+                <span class="time">{{item.time}}</span>
+            </div>
+        </li>
+    </ul>
+</div>
