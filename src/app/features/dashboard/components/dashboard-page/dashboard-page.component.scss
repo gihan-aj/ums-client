@@ -1,0 +1,16 @@
+:host {
+    display: block;
+}
+
+.welcome-header {
+    margin-bottom: calc(var(--spacing-unit) * 2);
+    h1 {
+        margin: 0;
+    }
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: calc(var(--spacing-unit) * 2);
+}

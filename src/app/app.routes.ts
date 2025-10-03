@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { authGuard } from './core/guards/auth.guard';
-import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
+import { DashboardPageComponent } from './features/dashboard/components/dashboard-page/dashboard-page.component';
 
 export const routes: Routes = [
   // --- Public Authentication Routes ---
@@ -20,7 +20,7 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     canActivate: [authGuard], // Protect this whole section
     children: [
-      { path: 'dashboard', component: DashboardComponent },
+      { path: 'dashboard', component: DashboardPageComponent },
       {
         path: 'users',
         loadChildren: () =>

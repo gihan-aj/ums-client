@@ -1,0 +1,59 @@
+:host {
+  display: block;
+}
+
+.stats-card-container {
+  display: flex;
+  min-height: 130px;
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 2);
+  padding: calc(var(--spacing-unit) * 3);
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: calc(var(--border-radius) * 1.5);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: var(--text-color-light);
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    color: var(--secondary-color);
+    font-weight: 500;
+  }
+  .value {
+    font-size: 1.75rem;
+    font-weight: 700;
+  }
+}
+
+// Color Variants
+.blue .icon-wrapper {
+  background-color: #3b82f6; // A nice blue
+}
+.green .icon-wrapper {
+  background-color: #22c55e; // A vibrant green
+}
+.orange .icon-wrapper {
+  background-color: #f97316; // A warm orange
+}
+.purple .icon-wrapper {
+  background-color: #8b5cf6; // A modern purple
+}

@@ -1,0 +1,18 @@
+<div class="page-container">
+    <!-- Welcome header -->
+     <div class="welcome-header" *ngIf="user$ | async as user">
+        <h1>Welcome back, {{user.given_name}}!</h1>
+        <p class="subtitle">{{ currentDate | date: 'fullDate' }}</p>
+     </div>
+
+     <!-- Stats Cards Grid -->
+      <div class="stats-grid">
+        <app-stats-card
+            *ngFor="let stat of dashboardStats"
+            [title]="stat.title"
+            [value]="stat.value"
+            [icon]="stat.icon"
+            [color]="stat.color"
+        ></app-stats-card>
+      </div>
+</div>
