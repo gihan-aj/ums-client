@@ -2,6 +2,10 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-unit);
+    
+    i {
+        font-size: 2.5rem;
+    }
 }
 
 .title-info {

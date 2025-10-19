@@ -31,6 +31,8 @@ A modern, full-stack User Management System built from the ground up to showcase
 | ![Login Page](./screenshots/login.png) | ![Dashboard](./screenshots/dashboard.png) |
 | **User Management** | **Role Editor** |
 | ![User Management](./screenshots/user-management.png) | ![Role Editor](./screenshots/role-editor.png) |
+| **Light mode** | **Confirmation Dialog** |
+| ![Light mode](./screenshots/edit-user-light.png) | ![Confirmation Dialog](./screenshots/role-management-light.png) |
 
 ---
 
