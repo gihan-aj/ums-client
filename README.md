@@ -82,6 +82,7 @@ This project was built to demonstrate a deep understanding of modern web archite
 - [PostgreSQL](https://www.postgresql.org/download/)
 
 ### Backend Setup
+[Repo](https://github.com/gihan-aj/UMS)
 ```bash
 # 1. Navigate to the backend project directory
 cd /path/to/your/backend
@@ -96,3 +97,18 @@ dotnet ef database update
 
 # 5. Run the application
 dotnet run
+```
+### Frontend Setup
+```bash
+# 1. Navigate to the frontend project directory
+cd /path/to/your/ums-client
+
+# 2. Install dependencies
+npm install
+
+# 3. Ensure the API URL in src/environments/environment.development.ts is correct
+
+# 4. Run the application
+npm start
+```
+The application will be available at `http://localhost:4200`.
