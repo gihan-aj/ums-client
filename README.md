@@ -1,59 +1,98 @@
-# UmsClient
+# User Management System (UMS)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
+A modern, full-stack User Management System built from the ground up to showcase best practices in both frontend and backend development. The frontend is a feature-rich Angular SPA, and the backend is a secure .NET Web API.
 
-## Development server
+**Live Demo:** [[Deployed application](https://ums-client-200915304888.asia-south1.run.app/)]
 
-To start a local development server, run:
+---
 
+## ✨ Key Features
+
+- **Full Authentication Flow:** Secure user registration, login, and password reset functionality using JWTs and HttpOnly refresh tokens.
+- **Role-Based Access Control (RBAC):**
+    - **Route-level security** using `CanActivateFn` guards to protect pages.
+    - **UI-element security** with a custom `*appHasPermission` directive to declaratively show/hide buttons and menu items.
+- **Complete CRUD Operations:** Fully-featured management pages for both Users and Roles.
+- **Custom Component Library:** A complete set of reusable components built from scratch without any external libraries (like Angular Material or PrimeNG).
+    - Generic Data Table with sorting and pagination.
+    - Dynamic Modal & Dialog system.
+    - Advanced `PermissionTree` custom form control.
+    - Animated Dropdown menus.
+- **Advanced State Management:** Utilizes NgRx for predictable global state, with lazy-loaded feature states for performance.
+- **Responsive Design:** A clean, modern UI that works on any device, complete with a professional light/dark theme.
+- **Interactive Dashboard:** A dynamic dashboard featuring charts (using Chart.js) and key metric cards.
+
+---
+
+## 📸 Screenshots
+
+*(Note: To add your own images, create a `screenshots` folder in the root of your repo, place your images there, and update the paths below.)*
+
+| Login Page | Dashboard |
+| :---: | :---: |
+| ![Login Page](./screenshots/login.png) | ![Dashboard](./screenshots/dashboard.png) |
+| **User Management** | **Role Editor** |
+| ![User Management](./screenshots/user-management.png) | ![Role Editor](./screenshots/role-editor.png) |
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **Angular 19** (Standalone Components)
+- **TypeScript**
+- **NgRx** for state management
+- **RxJS** for asynchronous operations
+- **Sass (SCSS)** for styling
+- **Chart.js** for data visualization
+
+### Backend
+- **.NET 8** Web API
+- **C#**
+- **Entity Framework Core** for data access
+- **PostgreSQL** Database
+- **JWT** for Authentication
+
+### DevOps
+- **Docker** for containerization
+- **GitHub Actions** for CI/CD
+- **Google Cloud Run** for hosting
+
+---
+
+## 🚀 Architectural Highlights
+
+This project was built to demonstrate a deep understanding of modern web architecture. Key patterns include:
+
+1.  **Hybrid State Management:** Uses NgRx for shared, global state (like auth) while leveraging component-level services for localized, complex state (like the multi-tab user edit form). This shows a pragmatic approach to state management.
+
+2.  **Dynamic Component Injection:** The `DialogService` uses Angular's `ViewContainerRef` to dynamically create and destroy modal components at runtime, creating a powerful, decoupled UI system.
+
+3.  **Declarative, Multi-Layered Security:** Combines route guards and a custom structural directive (`*appHasPermission`) to enforce authorization at both the page and element level.
+
+4.  **Custom Form Controls with `ControlValueAccessor`:** Advanced components like the `PermissionTreeComponent` implement this interface, allowing them to integrate seamlessly with Angular's Reactive Forms.
+
+---
+
+## 🏁 Getting Started
+
+### Prerequisites
+- [.NET 8 SDK](https://dotnet.microsoft.com/download)
+- [Node.js and npm](https://nodejs.org/)
+- [PostgreSQL](https://www.postgresql.org/download/)
+
+### Backend Setup
 ```bash
-ng serve
-```
+# 1. Navigate to the backend project directory
+cd /path/to/your/backend
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+# 2. Restore dependencies
+dotnet restore
 
-## Code scaffolding
+# 3. Update the database connection string in appsettings.Development.json
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+# 4. Apply database migrations
+dotnet ef database update
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+# 5. Run the application
+dotnet run
