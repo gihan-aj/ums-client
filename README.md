@@ -26,8 +26,6 @@ A modern, full-stack User Management System built from the ground up to showcase
 
 ## 📸 Screenshots
 
-*(Note: To add your own images, create a `screenshots` folder in the root of your repo, place your images there, and update the paths below.)*
-
 | Login Page | Dashboard |
 | :---: | :---: |
 | ![Login Page](./screenshots/login.png) | ![Dashboard](./screenshots/dashboard.png) |
