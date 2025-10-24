@@ -14,7 +14,7 @@ import {
   TableComponent,
 } from '../../../../shared/components/table/table.component';
 import { Store } from '@ngrx/store';
-import { filter, map, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { filter, map, Observable, Subject, take, takeUntil, tap } from 'rxjs';
 import { User, UserQuery } from '../../store/users.state';
 import {
   selectUserQuery,
@@ -99,6 +99,12 @@ export class UserManagementComponent implements OnInit, OnDestroy {
 
     // Dispatch the action to load the initial set of users
     this.store.dispatch(UsersActions.loadUsers({}));
+
+    this.query$.pipe(take(1)).subscribe((query) => {
+      // For now, only one filter is being sent.
+      const searchValue = query.filters[0].value;
+      if (searchValue) this.searchControl.setValue(searchValue);
+    });
 
     this.searchControl.valueChanges
       .pipe(takeUntil(this.destroy$))

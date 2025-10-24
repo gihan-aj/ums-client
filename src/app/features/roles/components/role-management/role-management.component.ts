@@ -6,7 +6,7 @@ import { PaginationComponent } from '../../../../shared/components/pagination/pa
 import { HasPermissionDirective } from '../../../../core/directives/has-permission.directive';
 import { Store } from '@ngrx/store';
 import { BreadcrumbService } from '../../../../core/services/breadcrumb.service';
-import { filter, Observable, Subject, takeUntil } from 'rxjs';
+import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
 import { Role, RolesQuery } from '../../store/roles.state';
 import {
   selectRoles,
@@ -77,6 +77,11 @@ export class RoleManagementComponent implements OnInit {
     ];
 
     this.store.dispatch(RolesActions.loadRoles({}));
+
+    this.query$.pipe(take(1)).subscribe((query) => {
+      const searchValue = query.filters[0].value;
+      if (searchValue) this.searchControl.setValue(searchValue);
+    });
 
     this.searchControl.valueChanges
       .pipe(takeUntil(this.destroy$))
